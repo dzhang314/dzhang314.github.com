@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <meta name="generator" content="Madoko, version 1.0.1" />
+  <meta name="viewport" content="initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Surreal Numbers - David K. Zhang - Personal Website</title>
+  <style type="text/css"  class="link">
+  /*# sourceURL=../resources/css/DZ_MADOKO.css */
+  
+  .madoko .toc>.tocblock .tocblock .tocblock {
+    margin-left: 2.25em;
+  }
+  .madoko .toc>.tocblock .tocblock {
+    margin-left: 1.5em;
+  }
+  .madoko .toc-contents>.tocblock>.tocitem {
+    font-weight: bold;
+  }
+  .madoko .toc {
+    margin-top: 1em;
+  }
+  .madoko p.para-continue {
+    margin-bottom: 0pt;
+  }
+  .madoko .para-block+p {
+    margin-top: 0pt;
+  }
+  .madoko ul.para-block, .madoko ol.para-block {
+    margin-top: 0pt;
+    margin-bottom: 0pt;
+  }
+  .madoko ul.para-end, .madoko ol.para-end {
+    margin-bottom: 1em;
+  }
+  .madoko dl {
+    margin-left: 0em;
+  }
+  .madoko blockquote {
+    font-style: italic;
+  }
+  .madoko a.localref {
+    text-decoration: none;
+  }
+  .madoko a.localref:hover {
+    text-decoration: underline;
+  }
+  .madoko .footnotes {
+    font-size: smaller;
+    margin-top: 2em;
+  }
+  .madoko .footnotes hr {
+    width: 50%;
+    text-align: left;
+  }
+  .madoko .footnote { 
+    margin-left: 1em;
+  }
+  .madoko .footnote-before {
+    margin-left: -1em;
+    width: 1em;
+    display: inline-block;
+  }
+  .madoko .align-center, .madoko .align-center>p {
+    text-align: center !important;
+  }
+  .madoko .align-center pre {
+    text-align: left;
+  }
+  .madoko .align-center>* {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  .madoko .align-left, .madoko .align-left>p {
+    text-align: left !important;
+  }
+  .madoko .align-left>* {
+    margin-left: 0pt !important;
+    margin-right: auto !important;
+  }
+  .madoko .align-right, .madoko .align-right>p {
+    text-align: right !important;
+  }
+  .madoko .align-right>* {
+    margin-left: auto !important;
+    margin-right: 0pt !important;
+  }
+  .madoko .align-center>table,
+  .madoko .align-left>table,
+  .madoko .align-right>table {
+    text-align: left !important;
+  }
+  .madoko .equation-before {
+    float: right;
+  }
+  .madoko .bibitem {
+    font-size: smaller;
+  }
+  .madoko .bibsearch {
+    font-size: x-small;
+    text-decoration:none;
+    color: black;
+    font-family: "Segoe UI Symbol", Symbola, serif;
+  }
+  .madoko .block, .madoko .figure, .madoko .bibitem, .madoko .equation, .madoko div.math {
+    margin-top: 1ex;
+    margin-bottom: 1ex;
+  }
+  .madoko .figure {
+    padding: 0.5em;
+    margin-left: 0pt;
+    margin-right: 0pt;
+  }
+  .madoko .hidden {
+    display: none;
+  }
+  .madoko .invisible {
+    visibility: hidden;
+  }
+  .madoko.preview .invisible {
+    visibility: visible;
+    opacity: 0.5;
+  }
+  .madoko code.code, .madoko span.code {
+    white-space: pre-wrap;
+  }
+  .madoko hr, hr.madoko {
+    border: none;
+    border-bottom: black solid 1px;
+    margin-bottom: 0.5ex;
+  }
+  .madoko .framed>*:first-child {
+    margin-top: 0pt;
+  }
+  .madoko .framed>*:last-child {
+    margin-bottom: 0pt;
+  }
+  .madoko ul.list-style-type-dash {
+      list-style-type: none !important;
+  }
+  .madoko ul.list-style-type-dash > li:before {
+      content: "\2013"; 
+      position: absolute;
+      margin-left: -1em; 
+  }
+  .madoko table.madoko {
+    border-collapse: collapse;
+  }
+  .madoko td, .madoko th {
+    padding: 0ex 0.5ex;
+    margin: 0pt;
+    vertical-align: top;
+  }
+  .madoko .cell-border-left {
+    border-left: 1px solid black;
+  }
+  .madoko .cell-border-right {
+    border-right: 1px solid black;
+  }
+  .madoko thead>tr:first-child>.cell-line,
+  .madoko tbody:first-child>tr:first-child>.cell-line {
+    border-top: 1px solid black;
+    border-bottom: none;
+  }
+  .madoko .cell-line, .madoko .cell-double-line {
+    border-bottom: 1px solid black;
+    border-top: none;
+  }
+  .madoko .cell-double-line {
+    border-top: 1px solid black;
+    padding-top: 1.5px !important;
+  }
+  .madoko .input-mathpre .MathJax_Display {
+    text-align: left !important;
+  }
+  .madoko div.input-mathpre {
+    text-align: left;
+    margin-top: 1.5ex;
+    margin-bottom: 1ex;
+  }
+  .madoko .math-rendering {
+    color: gray;
+  }
+  .madoko .mathdisplay {
+    text-align: center;
+  }
+  .madoko .pretty table {
+    border-collapse: collapse;
+  }
+  .madoko .pretty td {
+    padding: 0em;
+  }
+  .madoko .pretty td.empty {
+    min-width: 1.5ex;
+  }
+  .madoko .pretty td.expander {
+    width: 100em;
+  }
+  .madoko .symbol {
+    font-family: "Segoe UI Symbol", Symbola, serif;
+  }
+  body.madoko {  
+    -webkit-text-size-adjust: 100%;       
+    text-rendering: optimizeLegibility;
+  }
+  body.madoko {
+    max-width: 88ex; 
+    margin: 1em auto;
+    padding: 0em 2em;  
+  }
+  body.preview.madoko {
+    padding: 0em 1em;
+  }
+  .madoko h1, .madoko h2, .madoko h3, .madoko h4 { 
+    margin-top: 1.22em; 
+    margin-bottom: 1ex;
+  }
+  .madoko h1+p, .madoko h2+p, .madoko h3+p, .madoko h4+p, .madoko h5+p  { 
+    margin-top: 1ex;    
+  }
+  .madoko h5, .madoko h6 { 
+    margin-top: 1ex;
+    font-size: 1em;
+  }
+  .madoko h5 { 
+    margin-bottom: 0.5ex;
+  }
+  .madoko h5 + p {
+    margin-top: 0.5ex;
+  }
+  .madoko h6 { 
+    margin-bottom: 0pt;
+  }
+  .madoko h6 + p {
+    margin-top: 0pt;
+  }
+  .madoko pre, .madoko code, .madoko kbd, .madoko samp, .madoko tt, 
+  .madoko .monospace, .madoko .token-indent, .madoko .reveal pre, .madoko .reveal code, .madoko .email {
+    font-family: Consolas,"Andale Mono WT","Andale Mono",Lucida Console,Monaco,monospace,monospace;
+    font-size: 0.85em;
+  }
+  .madoko pre code, .madoko .token-indent {
+    font-size: 0.95em;
+  }
+  .madoko pre code {
+    font-family: inherit !important;
+  }
+  .madoko ol.linenums li {
+    background-color: white;
+    list-style-type: decimal;
+  }
+  .madoko .remote {
+    background-color: #F0FFF0;
+  }
+  .madoko .remote + * {
+    margin-top: 0pt;
+  }
+  @media print {
+    body.madoko {
+      font-size: 10pt;
+    }
+    @page {
+      margin: 0.5in 0.5in;
+    }
+  }
+  @media only screen and (max-device-width:1024px) {
+    body.madoko {
+      padding: 0em 0.5em;    
+    }
+    .madoko li {
+      text-align: left;
+    }
+  }
+  
+    </style>
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/readable/bootstrap.min.css"  class="link">
+  <link rel="icon" href="/resources/favicon.png">  
+      <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+      <![endif]-->
+      <style>
+      body.madoko {
+          padding: 0pt;
+          padding-top: 60px;
+          margin: 0pt;
+          max-width: 100%;
+      }
+      .footer {
+          padding-top: 36px;
+          padding-bottom: 36px;
+          margin-top: 36px;
+          border-top: 1px solid #eee;
+      }
+      </style>
+  </head>
+<body class="madoko">
+
+<div class="body madoko" style="line-adjust:0">
+
+<nav class="nav navbar navbar-default navbar-fixed-top" data-line="3;../include/navbar/DZ_Navbar_LecNotes.html:2">
+<div class="container" data-line="3;../include/navbar/DZ_Navbar_LecNotes.html:3">
+<div class="navbar-header" data-line="3;../include/navbar/DZ_Navbar_LecNotes.html:4"><button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+  <span class="sr-only">Toggle navigation</span>
+  <span class="icon-bar"></span>
+  <span class="icon-bar"></span>
+  <span class="icon-bar"></span>
+</button>
+
+
+<p class="p noindent" data-line="3;../include/navbar/DZ_Navbar_LecNotes.html:11"><span data-line="3;../include/navbar/DZ_Navbar_LecNotes.html:11"></span><a class="navbar-brand" href="/index.html"><span data-line="3;../include/navbar/DZ_Navbar_LecNotes.html:11"></span>
+  <span data-line="3;../include/navbar/DZ_Navbar_LecNotes.html:12"></span><img src="/resources/favicon_crop.png" style="max-height:38px" alt="David K. Zhang - Logo" /><span data-line="3;../include/navbar/DZ_Navbar_LecNotes.html:12"></span>
+<span data-line="3;../include/navbar/DZ_Navbar_LecNotes.html:13"></span></a></p></div><div id="navbar" class="navbar-collapse collapse">
+<ul class="nav navbar-nav">
+<li><a href="/index.html">Home</a></li>
+<li><a href="/projects.html">Current Projects</a></li>
+<li><a href="/publications.html">Publications</a></li>
+<li class="dropdown active">
+<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Lecture Notes <span class="caret"></span></a>
+<ul class="dropdown-menu">
+<li class="dropdown-header">Vanderbilt - Pure Mathematics</li>
+<li><a href="/notes/math-2500.html">MATH 2500 - Multivariable Calculus and Linear Algebra I</a></li>
+<li><a href="/notes/math-2501.html">MATH 2501 - Multivariable Calculus and Linear Algebra II</a></li>
+<li role="separator" class="divider"></li>
+<li class="dropdown-header">Personal - Pure Mathematics</li>
+<li><a href="/notes/surreal-numbers.html">Theory of Surreal Numbers</a></li>
+<li role="separator" class="divider"></li>
+<li class="dropdown-header">Coming Soon</li>
+<li><a href="#">MATH 4300 - Modern Algebra</a></li>
+<li><a href="#">MATH 7200 - Algebraic Topology</a></li>
+<li><a href="#">MATH 9100 - Big Data and Compressed Sensing</a></li>
+<li><a href="#">PHYS 3640 - Solid-State Physics</a></li>
+<li><a href="#">CS 3250 - Algorithms</a></li>
+</ul>
+</li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li><a href="/contact.html">Contact</a></li>
+</ul>
+</div>
+</div></nav>
+<div class="mathdefs input-mathdefs" data-line="5"></div>
+<div class="container" data-line="12">
+
+<div class="center align-center" data-line="14" style="text-align:center"><h2 id="sec-notes-on-the-theory-of-surreal-numbers" class="clearnum h1" data-line="15" data-heading-depth="1" style="display:block"><span data-line="15"></span>Notes on the Theory of Surreal Numbers</h2>
+<p class="p noindent" data-line="17"><span data-line="17"></span>By David K. Zhang</p></div><h2 id="sec-introduction" class="h1" data-line="20" data-heading-depth="1" style="display:block"><span data-line="20"></span><span class="heading-before"><span class="heading-label">1</span>.&#8194;</span><span data-line="20"></span>Introduction</h2>
+<p class="p noindent" data-line="22"><span data-line="22"></span>The <span data-line="22"></span><em class="em-low1">surreal numbers</em><span data-line="22"></span> form a vast number system which is much larger than all familiar everyday number systems, such as the integers <span data-line="22"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.0210em;height:0.7585em;width:0.7378em" viewBox='34.669 54.811 7.027 7.224' ><desc>$\Z$</desc><g id='page5'><use x='34.869' xlink:href='#g1-90' y='61.836'/></g></svg><span data-line="22"></span>, rationals <span data-line="22"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.2091em;height:0.9657em;width:0.8537em" viewBox='88.467 54.622 8.13 9.197' ><desc>$\Q$</desc><g id='page8'><use x='88.667' xlink:href='#g1-81' y='61.836'/></g></svg><span data-line="22"></span>, and real numbers <span data-line="22"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.0210em;height:0.7585em;width:0.7957em" viewBox='34.669 54.811 7.578 7.224' ><desc>$\R$</desc><g id='page9'><use x='34.869' xlink:href='#g1-82' y='61.836'/></g></svg><span data-line="22"></span>. The surreal number system not only includes all real numbers, but also <span data-line="22"></span><em class="em-low1">infinite</em><span data-line="22"></span> and <span data-line="22"></span><em class="em-low1">infinitesimal</em><span data-line="22"></span> numbers, such as <span data-line="22"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.1877em;height:0.9385em;width:1.1492em" viewBox='88.467 54.731 10.945 8.938' ><desc>$\aleph_0$</desc><g id='page4'><use x='88.667' xlink:href='#g2-64' y='61.836'/><use x='94.733' xlink:href='#g5-48' y='63.33'/></g></svg><span data-line="22"></span> (the size of the set <span data-line="22"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.0210em;height:0.7585em;width:0.7378em" viewBox='34.669 54.811 7.027 7.224' ><desc>$\Z$</desc><g id='page5'><use x='34.869' xlink:href='#g1-90' y='61.836'/></g></svg><span data-line="22"></span>) and <span data-line="22"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.0210em;height:0.5599em;width:0.4489em" viewBox='88.467 56.993 4.275 5.332' ><desc>$\mathfrak{c}$</desc><g id='page6'><use x='88.667' xlink:href='#g0-99' y='61.836'/></g></svg><span data-line="22"></span> (the size of the set <span data-line="22"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.0210em;height:0.7585em;width:0.7957em" viewBox='34.669 54.811 7.578 7.224' ><desc>$\R$</desc><g id='page9'><use x='34.869' xlink:href='#g1-82' y='61.836'/></g></svg><span data-line="22"></span>).
+</p>
+<p class="p indent" data-line="24"><span data-line="24"></span>In fact, the surreal number system includes all of the <span data-line="24"></span>&#8220;sizes of infinity&#8221;<span data-line="24"></span>, by containing all ordinal numbers (and hence all cardinal numbers). This means that there are so many surreal numbers, they cannot even be considered as a set; instead, they form a structure mathematicians call a <span data-line="24"></span><em class="em-low1">proper class.</em><span data-line="24"></span>
+</p>
+<p class="p indent" data-line="26"><span data-line="26"></span>As one would expect from a number system, surreal numbers can be added, subtracted, multiplied, divided, and exponentiated. These operations enjoy many of the familiar properties they would in <span data-line="26"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.2091em;height:0.9657em;width:0.8537em" viewBox='88.467 54.622 8.13 9.197' ><desc>$\Q$</desc><g id='page8'><use x='88.667' xlink:href='#g1-81' y='61.836'/></g></svg><span data-line="26"></span> or <span data-line="26"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.0210em;height:0.7585em;width:0.7957em" viewBox='34.669 54.811 7.578 7.224' ><desc>$\R$</desc><g id='page9'><use x='34.869' xlink:href='#g1-82' y='61.836'/></g></svg><span data-line="26"></span>; for example, addition and multiplication are associative, commutative, and distributive. Moreover, unlike the complex numbers <span data-line="26"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.0210em;height:0.7983em;width:0.7957em" viewBox='88.467 54.622 7.578 7.603' ><desc>$\C$</desc><g id='page1'><use x='88.667' xlink:href='#g1-67' y='61.836'/></g></svg><span data-line="26"></span>, the surreal numbers are linearly ordered in a natural way. This gives the surreal numbers the rich algebraic structure of an <span data-line="26"></span><em class="em-low1">exponential ordered field</em><span data-line="26"></span>.
+</p>
+<p class="p indent" data-line="28"><span data-line="28"></span>The study of surreal numbers was initiated by John Conway and Donald Knuth in the mid-1970<span data-line="28"></span>&#39;<span data-line="28"></span>s. Conway<span data-line="28"></span>&#39;<span data-line="28"></span>s primary interest was to use the surreal numbers as a tool to study two-player combinatorial games, such as chess and Go. The original definition of <span data-line="28"></span>&#8220;surreal number&#8221;<span data-line="28"></span> he formulated was suitable for this purpose, but highly abstract. (Conway thought of surreal numbers as proper-class-sized equivalence classes of certain recursive structures defined through transfinite induction.)
+</p>
+<p class="p indent" data-line="30"><span data-line="30"></span>In these notes, we will study the surreal numbers through an alternative, more concrete viewpoint, developed by the late Harry Gonshor in his 1986 book, <span data-line="30"></span><em class="em-low1">An Introduction to the Theory of Surreal Numbers</em><span data-line="30"></span>. Gonshor<span data-line="30"></span>&#39;<span data-line="30"></span>s formulation (which is fully equivalent to Conway<span data-line="30"></span>&#39;<span data-line="30"></span>s) makes the surreal number system much easier to conceptualize and compute with, and better reveals their natural (tree-like) structure.
+</p><h3 id="sec-prerequisites" class="h2" data-line="32" data-heading-depth="2" style="display:block"><span data-line="32"></span><span class="heading-before"><span class="heading-label">1.1</span>.&#8194;</span><span data-line="32"></span>Prerequisites</h3>
+<p class="p noindent" data-line="34"><span data-line="34"></span>The surreal numbers are so radically different from the other number systems of mathematics that virtually no knowledge of their algebra or analysis is required. The only necessary prerequite to studying the surreal numbers is a basic familiarity with the ordinal number system<span data-line="34"></span> <span data-line="34"></span>&#8212;<span data-line="34"></span> e.g., what an ordinal number intuitively <span data-line="34"></span>&#8220;looks like,&#8221;<span data-line="34"></span> how to tell a limit ordinal from a successor ordinal, and a working understanding of ordinal arithmetic.
+</p><h2 id="sec-basic-definitions" class="h1" data-line="36" data-heading-depth="1" style="display:block"><span data-line="36"></span><span class="heading-before"><span class="heading-label">2</span>.&#8194;</span><span data-line="36"></span>Basic Definitions</h2>
+<div class="panel panel-default" data-line="38">
+<div class="panel-body" data-line="39">
+<p class="p noindent" data-line="40" style="margin:0px;padding:0px"><span data-line="40"></span><strong class="strong-star2">Definition:</strong><span data-line="40"></span> A <span data-line="40"></span><em class="em-low1">surreal number</em><span data-line="40"></span> is a function from an initial segment of the ordinal numbers into a 2-element set, traditionally denoted by <span data-line="40"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.2930em;height:1.0881em;width:3.1702em" viewBox='34.669 54.164 30.192 10.363' ><desc>$\{+,-\}$</desc><g id='page11'><use x='34.869' xlink:href='#g2-102' y='61.836'/><use x='39.832' xlink:href='#g4-43' y='61.836'/><use x='47.552' xlink:href='#g3-59' y='61.836'/><use x='51.969' xlink:href='#g2-0' y='61.836'/><use x='59.689' xlink:href='#g2-103' y='61.836'/></g></svg><span data-line="40"></span>.</p></div></div>
+<p class="p noindent" data-line="45"><span data-line="45"></span>Informally, we may think of an ordinal number as a sequence of pluses and minuses, indexed by the ordinal numbers, which terminates at some ordinal. Note that the empty sequence is also included as a possibility.
+</p>
+<div class="panel panel-default" data-line="47">
+<div class="panel-body" data-line="48">
+<p class="p noindent" data-line="49" style="margin:0px;padding:0px"><span data-line="49"></span><em class="em-low1">Note:</em><span data-line="49"></span>  If we assume the standard (von Neumann) representation of an ordinal number as the set of all smaller ordinal numbers, we could equivalently consider a surreal number as a function from an ordinal number into <span data-line="49"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.2930em;height:1.0881em;width:3.1702em" viewBox='34.669 54.164 30.192 10.363' ><desc>$\{+,-\}$</desc><g id='page11'><use x='34.869' xlink:href='#g2-102' y='61.836'/><use x='39.832' xlink:href='#g4-43' y='61.836'/><use x='47.552' xlink:href='#g3-59' y='61.836'/><use x='51.969' xlink:href='#g2-0' y='61.836'/><use x='59.689' xlink:href='#g2-103' y='61.836'/></g></svg><span data-line="49"></span>. However, for stylistic reasons, I prefer to think of ordinal numbers as <span data-line="49"></span><em class="em-low1">atomic</em><span data-line="49"></span> entities, focusing only on their identity and ignoring their internal structure.</p></div></div>
+<div class="footer" data-line="54;../include/DZ_Footer.mdk:2">
+<p class="p noindent" data-line="54;../include/DZ_Footer.mdk:3"><span data-line="54;../include/DZ_Footer.mdk:3"></span>&#169;<span data-line="54;../include/DZ_Footer.mdk:3"></span> David Kai Zhang 2016</p></div></div><span data-line=""></span></div>
+<svg id='math-svg-paths' style='display:none' version='1.1' viewBox='0 0 0 0' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
+<defs>
+<path d='M5.938 -6.466C6.027 -6.595 6.027 -6.615 6.027 -6.645C6.027 -6.824 5.878 -6.824 5.699 -6.824H1.136C0.817 -6.824 0.817 -6.795 0.787 -6.535L0.638 -5.191L0.618 -5.061C0.618 -4.922 0.727 -4.872 0.797 -4.872C0.887 -4.872 0.946 -4.941 0.966 -5.021C1.006 -5.26 1.096 -5.699 1.704 -6.077C2.271 -6.446 2.969 -6.476 3.308 -6.476H4.115L0.369 -0.359C0.279 -0.229 0.279 -0.209 0.279 -0.179C0.279 0 0.438 0 0.618 0H5.729C6.027 0 6.027 -0.02 6.067 -0.279L6.336 -2.242C6.336 -2.351 6.247 -2.421 6.167 -2.421C6.017 -2.421 5.998 -2.321 5.968 -2.122C5.798 -1.305 5.021 -0.349 3.606 -0.349H2.192L5.938 -6.466ZM1.126 -6.476H1.654V-6.466C1.385 -6.316 1.196 -6.137 1.076 -6.027L1.126 -6.476ZM4.523 -6.476H5.539L1.783 -0.349H0.767L4.523 -6.476ZM5.051 -0.359C5.33 -0.518 5.589 -0.737 5.818 -1.016C5.798 -0.817 5.778 -0.707 5.729 -0.349H5.051V-0.359Z' id='g1-90'/>
+<path d='M4.762 0.09C6.167 -0.199 7.422 -1.315 7.422 -3.407C7.422 -5.918 5.659 -7.014 3.875 -7.014C2.052 -7.014 0.329 -5.868 0.329 -3.417C0.329 -1.285 1.604 -0.269 2.78 0.04C3.228 1.066 4.214 1.783 5.45 1.783C5.948 1.783 6.496 1.684 7.014 1.484C7.193 1.415 7.293 1.375 7.293 1.255S7.203 1.076 7.123 1.076C7.103 1.076 7.093 1.076 7.024 1.096C6.745 1.166 6.635 1.166 6.476 1.166C5.559 1.166 4.991 0.588 4.762 0.09ZM2.501 -6.386C1.893 -5.679 1.733 -4.513 1.733 -3.417C1.733 -2.441 1.853 -1.196 2.511 -0.418C1.823 -0.677 0.677 -1.474 0.677 -3.407C0.677 -5.44 1.913 -6.177 2.491 -6.396L2.501 -6.386ZM5.26 -6.396C5.928 -6.147 7.073 -5.35 7.073 -3.417C7.073 -1.385 5.838 -0.648 5.24 -0.418C5.858 -1.146 6.017 -2.311 6.017 -3.407C6.017 -4.384 5.898 -5.629 5.25 -6.386L5.26 -6.396ZM3.875 -0.159C2.262 -0.159 2.082 -2.271 2.082 -3.407C2.082 -4.603 2.281 -6.665 3.875 -6.665C5.489 -6.665 5.669 -4.553 5.669 -3.417C5.669 -2.222 5.469 -0.159 3.875 -0.159ZM3.218 0.139C3.497 0.189 3.866 0.189 3.875 0.189C3.925 0.189 4.134 0.189 4.413 0.159C4.682 0.787 5.151 1.166 5.649 1.365C5.748 1.405 5.758 1.405 5.758 1.415C5.758 1.435 5.579 1.435 5.45 1.435C4.603 1.435 3.736 1.036 3.218 0.139Z' id='g1-81'/>
+<path d='M2.67 -3.128H3.029L4.523 -0.817C4.623 -0.658 4.862 -0.269 4.971 -0.12C5.041 0 5.071 0 5.3 0H6.675C6.854 0 7.004 0 7.004 -0.179C7.004 -0.259 6.944 -0.329 6.854 -0.349C6.486 -0.428 5.998 -1.086 5.758 -1.405C5.689 -1.504 5.191 -2.162 4.523 -3.238C5.41 -3.397 6.267 -3.776 6.267 -4.961C6.267 -6.346 4.802 -6.824 3.626 -6.824H0.498C0.319 -6.824 0.159 -6.824 0.159 -6.645C0.159 -6.476 0.349 -6.476 0.428 -6.476C0.996 -6.476 1.046 -6.406 1.046 -5.908V-0.917C1.046 -0.418 0.996 -0.349 0.428 -0.349C0.349 -0.349 0.159 -0.349 0.159 -0.179C0.159 0 0.319 0 0.498 0H3.228C3.407 0 3.557 0 3.557 -0.179C3.557 -0.349 3.387 -0.349 3.278 -0.349C2.71 -0.349 2.67 -0.428 2.67 -0.917V-3.128ZM4.593 -3.616C4.872 -3.985 4.902 -4.513 4.902 -4.951C4.902 -5.43 4.842 -5.958 4.523 -6.366C4.932 -6.276 5.918 -5.968 5.918 -4.961C5.918 -4.314 5.619 -3.806 4.593 -3.616ZM2.67 -5.938C2.67 -6.147 2.67 -6.476 3.288 -6.476C4.134 -6.476 4.553 -6.127 4.553 -4.951C4.553 -3.666 4.244 -3.477 2.67 -3.477V-5.938ZM1.315 -0.349C1.395 -0.528 1.395 -0.807 1.395 -0.897V-5.928C1.395 -6.027 1.395 -6.296 1.315 -6.476H2.451C2.321 -6.316 2.321 -6.117 2.321 -5.968V-0.897C2.321 -0.797 2.321 -0.528 2.401 -0.349H1.315ZM3.437 -3.128C3.507 -3.138 3.547 -3.148 3.626 -3.148C3.776 -3.148 3.995 -3.168 4.144 -3.188C4.294 -2.949 5.37 -1.176 6.197 -0.349H5.23L3.437 -3.128Z' id='g1-82'/>
+<path d='M4.682 -1.116C5.131 -0.608 5.161 -0.289 5.171 -0.11C5.181 -0.04 5.23 -0.01 5.27 -0.01C5.32 -0.01 5.529 -0.13 5.529 -0.648C5.529 -0.837 5.529 -1.036 5.031 -1.644L4.443 -2.321L4.832 -4.912C4.862 -4.882 5.141 -4.573 5.171 -4.214C5.171 -4.174 5.181 -4.085 5.27 -4.085C5.32 -4.085 5.529 -4.204 5.529 -4.722C5.529 -5.061 5.45 -5.2 4.991 -5.619C4.752 -5.828 4.294 -6.625 4.224 -6.804C4.204 -6.854 4.184 -6.904 4.125 -6.904C4.075 -6.904 3.866 -6.785 3.866 -6.267C3.866 -5.958 3.965 -5.748 4.533 -5.2C4.513 -4.912 4.493 -4.643 4.374 -3.975C4.214 -3.088 4.204 -3.009 4.164 -2.64L1.395 -5.798C0.946 -6.306 0.917 -6.625 0.907 -6.804C0.897 -6.874 0.847 -6.904 0.807 -6.904C0.757 -6.904 0.548 -6.785 0.548 -6.267C0.548 -6.077 0.548 -5.878 1.046 -5.27L1.634 -4.593C1.116 -3.776 0.827 -3.059 0.827 -2.401C0.827 -2.072 0.917 -1.843 1.176 -1.355C1.335 -1.066 1.425 -0.817 1.425 -0.608C1.425 -0.498 1.425 -0.239 0.717 -0.219C0.618 -0.219 0.548 -0.219 0.548 -0.11S0.638 0 0.817 0H1.375C1.644 0 2.391 -0.02 2.391 -0.588C2.391 -0.966 2.162 -1.245 1.933 -1.524C1.524 -2.012 1.494 -2.152 1.494 -2.461C1.494 -2.849 1.544 -3.656 1.863 -4.334L4.682 -1.116Z' id='g2-64'/>
+<path d='M3.599 -2.225C3.599 -2.992 3.508 -3.543 3.187 -4.031C2.971 -4.352 2.538 -4.631 1.981 -4.631C0.363 -4.631 0.363 -2.727 0.363 -2.225S0.363 0.139 1.981 0.139S3.599 -1.723 3.599 -2.225ZM1.981 -0.056C1.66 -0.056 1.234 -0.244 1.095 -0.816C0.997 -1.227 0.997 -1.799 0.997 -2.315C0.997 -2.824 0.997 -3.354 1.102 -3.738C1.248 -4.289 1.695 -4.435 1.981 -4.435C2.357 -4.435 2.72 -4.205 2.845 -3.801C2.957 -3.424 2.964 -2.922 2.964 -2.315C2.964 -1.799 2.964 -1.283 2.873 -0.844C2.734 -0.209 2.26 -0.056 1.981 -0.056Z' id='g5-48'/>
+<path d='M3.577 -0.917L3.497 -1.086C3.158 -0.887 2.77 -0.677 2.451 -0.578C2.142 -0.857 1.793 -1.176 1.614 -1.465C1.564 -1.763 1.544 -2.102 1.544 -2.451C1.544 -2.939 1.574 -3.626 1.753 -3.925C2.122 -3.925 2.62 -3.676 2.949 -3.387L3.039 -3.417L3.557 -4.204C3.228 -4.423 2.869 -4.613 2.481 -4.643L0.837 -3.616C0.717 -3.059 0.717 -2.461 0.717 -2.172C0.717 -1.724 0.737 -1.285 0.767 -0.837C1.106 -0.438 1.465 -0.05 1.863 0.289L3.577 -0.917Z' id='g0-99'/>
+<path d='M6.545 -6.685C6.545 -6.854 6.545 -7.014 6.376 -7.014C6.366 -7.014 6.217 -7.014 6.197 -6.834C6.167 -6.555 5.938 -6.555 5.868 -6.555C5.519 -6.555 5.171 -6.705 4.971 -6.795C4.463 -7.014 4.035 -7.014 3.875 -7.014C2.212 -7.014 0.369 -5.968 0.369 -3.417C0.369 -0.877 2.172 0.189 3.895 0.189C4.423 0.189 5.131 0.08 5.858 -0.359C6.316 -0.648 6.824 -1.146 6.824 -1.285S6.675 -1.484 6.615 -1.484C6.545 -1.484 6.506 -1.455 6.406 -1.345C5.828 -0.687 4.941 -0.289 4.055 -0.289C2.511 -0.289 2.122 -1.853 2.122 -3.397C2.122 -5.36 2.839 -6.665 3.905 -6.665C4.653 -6.665 5.848 -5.938 6.187 -4.882C6.217 -4.792 6.247 -4.692 6.376 -4.692C6.545 -4.692 6.545 -4.852 6.545 -5.021V-6.685ZM6.197 -5.659C6.077 -5.828 5.948 -5.958 5.699 -6.217C5.748 -6.207 5.828 -6.207 5.878 -6.207C5.988 -6.207 6.117 -6.227 6.197 -6.276V-5.659ZM2.66 -6.436C2.431 -6.207 1.773 -5.35 1.773 -3.397C1.773 -2.411 1.923 -1.036 2.819 -0.319C1.186 -0.847 0.717 -2.192 0.717 -3.407C0.717 -5.24 1.724 -6.127 2.66 -6.446V-6.436Z' id='g1-67'/>
+<path d='M6.565 -2.291C6.735 -2.291 6.914 -2.291 6.914 -2.491S6.735 -2.69 6.565 -2.69H1.176C1.006 -2.69 0.827 -2.69 0.827 -2.491S1.006 -2.291 1.176 -2.291H6.565Z' id='g2-0'/>
+<path d='M2.819 -6.147C2.819 -6.545 3.078 -7.183 4.164 -7.253C4.214 -7.263 4.254 -7.303 4.254 -7.362C4.254 -7.472 4.174 -7.472 4.065 -7.472C3.068 -7.472 2.162 -6.964 2.152 -6.227V-3.955C2.152 -3.567 2.152 -3.248 1.753 -2.919C1.405 -2.63 1.026 -2.61 0.807 -2.6C0.757 -2.59 0.717 -2.55 0.717 -2.491C0.717 -2.391 0.777 -2.391 0.877 -2.381C1.534 -2.341 2.012 -1.983 2.122 -1.494C2.152 -1.385 2.152 -1.365 2.152 -1.006V0.966C2.152 1.385 2.152 1.704 2.63 2.082C3.019 2.381 3.676 2.491 4.065 2.491C4.174 2.491 4.254 2.491 4.254 2.381C4.254 2.281 4.194 2.281 4.095 2.271C3.467 2.232 2.979 1.913 2.849 1.405C2.819 1.315 2.819 1.295 2.819 0.936V-1.156C2.819 -1.614 2.74 -1.783 2.421 -2.102C2.212 -2.311 1.923 -2.411 1.644 -2.491C2.461 -2.72 2.819 -3.178 2.819 -3.756V-6.147Z' id='g2-102'/>
+<path d='M2.152 1.166C2.152 1.564 1.893 2.202 0.807 2.271C0.757 2.281 0.717 2.321 0.717 2.381C0.717 2.491 0.827 2.491 0.917 2.491C1.883 2.491 2.809 2.002 2.819 1.245V-1.026C2.819 -1.415 2.819 -1.733 3.218 -2.062C3.567 -2.351 3.945 -2.371 4.164 -2.381C4.214 -2.391 4.254 -2.431 4.254 -2.491C4.254 -2.59 4.194 -2.59 4.095 -2.6C3.437 -2.64 2.959 -2.999 2.849 -3.487C2.819 -3.597 2.819 -3.616 2.819 -3.975V-5.948C2.819 -6.366 2.819 -6.685 2.341 -7.064C1.943 -7.372 1.255 -7.472 0.917 -7.472C0.827 -7.472 0.717 -7.472 0.717 -7.362C0.717 -7.263 0.777 -7.263 0.877 -7.253C1.504 -7.213 1.993 -6.894 2.122 -6.386C2.152 -6.296 2.152 -6.276 2.152 -5.918V-3.826C2.152 -3.367 2.232 -3.198 2.55 -2.879C2.76 -2.67 3.049 -2.57 3.328 -2.491C2.511 -2.262 2.152 -1.803 2.152 -1.225V1.166Z' id='g2-103'/>
+<path d='M2.022 -0.01C2.022 -0.667 1.773 -1.056 1.385 -1.056C1.056 -1.056 0.857 -0.807 0.857 -0.528C0.857 -0.259 1.056 0 1.385 0C1.504 0 1.634 -0.04 1.733 -0.13C1.763 -0.149 1.773 -0.159 1.783 -0.159S1.803 -0.149 1.803 -0.01C1.803 0.727 1.455 1.325 1.126 1.654C1.016 1.763 1.016 1.783 1.016 1.813C1.016 1.883 1.066 1.923 1.116 1.923C1.225 1.923 2.022 1.156 2.022 -0.01Z' id='g3-59'/>
+<path d='M4.075 -2.291H6.854C6.994 -2.291 7.183 -2.291 7.183 -2.491S6.994 -2.69 6.854 -2.69H4.075V-5.479C4.075 -5.619 4.075 -5.808 3.875 -5.808S3.676 -5.619 3.676 -5.479V-2.69H0.887C0.747 -2.69 0.558 -2.69 0.558 -2.491S0.747 -2.291 0.887 -2.291H3.676V0.498C3.676 0.638 3.676 0.827 3.875 0.827S4.075 0.638 4.075 0.498V-2.291Z' id='g4-43'/>
+</defs>
+</svg>
+
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</html>
