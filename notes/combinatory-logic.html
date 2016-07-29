@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <meta name="generator" content="Madoko, version 1.0.1" />
+  <meta name="viewport" content="initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Combinatory Logic - David K. Zhang - Personal Website</title>
+  <style type="text/css"  class="link">
+  /*# sourceURL=../resources/css/DZ_MADOKO.css */
+  
+  .madoko .toc>.tocblock .tocblock .tocblock {
+    margin-left: 2.25em;
+  }
+  .madoko .toc>.tocblock .tocblock {
+    margin-left: 1.5em;
+  }
+  .madoko .toc-contents>.tocblock>.tocitem {
+    font-weight: bold;
+  }
+  .madoko .toc {
+    margin-top: 1em;
+  }
+  .madoko p.para-continue {
+    margin-bottom: 0pt;
+  }
+  .madoko .para-block+p {
+    margin-top: 0pt;
+  }
+  .madoko ul.para-block, .madoko ol.para-block {
+    margin-top: 0pt;
+    margin-bottom: 0pt;
+  }
+  .madoko ul.para-end, .madoko ol.para-end {
+    margin-bottom: 1em;
+  }
+  .madoko dl {
+    margin-left: 0em;
+  }
+  .madoko blockquote {
+    font-style: italic;
+  }
+  .madoko a.localref {
+    text-decoration: none;
+  }
+  .madoko a.localref:hover {
+    text-decoration: underline;
+  }
+  .madoko .footnotes {
+    font-size: smaller;
+    margin-top: 2em;
+  }
+  .madoko .footnotes hr {
+    width: 50%;
+    text-align: left;
+  }
+  .madoko .footnote { 
+    margin-left: 1em;
+  }
+  .madoko .footnote-before {
+    margin-left: -1em;
+    width: 1em;
+    display: inline-block;
+  }
+  .madoko .align-center, .madoko .align-center>p {
+    text-align: center !important;
+  }
+  .madoko .align-center pre {
+    text-align: left;
+  }
+  .madoko .align-center>* {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  .madoko .align-left, .madoko .align-left>p {
+    text-align: left !important;
+  }
+  .madoko .align-left>* {
+    margin-left: 0pt !important;
+    margin-right: auto !important;
+  }
+  .madoko .align-right, .madoko .align-right>p {
+    text-align: right !important;
+  }
+  .madoko .align-right>* {
+    margin-left: auto !important;
+    margin-right: 0pt !important;
+  }
+  .madoko .align-center>table,
+  .madoko .align-left>table,
+  .madoko .align-right>table {
+    text-align: left !important;
+  }
+  .madoko .equation-before {
+    float: right;
+  }
+  .madoko .bibitem {
+    font-size: smaller;
+  }
+  .madoko .bibsearch {
+    font-size: x-small;
+    text-decoration:none;
+    color: black;
+    font-family: "Segoe UI Symbol", Symbola, serif;
+  }
+  .madoko .block, .madoko .figure, .madoko .bibitem, .madoko .equation, .madoko div.math {
+    margin-top: 1ex;
+    margin-bottom: 1ex;
+  }
+  .madoko .figure {
+    padding: 0.5em;
+    margin-left: 0pt;
+    margin-right: 0pt;
+  }
+  .madoko .hidden {
+    display: none;
+  }
+  .madoko .invisible {
+    visibility: hidden;
+  }
+  .madoko.preview .invisible {
+    visibility: visible;
+    opacity: 0.5;
+  }
+  .madoko code.code, .madoko span.code {
+    white-space: pre-wrap;
+  }
+  .madoko hr, hr.madoko {
+    border: none;
+    border-bottom: black solid 1px;
+    margin-bottom: 0.5ex;
+  }
+  .madoko .framed>*:first-child {
+    margin-top: 0pt;
+  }
+  .madoko .framed>*:last-child {
+    margin-bottom: 0pt;
+  }
+  .madoko ul.list-style-type-dash {
+      list-style-type: none !important;
+  }
+  .madoko ul.list-style-type-dash > li:before {
+      content: "\2013"; 
+      position: absolute;
+      margin-left: -1em; 
+  }
+  .madoko table.madoko {
+    border-collapse: collapse;
+  }
+  .madoko td, .madoko th {
+    padding: 0ex 0.5ex;
+    margin: 0pt;
+    vertical-align: top;
+  }
+  .madoko .cell-border-left {
+    border-left: 1px solid black;
+  }
+  .madoko .cell-border-right {
+    border-right: 1px solid black;
+  }
+  .madoko thead>tr:first-child>.cell-line,
+  .madoko tbody:first-child>tr:first-child>.cell-line {
+    border-top: 1px solid black;
+    border-bottom: none;
+  }
+  .madoko .cell-line, .madoko .cell-double-line {
+    border-bottom: 1px solid black;
+    border-top: none;
+  }
+  .madoko .cell-double-line {
+    border-top: 1px solid black;
+    padding-top: 1.5px !important;
+  }
+  .madoko .input-mathpre .MathJax_Display {
+    text-align: left !important;
+  }
+  .madoko div.input-mathpre {
+    text-align: left;
+    margin-top: 1.5ex;
+    margin-bottom: 1ex;
+  }
+  .madoko .math-rendering {
+    color: gray;
+  }
+  .madoko .mathdisplay {
+    text-align: center;
+  }
+  .madoko .pretty table {
+    border-collapse: collapse;
+  }
+  .madoko .pretty td {
+    padding: 0em;
+  }
+  .madoko .pretty td.empty {
+    min-width: 1.5ex;
+  }
+  .madoko .pretty td.expander {
+    width: 100em;
+  }
+  .madoko .symbol {
+    font-family: "Segoe UI Symbol", Symbola, serif;
+  }
+  body.madoko {  
+    -webkit-text-size-adjust: 100%;       
+    text-rendering: optimizeLegibility;
+  }
+  body.madoko {
+    max-width: 88ex; 
+    margin: 1em auto;
+    padding: 0em 2em;  
+  }
+  body.preview.madoko {
+    padding: 0em 1em;
+  }
+  .madoko h1, .madoko h2, .madoko h3, .madoko h4 { 
+    margin-top: 1.22em; 
+    margin-bottom: 1ex;
+  }
+  .madoko h1+p, .madoko h2+p, .madoko h3+p, .madoko h4+p, .madoko h5+p  { 
+    margin-top: 1ex;    
+  }
+  .madoko h5, .madoko h6 { 
+    margin-top: 1ex;
+    font-size: 1em;
+  }
+  .madoko h5 { 
+    margin-bottom: 0.5ex;
+  }
+  .madoko h5 + p {
+    margin-top: 0.5ex;
+  }
+  .madoko h6 { 
+    margin-bottom: 0pt;
+  }
+  .madoko h6 + p {
+    margin-top: 0pt;
+  }
+  .madoko pre, .madoko code, .madoko kbd, .madoko samp, .madoko tt, 
+  .madoko .monospace, .madoko .token-indent, .madoko .reveal pre, .madoko .reveal code, .madoko .email {
+    font-family: Consolas,"Andale Mono WT","Andale Mono",Lucida Console,Monaco,monospace,monospace;
+    font-size: 0.85em;
+  }
+  .madoko pre code, .madoko .token-indent {
+    font-size: 0.95em;
+  }
+  .madoko pre code {
+    font-family: inherit !important;
+  }
+  .madoko ol.linenums li {
+    background-color: white;
+    list-style-type: decimal;
+  }
+  .madoko .remote {
+    background-color: #F0FFF0;
+  }
+  .madoko .remote + * {
+    margin-top: 0pt;
+  }
+  @media print {
+    body.madoko {
+      font-size: 10pt;
+    }
+    @page {
+      margin: 0.5in 0.5in;
+    }
+  }
+  @media only screen and (max-device-width:1024px) {
+    body.madoko {
+      padding: 0em 0.5em;    
+    }
+    .madoko li {
+      text-align: left;
+    }
+  }
+  
+    </style>
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/readable/bootstrap.min.css"  class="link">
+  <link rel="icon" href="/resources/favicon.png">  
+      <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+      <![endif]-->
+      <style>
+      body.madoko {
+          padding: 0pt;
+          padding-top: 60px;
+          margin: 0pt;
+          max-width: 100%;
+      }
+      .footer {
+          padding-top: 36px;
+          padding-bottom: 36px;
+          margin-top: 36px;
+          border-top: 1px solid #eee;
+      }
+      </style>
+  </head>
+<body class="madoko">
+
+<div class="body madoko" style="line-adjust:0">
+
+<nav class="nav navbar navbar-default navbar-fixed-top" data-line="4;../include/navbar/DZ_Navbar_LecNotes.html:2">
+<div class="container" data-line="4;../include/navbar/DZ_Navbar_LecNotes.html:3">
+<div class="navbar-header" data-line="4;../include/navbar/DZ_Navbar_LecNotes.html:4"><button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+  <span class="sr-only">Toggle navigation</span>
+  <span class="icon-bar"></span>
+  <span class="icon-bar"></span>
+  <span class="icon-bar"></span>
+</button>
+
+
+<p class="p noindent" data-line="4;../include/navbar/DZ_Navbar_LecNotes.html:11"><span data-line="4;../include/navbar/DZ_Navbar_LecNotes.html:11"></span><a class="navbar-brand" href="/index.html"><span data-line="4;../include/navbar/DZ_Navbar_LecNotes.html:11"></span>
+  <span data-line="4;../include/navbar/DZ_Navbar_LecNotes.html:12"></span><img src="/resources/favicon_crop.png" style="max-height:38px" alt="David K. Zhang - Logo" /><span data-line="4;../include/navbar/DZ_Navbar_LecNotes.html:12"></span>
+<span data-line="4;../include/navbar/DZ_Navbar_LecNotes.html:13"></span></a></p></div><div id="navbar" class="navbar-collapse collapse">
+<ul class="nav navbar-nav">
+<li><a href="/index.html">Home</a></li>
+<li><a href="/projects.html">Current Projects</a></li>
+<li><a href="/publications.html">Publications</a></li>
+<li class="dropdown active">
+<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Lecture Notes <span class="caret"></span></a>
+<ul class="dropdown-menu">
+<li class="dropdown-header">Vanderbilt - Pure Mathematics</li>
+<li><a href="/notes/math-2500.html">MATH 2500 - Multivariable Calculus and Linear Algebra I</a></li>
+<li><a href="/notes/math-2501.html">MATH 2501 - Multivariable Calculus and Linear Algebra II</a></li>
+<li role="separator" class="divider"></li>
+<li class="dropdown-header">Personal - Pure Mathematics</li>
+<li><a href="/notes/combinatory-logic.html">Mathematical Birdwatching (and Combinatory Logic)</a></li>
+<li><a href="/notes/representation-theory.html">Representation Theory of Finite Groups</a></li>
+<li><a href="/notes/surreal-numbers.html">Theory of Surreal Numbers</a></li>
+<li role="separator" class="divider"></li>
+<li class="dropdown-header">Personal - Physics</li>
+<li><a href="/notes/normal-modes.html">Normal Modes of Oscillatory Systems</a></li>
+<li><a href="/notes/quantum-gases.html">Statistical Mechanics of Free Quantum Gases</a></li>
+<li role="separator" class="divider"></li>
+<li class="dropdown-header">Research - Computational Quantum Mechanics</li>
+<li><a href="/notes/eigen-derivatives.html">Derivatives of Generalized Eigenvalues and Eigenvectors</a></li>
+<li><a href="/notes/gaussian-integrals.html">Gaussian Integrals and Beyond</a></li>
+<li><a href="/notes/ecg-matelems.html">Matrix Elements of ECG Basis Functions</a></li>
+</ul>
+</li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+<li><a href="/contact.html">Contact</a></li>
+</ul>
+</div>
+</div></nav>
+<div class="mathdefs input-mathdefs" data-line="6"></div>
+<div class="container" data-line="11">
+
+<div class="center align-center" data-line="13" style="text-align:center"><h2 id="sec-mathematical-birdwatching-and-combinatory-logic" class="clearnum h1" data-line="14" data-heading-depth="1" style="display:block"><span data-line="14"></span>Mathematical Birdwatching (and Combinatory Logic)</h2>
+<p class="p noindent" data-line="16"><span data-line="16"></span>By David K. Zhang</p></div>
+<p class="p noindent" data-line="19"><span data-line="19"></span><br>
+<span data-line="19"></span>
+</p>
+<div class="panel panel-info" data-line="20">
+<div class="panel-heading" data-line="21"><h5 id="sec-under-construction" class="clearnum h4" data-line="22" data-heading-depth="4" style="display:block;margin:0px;;padding:0px"><span data-line="22"></span>Under Construction!</h5></div></div><h2 id="sec-the-enchanted-forest" class="h1" data-line="26" data-heading-depth="1" style="display:block"><span data-line="26"></span><span class="heading-before"><span class="heading-label">1</span>.&#8194;</span><span data-line="26"></span>The Enchanted Forest</h2>
+<p class="p noindent" data-line="28"><span data-line="28"></span>Imagine that you wake up one day in an enchanted forest populated by talking birds. The birds love talking about each other<span data-line="28"></span> <span data-line="28"></span>&#8212;<span data-line="28"></span> if you walk up to a bird <span data-line="28"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.0210em;height:0.5159em;width:0.6387em" viewBox='88.467 57.232 6.083 4.913' ><desc>$x$</desc><g id='page1'><use x='88.667' xlink:href='#g1-120' y='61.836'/></g></svg><span data-line="28"></span> and say the name of a bird <span data-line="28"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.2446em;height:0.7188em;width:0.8811em" viewBox='88.467 57.232 8.391 6.846' ><desc>$y,$</desc><g id='page1'><use x='88.667' xlink:href='#g1-121' y='61.836'/><use x='93.891' xlink:href='#g1-59' y='61.836'/></g></svg><span data-line="28"></span> then <span data-line="28"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.0210em;height:0.5159em;width:0.6387em" viewBox='88.467 57.232 6.083 4.913' ><desc>$x$</desc><g id='page1'><use x='88.667' xlink:href='#g1-120' y='61.836'/></g></svg><span data-line="28"></span> will say the name of a bird in response, which we designate by <span data-line="28"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.2446em;height:0.7188em;width:1.4766em" viewBox='88.467 57.232 14.063 6.846' ><desc>$xy.$</desc><g id='page1'><use x='88.667' xlink:href='#g1-120' y='61.836'/><use x='94.34' xlink:href='#g1-121' y='61.836'/><use x='99.564' xlink:href='#g1-58' y='61.836'/></g></svg><span data-line="28"></span> If you instead approach <span data-line="28"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.2446em;height:0.7188em;width:0.5916em" viewBox='34.669 57.232 5.634 6.846' ><desc>$y$</desc><g id='page1'><use x='34.869' xlink:href='#g1-121' y='61.836'/></g></svg><span data-line="28"></span> and say <span data-line="28"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.0210em;height:0.5159em;width:0.6387em" viewBox='88.467 57.232 6.083 4.913' ><desc>$x$</desc><g id='page1'><use x='88.667' xlink:href='#g1-120' y='61.836'/></g></svg><span data-line="28"></span>&#39;<span data-line="28"></span>s name, <span data-line="28"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.2446em;height:0.7188em;width:0.5916em" viewBox='34.669 57.232 5.634 6.846' ><desc>$y$</desc><g id='page1'><use x='34.869' xlink:href='#g1-121' y='61.836'/></g></svg><span data-line="28"></span> will respond with another name <span data-line="28"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.2446em;height:0.7188em;width:1.4766em" viewBox='88.467 57.232 14.063 6.846' ><desc>$yx,$</desc><g id='page1'><use x='88.667' xlink:href='#g1-121' y='61.836'/><use x='93.891' xlink:href='#g1-120' y='61.836'/><use x='99.564' xlink:href='#g1-59' y='61.836'/></g></svg><span data-line="28"></span> which is not necessarily the same as <span data-line="28"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.2446em;height:0.7188em;width:1.4766em" viewBox='88.467 57.232 14.063 6.846' ><desc>$xy.$</desc><g id='page1'><use x='88.667' xlink:href='#g1-120' y='61.836'/><use x='94.34' xlink:href='#g1-121' y='61.836'/><use x='99.564' xlink:href='#g1-58' y='61.836'/></g></svg><span data-line="28"></span>
+</p>
+<p class="p indent" data-line="30"><span data-line="30"></span>The birds always behave in a consistent and predictable manner, in the sense that <span data-line="30"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.0210em;height:0.5159em;width:0.6387em" viewBox='88.467 57.232 6.083 4.913' ><desc>$x$</desc><g id='page1'><use x='88.667' xlink:href='#g1-120' y='61.836'/></g></svg><span data-line="30"></span>&#39;<span data-line="30"></span>s response to hearing <span data-line="30"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.2446em;height:0.7188em;width:0.5916em" viewBox='34.669 57.232 5.634 6.846' ><desc>$y$</desc><g id='page1'><use x='34.869' xlink:href='#g1-121' y='61.836'/></g></svg><span data-line="30"></span> is always the same bird <span data-line="30"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.2446em;height:0.7188em;width:1.1871em" viewBox='88.467 57.232 11.306 6.846' ><desc>$xy$</desc><g id='page1'><use x='88.667' xlink:href='#g1-120' y='61.836'/><use x='94.34' xlink:href='#g1-121' y='61.836'/></g></svg><span data-line="30"></span> regardless of the weather or time of day. This means that the operation <span data-line="30"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.2930em;height:1.0881em;width:5.2290em" viewBox='34.669 54.164 49.8 10.363' ><desc>$(x,y) \mapsto xy$</desc><g id='page1'><use x='34.869' xlink:href='#g2-40' y='61.836'/><use x='38.729' xlink:href='#g1-120' y='61.836'/><use x='44.402' xlink:href='#g1-59' y='61.836'/><use x='48.819' xlink:href='#g1-121' y='61.836'/><use x='54.043' xlink:href='#g2-41' y='61.836'/><use x='60.67' xlink:href='#g0-55' y='61.836'/><use x='60.67' xlink:href='#g0-33' y='61.836'/><use x='73.363' xlink:href='#g1-120' y='61.836'/><use x='79.036' xlink:href='#g1-121' y='61.836'/></g></svg><span data-line="30"></span> of saying <span data-line="30"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.2446em;height:0.7188em;width:0.5916em" viewBox='34.669 57.232 5.634 6.846' ><desc>$y$</desc><g id='page1'><use x='34.869' xlink:href='#g1-121' y='61.836'/></g></svg><span data-line="30"></span>&#39;<span data-line="30"></span>s name to <span data-line="30"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.0210em;height:0.5159em;width:0.6387em" viewBox='88.467 57.232 6.083 4.913' ><desc>$x$</desc><g id='page1'><use x='88.667' xlink:href='#g1-120' y='61.836'/></g></svg><span data-line="30"></span> can be regarded as a mathematical function.
+</p>
+<div class="well well-sm" data-line="32">
+<p class="p noindent" data-line="33" style="margin-bottom:0px;padding-bottom:0px"><span data-line="33"></span><strong class="strong-star2">Definition:</strong><span data-line="33"></span> A <span data-line="33"></span><strong class="strong-star2"><em class="em-star1">forest</em></strong><span data-line="33"></span> is a set <span data-line="33"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.0210em;height:0.7983em;width:0.9102em" viewBox='34.669 54.751 8.669 7.603' ><desc>$\F$</desc><g id='page1'><use x='34.869' xlink:href='#g0-70' y='61.836'/></g></svg><span data-line="33"></span> equipped with a binary operation <span data-line="33"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.1078em;height:0.7983em;width:5.5149em" viewBox='88.467 54.751 52.523 7.603' ><desc>$\F \times \F \to \F$</desc><g id='page1'><use x='88.667' xlink:href='#g0-70' y='61.836'/><use x='99.005' xlink:href='#g0-2' y='61.836'/><use x='108.938' xlink:href='#g0-70' y='61.836'/><use x='119.829' xlink:href='#g0-33' y='61.836'/><use x='132.522' xlink:href='#g0-70' y='61.836'/></g></svg><span data-line="33"></span>, denoted by juxtaposition. The elements of <span data-line="33"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.0210em;height:0.7983em;width:0.9102em" viewBox='34.669 54.751 8.669 7.603' ><desc>$\F$</desc><g id='page1'><use x='34.869' xlink:href='#g0-70' y='61.836'/></g></svg><span data-line="33"></span> are called <span data-line="33"></span><strong class="strong-star2"><em class="em-star1">birds</em></strong><span data-line="33"></span>. If <span data-line="33"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.2379em;height:0.9793em;width:3.7941em" viewBox='34.669 54.751 36.134 9.327' ><desc>$x,y \in \F$</desc><g id='page1'><use x='34.869' xlink:href='#g1-120' y='61.836'/><use x='40.542' xlink:href='#g1-59' y='61.836'/><use x='44.959' xlink:href='#g1-121' y='61.836'/><use x='52.95' xlink:href='#g0-50' y='61.836'/><use x='62.335' xlink:href='#g0-70' y='61.836'/></g></svg><span data-line="33"></span>, then we interpret <span data-line="33"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.2446em;height:0.7188em;width:1.1871em" viewBox='88.467 57.232 11.306 6.846' ><desc>$xy$</desc><g id='page1'><use x='88.667' xlink:href='#g1-120' y='61.836'/><use x='94.34' xlink:href='#g1-121' y='61.836'/></g></svg><span data-line="33"></span> as <span data-line="33"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.0210em;height:0.5159em;width:0.6387em" viewBox='88.467 57.232 6.083 4.913' ><desc>$x$</desc><g id='page1'><use x='88.667' xlink:href='#g1-120' y='61.836'/></g></svg><span data-line="33"></span>&#39;<span data-line="33"></span>s <span data-line="33"></span><strong class="strong-star2"><em class="em-star1">response</em></strong><span data-line="33"></span> to hearing the name of <span data-line="33"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.2446em;height:0.7188em;width:0.5916em" viewBox='34.669 57.232 5.634 6.846' ><desc>$y$</desc><g id='page1'><use x='34.869' xlink:href='#g1-121' y='61.836'/></g></svg><span data-line="33"></span>.</p></div>
+<div class="panel panel-default" data-line="37">
+<div class="panel-body" data-line="38">
+<p class="p noindent para-continue" data-line="39"><span data-line="39"></span><strong class="strong-star2">Example:</strong><span data-line="39"></span> Consider the set <span data-line="39"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.2930em;height:1.0881em;width:8.6333em" viewBox='34.669 54.164 82.222 10.363' ><desc>$\{\text{Parrot},\,\text{Cardinal}\}$</desc><g id='page19'><use x='34.869' xlink:href='#g0-102' y='61.836'/><use x='39.832' xlink:href='#g2-80' y='61.836'/><use x='46.31' xlink:href='#g2-97' y='61.836'/><use x='51.273' xlink:href='#g2-114' y='61.836'/><use x='55.16' xlink:href='#g2-114' y='61.836'/><use x='59.048' xlink:href='#g2-111' y='61.836'/><use x='64.01' xlink:href='#g2-116' y='61.836'/><use x='67.976' xlink:href='#g1-59' y='61.836'/><use x='74.054' xlink:href='#g2-67' y='61.836'/><use x='81.223' xlink:href='#g2-97' y='61.836'/><use x='86.185' xlink:href='#g2-114' y='61.836'/><use x='90.073' xlink:href='#g2-100' y='61.836'/><use x='95.587' xlink:href='#g2-105' y='61.836'/><use x='98.344' xlink:href='#g2-110' y='61.836'/><use x='103.858' xlink:href='#g2-97' y='61.836'/><use x='108.821' xlink:href='#g2-108' y='61.836'/><use x='111.719' xlink:href='#g0-103' y='61.836'/></g></svg><span data-line="39"></span> equipped with the following binary operation:
+</p>
+<div class="math para-block" data-line="40">
+<div class="mathdisplay para-block input-math" data-math-full="" data-line="41" style="line-adjust:0"><svg  class="mathdisplay math-display math-render-svg math" data-math-full="" style="vertical-align:-0.0210em;height:2.3716em;width:28.0759em" viewBox='127.46 54.014 267.39 22.587' ><desc>\[\begin{aligned}
+\text{Parrot}   \cdot \text{Parrot}   &amp;= \text{Parrot} &amp;
+\text{Cardinal} \cdot \text{Parrot}    = \text{Cardinal} \\
+\text{Parrot}   \cdot \text{Cardinal} &amp;= \text{Cardinal} &amp;
+\text{Cardinal} \cdot \text{Cardinal}  = \text{Cardinal}
+\end{aligned}
+\]</desc><g id='page1'><use x='137.18' xlink:href='#g2-80' y='61.238'/><use x='143.658' xlink:href='#g2-97' y='61.238'/><use x='148.621' xlink:href='#g2-114' y='61.238'/><use x='152.508' xlink:href='#g2-114' y='61.238'/><use x='156.396' xlink:href='#g2-111' y='61.238'/><use x='161.358' xlink:href='#g2-116' y='61.238'/><use x='167.538' xlink:href='#g0-1' y='61.238'/><use x='172.509' xlink:href='#g2-80' y='61.238'/><use x='178.987' xlink:href='#g2-97' y='61.238'/><use x='183.95' xlink:href='#g2-114' y='61.238'/><use x='187.838' xlink:href='#g2-114' y='61.238'/><use x='191.725' xlink:href='#g2-111' y='61.238'/><use x='196.688' xlink:href='#g2-116' y='61.238'/><use x='203.431' xlink:href='#g2-61' y='61.238'/><use x='213.919' xlink:href='#g2-80' y='61.238'/><use x='220.397' xlink:href='#g2-97' y='61.238'/><use x='225.359' xlink:href='#g2-114' y='61.238'/><use x='229.247' xlink:href='#g2-114' y='61.238'/><use x='233.134' xlink:href='#g2-111' y='61.238'/><use x='238.097' xlink:href='#g2-116' y='61.238'/><use x='271.095' xlink:href='#g2-67' y='61.238'/><use x='278.263' xlink:href='#g2-97' y='61.238'/><use x='283.226' xlink:href='#g2-114' y='61.238'/><use x='287.113' xlink:href='#g2-100' y='61.238'/><use x='292.627' xlink:href='#g2-105' y='61.238'/><use x='295.384' xlink:href='#g2-110' y='61.238'/><use x='300.898' xlink:href='#g2-97' y='61.238'/><use x='305.861' xlink:href='#g2-108' y='61.238'/><use x='310.973' xlink:href='#g0-1' y='61.238'/><use x='315.944' xlink:href='#g2-80' y='61.238'/><use x='322.422' xlink:href='#g2-97' y='61.238'/><use x='327.385' xlink:href='#g2-114' y='61.238'/><use x='331.272' xlink:href='#g2-114' y='61.238'/><use x='335.159' xlink:href='#g2-111' y='61.238'/><use x='340.122' xlink:href='#g2-116' y='61.238'/><use x='346.856' xlink:href='#g2-61' y='61.238'/><use x='357.343' xlink:href='#g2-67' y='61.238'/><use x='364.511' xlink:href='#g2-97' y='61.238'/><use x='369.474' xlink:href='#g2-114' y='61.238'/><use x='373.361' xlink:href='#g2-100' y='61.238'/><use x='378.875' xlink:href='#g2-105' y='61.238'/><use x='381.632' xlink:href='#g2-110' y='61.238'/><use x='387.147' xlink:href='#g2-97' y='61.238'/><use x='392.109' xlink:href='#g2-108' y='61.238'/><use x='127.66' xlink:href='#g2-80' y='76.182'/><use x='134.138' xlink:href='#g2-97' y='76.182'/><use x='139.101' xlink:href='#g2-114' y='76.182'/><use x='142.988' xlink:href='#g2-114' y='76.182'/><use x='146.876' xlink:href='#g2-111' y='76.182'/><use x='151.839' xlink:href='#g2-116' y='76.182'/><use x='158.018' xlink:href='#g0-1' y='76.182'/><use x='162.989' xlink:href='#g2-67' y='76.182'/><use x='170.158' xlink:href='#g2-97' y='76.182'/><use x='175.121' xlink:href='#g2-114' y='76.182'/><use x='179.008' xlink:href='#g2-100' y='76.182'/><use x='184.522' xlink:href='#g2-105' y='76.182'/><use x='187.279' xlink:href='#g2-110' y='76.182'/><use x='192.793' xlink:href='#g2-97' y='76.182'/><use x='197.756' xlink:href='#g2-108' y='76.182'/><use x='203.431' xlink:href='#g2-61' y='76.182'/><use x='213.919' xlink:href='#g2-67' y='76.182'/><use x='221.087' xlink:href='#g2-97' y='76.182'/><use x='226.05' xlink:href='#g2-114' y='76.182'/><use x='229.937' xlink:href='#g2-100' y='76.182'/><use x='235.451' xlink:href='#g2-105' y='76.182'/><use x='238.208' xlink:href='#g2-110' y='76.182'/><use x='243.723' xlink:href='#g2-97' y='76.182'/><use x='248.685' xlink:href='#g2-108' y='76.182'/><use x='261.575' xlink:href='#g2-67' y='76.182'/><use x='268.743' xlink:href='#g2-97' y='76.182'/><use x='273.706' xlink:href='#g2-114' y='76.182'/><use x='277.593' xlink:href='#g2-100' y='76.182'/><use x='283.107' xlink:href='#g2-105' y='76.182'/><use x='285.864' xlink:href='#g2-110' y='76.182'/><use x='291.379' xlink:href='#g2-97' y='76.182'/><use x='296.341' xlink:href='#g2-108' y='76.182'/><use x='301.453' xlink:href='#g0-1' y='76.182'/><use x='306.424' xlink:href='#g2-67' y='76.182'/><use x='313.592' xlink:href='#g2-97' y='76.182'/><use x='318.555' xlink:href='#g2-114' y='76.182'/><use x='322.442' xlink:href='#g2-100' y='76.182'/><use x='327.957' xlink:href='#g2-105' y='76.182'/><use x='330.714' xlink:href='#g2-110' y='76.182'/><use x='336.228' xlink:href='#g2-97' y='76.182'/><use x='341.19' xlink:href='#g2-108' y='76.182'/><use x='346.856' xlink:href='#g2-61' y='76.182'/><use x='357.343' xlink:href='#g2-67' y='76.182'/><use x='364.511' xlink:href='#g2-97' y='76.182'/><use x='369.474' xlink:href='#g2-114' y='76.182'/><use x='373.361' xlink:href='#g2-100' y='76.182'/><use x='378.875' xlink:href='#g2-105' y='76.182'/><use x='381.632' xlink:href='#g2-110' y='76.182'/><use x='387.147' xlink:href='#g2-97' y='76.182'/><use x='392.109' xlink:href='#g2-108' y='76.182'/></g></svg></div></div>
+<p class="p noindent para-continued" data-line="48" style="margin:0px;padding:0px"><span data-line="48"></span>(We use a dot to separate bird names when they are spelled out.) In this two-element forest, the parrot simply repeats back the name of whatever bird it hears, while the cardinal only talks about itself.</p></div></div>
+<p class="p noindent" data-line="53"><span data-line="53"></span>Whenever we have three birds, <span data-line="53"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.2446em;height:0.7188em;width:1.9405em" viewBox='34.669 57.232 18.481 6.846' ><desc>$x,y,$</desc><g id='page1'><use x='34.869' xlink:href='#g1-120' y='61.836'/><use x='40.542' xlink:href='#g1-59' y='61.836'/><use x='44.959' xlink:href='#g1-121' y='61.836'/><use x='50.183' xlink:href='#g1-59' y='61.836'/></g></svg><span data-line="53"></span> and <span data-line="53"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.2407em;height:0.7062em;width:0.8632em" viewBox='88.467 57.232 8.221 6.726' ><desc>$z,$</desc><g id='page2'><use x='88.667' xlink:href='#g1-122' y='61.836'/><use x='93.721' xlink:href='#g1-59' y='61.836'/></g></svg><span data-line="53"></span> we must be careful to distinguish between the names <span data-line="53"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.2930em;height:1.0881em;width:2.5284em" viewBox='34.669 54.164 24.08 10.363' ><desc>$(xy)z$</desc><g id='page1'><use x='34.869' xlink:href='#g2-40' y='61.836'/><use x='38.729' xlink:href='#g1-120' y='61.836'/><use x='44.402' xlink:href='#g1-121' y='61.836'/><use x='49.625' xlink:href='#g2-41' y='61.836'/><use x='53.485' xlink:href='#g1-122' y='61.836'/></g></svg><span data-line="53"></span> and <span data-line="53"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.2930em;height:1.0881em;width:2.8179em" viewBox='88.467 54.164 26.837 10.363' ><desc>$x(yz).$</desc><g id='page1'><use x='88.667' xlink:href='#g1-120' y='61.836'/><use x='94.34' xlink:href='#g2-40' y='61.836'/><use x='98.2' xlink:href='#g1-121' y='61.836'/><use x='103.424' xlink:href='#g1-122' y='61.836'/><use x='108.478' xlink:href='#g2-41' y='61.836'/><use x='112.338' xlink:href='#g1-58' y='61.836'/></g></svg><span data-line="53"></span> The first is <span data-line="53"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.2446em;height:0.7188em;width:1.1871em" viewBox='88.467 57.232 11.306 6.846' ><desc>$xy$</desc><g id='page1'><use x='88.667' xlink:href='#g1-120' y='61.836'/><use x='94.34' xlink:href='#g1-121' y='61.836'/></g></svg><span data-line="53"></span>&#39;<span data-line="53"></span>s response to <span data-line="53"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.0210em;height:0.5159em;width:0.5737em" viewBox='88.467 57.232 5.464 4.913' ><desc>$z$</desc><g id='page1'><use x='88.667' xlink:href='#g1-122' y='61.836'/></g></svg><span data-line="53"></span>, while the second is <span data-line="53"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.0210em;height:0.5159em;width:0.6387em" viewBox='88.467 57.232 6.083 4.913' ><desc>$x$</desc><g id='page1'><use x='88.667' xlink:href='#g1-120' y='61.836'/></g></svg><span data-line="53"></span>&#39;<span data-line="53"></span>s response to <span data-line="53"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.2446em;height:0.7188em;width:1.4117em" viewBox='88.467 57.232 13.445 6.846' ><desc>$yz;$</desc><g id='page1'><use x='88.667' xlink:href='#g1-121' y='61.836'/><use x='93.891' xlink:href='#g1-122' y='61.836'/><use x='98.945' xlink:href='#g2-59' y='61.836'/></g></svg><span data-line="53"></span> these are not necessarily the same! Thus, the operation of <span data-line="53"></span>&#8220;multiplying&#8221;<span data-line="53"></span> two birds is in general <span data-line="53"></span><strong class="strong-star2">neither commutative nor associative</strong><span data-line="53"></span>. We will use parentheses throughout to indicate the order in which birds are spoken to.
+</p>
+<p class="p indent" data-line="55"><span data-line="55"></span>We will begin our study of ornithology by describing some special types of relationships between birds.
+</p>
+<div class="well well-sm" data-line="57">
+<p class="p noindent" data-line="58"><span data-line="58"></span><strong class="strong-star2">Definition:</strong><span data-line="58"></span> Let <span data-line="58"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.0210em;height:0.7983em;width:0.9102em" viewBox='34.669 54.751 8.669 7.603' ><desc>$\F$</desc><g id='page1'><use x='34.869' xlink:href='#g0-70' y='61.836'/></g></svg><span data-line="58"></span> be a forest, and let <span data-line="58"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.2379em;height:0.9793em;width:4.7886em" viewBox='88.467 54.751 45.606 9.327' ><desc>$x, y, z \in \F$</desc><g id='page1'><use x='88.667' xlink:href='#g1-120' y='61.836'/><use x='94.34' xlink:href='#g1-59' y='61.836'/><use x='98.758' xlink:href='#g1-121' y='61.836'/><use x='103.981' xlink:href='#g1-59' y='61.836'/><use x='108.399' xlink:href='#g1-122' y='61.836'/><use x='116.22' xlink:href='#g0-50' y='61.836'/><use x='125.604' xlink:href='#g0-70' y='61.836'/></g></svg><span data-line="58"></span> be any three birds.
+</p>
+<ul class="ul list-dash compact" data-line="60" style="margin-bottom:0px;padding-bottom:0px">
+<li class="li ul-li list-dash-li compact-li" data-line="60"><span data-line="60"></span>We say that <span data-line="60"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.0210em;height:0.5159em;width:0.6387em" viewBox='88.467 57.232 6.083 4.913' ><desc>$x$</desc><g id='page1'><use x='88.667' xlink:href='#g1-120' y='61.836'/></g></svg><span data-line="60"></span> is <span data-line="60"></span><strong class="strong-star2"><em class="em-star1">fond</em></strong><span data-line="60"></span> of <span data-line="60"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.2446em;height:0.7188em;width:0.5916em" viewBox='34.669 57.232 5.634 6.846' ><desc>$y$</desc><g id='page1'><use x='34.869' xlink:href='#g1-121' y='61.836'/></g></svg><span data-line="60"></span> if <span data-line="60"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.0210em;height:0.5159em;width:0.6387em" viewBox='88.467 57.232 6.083 4.913' ><desc>$x$</desc><g id='page1'><use x='88.667' xlink:href='#g1-120' y='61.836'/></g></svg><span data-line="60"></span> responds to <span data-line="60"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.2446em;height:0.7188em;width:0.5916em" viewBox='34.669 57.232 5.634 6.846' ><desc>$y$</desc><g id='page1'><use x='34.869' xlink:href='#g1-121' y='61.836'/></g></svg><span data-line="60"></span>&#39;<span data-line="60"></span>s name by repeating it. In symbols, <span data-line="60"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.0210em;height:0.5159em;width:0.6387em" viewBox='88.467 57.232 6.083 4.913' ><desc>$x$</desc><g id='page1'><use x='88.667' xlink:href='#g1-120' y='61.836'/></g></svg><span data-line="60"></span> is fond of <span data-line="60"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.2446em;height:0.7188em;width:0.5916em" viewBox='34.669 57.232 5.634 6.846' ><desc>$y$</desc><g id='page1'><use x='34.869' xlink:href='#g1-121' y='61.836'/></g></svg><span data-line="60"></span> if <span data-line="60"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.2446em;height:0.7188em;width:3.1273em" viewBox='34.669 57.232 29.784 6.846' ><desc>$xy = y$</desc><g id='page1'><use x='34.869' xlink:href='#g1-120' y='61.836'/><use x='40.542' xlink:href='#g1-121' y='61.836'/><use x='48.533' xlink:href='#g2-61' y='61.836'/><use x='59.02' xlink:href='#g1-121' y='61.836'/></g></svg><span data-line="60"></span>.
+</li>
+<li class="li ul-li list-dash-li compact-li" data-line="61"><span data-line="61"></span>We say that <span data-line="61"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.0210em;height:0.5159em;width:0.6387em" viewBox='88.467 57.232 6.083 4.913' ><desc>$x$</desc><g id='page1'><use x='88.667' xlink:href='#g1-120' y='61.836'/></g></svg><span data-line="61"></span> is <span data-line="61"></span><strong class="strong-star2"><em class="em-star1">normal</em></strong><span data-line="61"></span> if it is fond of some bird in <span data-line="61"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.0210em;height:0.7983em;width:0.9102em" viewBox='34.669 54.751 8.669 7.603' ><desc>$\F$</desc><g id='page1'><use x='34.869' xlink:href='#g0-70' y='61.836'/></g></svg><span data-line="61"></span> (including possibly itself). Otherwise, if <span data-line="61"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.0210em;height:0.5159em;width:0.6387em" viewBox='88.467 57.232 6.083 4.913' ><desc>$x$</desc><g id='page1'><use x='88.667' xlink:href='#g1-120' y='61.836'/></g></svg><span data-line="61"></span> is not fond of any bird in <span data-line="61"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.0210em;height:0.7983em;width:0.9102em" viewBox='34.669 54.751 8.669 7.603' ><desc>$\F$</desc><g id='page1'><use x='34.869' xlink:href='#g0-70' y='61.836'/></g></svg><span data-line="61"></span> (not even itself), it is <span data-line="61"></span><strong class="strong-star2"><em class="em-star1">abnormal</em></strong><span data-line="61"></span>.
+</li>
+<li class="li ul-li list-dash-li compact-li" data-line="62"><span data-line="62"></span>We say that <span data-line="62"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.0210em;height:0.5159em;width:0.6387em" viewBox='88.467 57.232 6.083 4.913' ><desc>$x$</desc><g id='page1'><use x='88.667' xlink:href='#g1-120' y='61.836'/></g></svg><span data-line="62"></span> <span data-line="62"></span><strong class="strong-star2"><em class="em-star1">composes</em></strong><span data-line="62"></span> <span data-line="62"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.2446em;height:0.7188em;width:0.5916em" viewBox='34.669 57.232 5.634 6.846' ><desc>$y$</desc><g id='page1'><use x='34.869' xlink:href='#g1-121' y='61.836'/></g></svg><span data-line="62"></span> with <span data-line="62"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.0210em;height:0.5159em;width:0.5737em" viewBox='88.467 57.232 5.464 4.913' ><desc>$z$</desc><g id='page1'><use x='88.667' xlink:href='#g1-122' y='61.836'/></g></svg><span data-line="62"></span> if for all birds <span data-line="62"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.2384em;height:0.9939em;width:2.8090em" viewBox='34.669 54.612 26.752 9.466' ><desc>$f \in \F$</desc><g id='page1'><use x='34.869' xlink:href='#g1-102' y='61.836'/><use x='43.568' xlink:href='#g0-50' y='61.836'/><use x='52.953' xlink:href='#g0-70' y='61.836'/></g></svg><span data-line="62"></span>, we have that <span data-line="62"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.2930em;height:1.0881em;width:5.1658em" viewBox='88.467 54.164 49.198 10.363' ><desc>$xf = y(zf)$</desc><g id='page1'><use x='88.667' xlink:href='#g1-120' y='61.836'/><use x='94.34' xlink:href='#g1-102' y='61.836'/><use x='103.039' xlink:href='#g2-61' y='61.836'/><use x='113.526' xlink:href='#g1-121' y='61.836'/><use x='118.75' xlink:href='#g2-40' y='61.836'/><use x='122.61' xlink:href='#g1-122' y='61.836'/><use x='127.664' xlink:href='#g1-102' y='61.836'/><use x='133.596' xlink:href='#g2-41' y='61.836'/></g></svg><span data-line="62"></span>. This means that <span data-line="62"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.0210em;height:0.5159em;width:0.6387em" viewBox='88.467 57.232 6.083 4.913' ><desc>$x$</desc><g id='page1'><use x='88.667' xlink:href='#g1-120' y='61.836'/></g></svg><span data-line="62"></span>&#39;<span data-line="62"></span>s response to <span data-line="62"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.2384em;height:0.9939em;width:0.6659em" viewBox='88.467 54.612 6.342 9.466' ><desc>$f$</desc><g id='page2'><use x='88.667' xlink:href='#g1-102' y='61.836'/></g></svg><span data-line="62"></span> is the same as <span data-line="62"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.2446em;height:0.7188em;width:0.5916em" viewBox='34.669 57.232 5.634 6.846' ><desc>$y$</desc><g id='page1'><use x='34.869' xlink:href='#g1-121' y='61.836'/></g></svg><span data-line="62"></span>&#39;<span data-line="62"></span>s response to <span data-line="62"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.0210em;height:0.5159em;width:0.5737em" viewBox='88.467 57.232 5.464 4.913' ><desc>$z$</desc><g id='page1'><use x='88.667' xlink:href='#g1-122' y='61.836'/></g></svg><span data-line="62"></span>&#39;<span data-line="62"></span>s response to <span data-line="62"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.2384em;height:0.9939em;width:0.6659em" viewBox='88.467 54.612 6.342 9.466' ><desc>$f$</desc><g id='page2'><use x='88.667' xlink:href='#g1-102' y='61.836'/></g></svg><span data-line="62"></span>.</li></ul></div>
+<p class="p noindent" data-line="67"><span data-line="67"></span>Note that a given forest might not contain a composition for every pair of birds. Moreover, when a composition exists, it might not be unique! For this reason, composing birds is subtly different from composing mathematical functions.
+</p>
+<div class="panel panel-default" data-line="69">
+<div class="panel-body" data-line="70">
+<p class="p noindent" data-line="71" style="margin:0px;padding:0px"><span data-line="71"></span><span class="text-danger"><strong class="strong-star2">Warning!</strong></span><span data-line="71"></span> Note that <span data-line="71"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.2446em;height:0.7188em;width:3.1096em" viewBox='88.467 57.232 29.615 6.846' ><desc>$x = yz$</desc><g id='page1'><use x='88.667' xlink:href='#g1-120' y='61.836'/><use x='97.107' xlink:href='#g2-61' y='61.836'/><use x='107.595' xlink:href='#g1-121' y='61.836'/><use x='112.818' xlink:href='#g1-122' y='61.836'/></g></svg><span data-line="71"></span> does <span data-line="71"></span><strong class="strong-star2">not</strong><span data-line="71"></span> mean that <span data-line="71"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.0210em;height:0.5159em;width:0.6387em" viewBox='88.467 57.232 6.083 4.913' ><desc>$x$</desc><g id='page1'><use x='88.667' xlink:href='#g1-120' y='61.836'/></g></svg><span data-line="71"></span> composes <span data-line="71"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.2446em;height:0.7188em;width:0.5916em" viewBox='34.669 57.232 5.634 6.846' ><desc>$y$</desc><g id='page1'><use x='34.869' xlink:href='#g1-121' y='61.836'/></g></svg><span data-line="71"></span> with <span data-line="71"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.0210em;height:0.8025em;width:0.8632em" viewBox='34.669 54.502 8.221 7.643' ><desc>$z!$</desc><g id='page1'><use x='34.869' xlink:href='#g1-122' y='61.836'/><use x='39.923' xlink:href='#g2-33' y='61.836'/></g></svg></p></div></div>
+<div class="footer" data-line="76;../include/DZ_Footer.mdk:2">
+<p class="p noindent" data-line="76;../include/DZ_Footer.mdk:3"><span data-line="76;../include/DZ_Footer.mdk:3"></span>&#169;<span data-line="76;../include/DZ_Footer.mdk:3"></span> David Kai Zhang 2016</p></div></div><span data-line=""></span></div>
+<svg id='math-svg-paths' style='display:none' version='1.1' viewBox='0 0 0 0' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
+<defs>
+<path d='M3.328 -3.009C3.387 -3.268 3.616 -4.184 4.314 -4.184C4.364 -4.184 4.603 -4.184 4.812 -4.055C4.533 -4.005 4.334 -3.756 4.334 -3.517C4.334 -3.357 4.443 -3.168 4.712 -3.168C4.932 -3.168 5.25 -3.347 5.25 -3.746C5.25 -4.264 4.663 -4.403 4.324 -4.403C3.746 -4.403 3.397 -3.875 3.278 -3.646C3.029 -4.304 2.491 -4.403 2.202 -4.403C1.166 -4.403 0.598 -3.118 0.598 -2.869C0.598 -2.77 0.697 -2.77 0.717 -2.77C0.797 -2.77 0.827 -2.79 0.847 -2.879C1.186 -3.935 1.843 -4.184 2.182 -4.184C2.371 -4.184 2.72 -4.095 2.72 -3.517C2.72 -3.208 2.55 -2.54 2.182 -1.146C2.022 -0.528 1.674 -0.11 1.235 -0.11C1.176 -0.11 0.946 -0.11 0.737 -0.239C0.986 -0.289 1.205 -0.498 1.205 -0.777C1.205 -1.046 0.986 -1.126 0.837 -1.126C0.538 -1.126 0.289 -0.867 0.289 -0.548C0.289 -0.09 0.787 0.11 1.225 0.11C1.883 0.11 2.242 -0.588 2.271 -0.648C2.391 -0.279 2.75 0.11 3.347 0.11C4.374 0.11 4.941 -1.176 4.941 -1.425C4.941 -1.524 4.852 -1.524 4.822 -1.524C4.732 -1.524 4.712 -1.484 4.692 -1.415C4.364 -0.349 3.686 -0.11 3.367 -0.11C2.979 -0.11 2.819 -0.428 2.819 -0.767C2.819 -0.986 2.879 -1.205 2.989 -1.644L3.328 -3.009Z' id='g1-120'/>
+<path d='M2.022 -0.01C2.022 -0.667 1.773 -1.056 1.385 -1.056C1.056 -1.056 0.857 -0.807 0.857 -0.528C0.857 -0.259 1.056 0 1.385 0C1.504 0 1.634 -0.04 1.733 -0.13C1.763 -0.149 1.773 -0.159 1.783 -0.159S1.803 -0.149 1.803 -0.01C1.803 0.727 1.455 1.325 1.126 1.654C1.016 1.763 1.016 1.783 1.016 1.813C1.016 1.883 1.066 1.923 1.116 1.923C1.225 1.923 2.022 1.156 2.022 -0.01Z' id='g1-59'/>
+<path d='M4.842 -3.796C4.882 -3.935 4.882 -3.955 4.882 -4.025C4.882 -4.204 4.742 -4.294 4.593 -4.294C4.493 -4.294 4.334 -4.234 4.244 -4.085C4.224 -4.035 4.144 -3.726 4.105 -3.547C4.035 -3.288 3.965 -3.019 3.905 -2.75L3.457 -0.956C3.417 -0.807 2.989 -0.11 2.331 -0.11C1.823 -0.11 1.714 -0.548 1.714 -0.917C1.714 -1.375 1.883 -1.993 2.222 -2.869C2.381 -3.278 2.421 -3.387 2.421 -3.587C2.421 -4.035 2.102 -4.403 1.604 -4.403C0.658 -4.403 0.289 -2.959 0.289 -2.869C0.289 -2.77 0.389 -2.77 0.408 -2.77C0.508 -2.77 0.518 -2.79 0.568 -2.949C0.837 -3.885 1.235 -4.184 1.574 -4.184C1.654 -4.184 1.823 -4.184 1.823 -3.866C1.823 -3.616 1.724 -3.357 1.654 -3.168C1.255 -2.112 1.076 -1.544 1.076 -1.076C1.076 -0.189 1.704 0.11 2.291 0.11C2.68 0.11 3.019 -0.06 3.298 -0.339C3.168 0.179 3.049 0.667 2.65 1.196C2.391 1.534 2.012 1.823 1.554 1.823C1.415 1.823 0.966 1.793 0.797 1.405C0.956 1.405 1.086 1.405 1.225 1.285C1.325 1.196 1.425 1.066 1.425 0.877C1.425 0.568 1.156 0.528 1.056 0.528C0.827 0.528 0.498 0.687 0.498 1.176C0.498 1.674 0.936 2.042 1.554 2.042C2.58 2.042 3.606 1.136 3.885 0.01L4.842 -3.796Z' id='g1-121'/>
+<path d='M1.913 -0.528C1.913 -0.817 1.674 -1.056 1.385 -1.056S0.857 -0.817 0.857 -0.528S1.096 0 1.385 0S1.913 -0.239 1.913 -0.528Z' id='g1-58'/>
+<path d='M8.309 -2.291C7.761 -1.873 7.492 -1.465 7.412 -1.335C6.964 -0.648 6.884 -0.02 6.884 -0.01C6.884 0.11 7.004 0.11 7.083 0.11C7.253 0.11 7.263 0.09 7.303 -0.09C7.532 -1.066 8.12 -1.903 9.245 -2.361C9.365 -2.401 9.395 -2.421 9.395 -2.491S9.335 -2.59 9.315 -2.6C8.877 -2.77 7.671 -3.268 7.293 -4.941C7.263 -5.061 7.253 -5.091 7.083 -5.091C7.004 -5.091 6.884 -5.091 6.884 -4.971C6.884 -4.951 6.974 -4.324 7.392 -3.656C7.592 -3.357 7.88 -3.009 8.309 -2.69H0.907C0.727 -2.69 0.548 -2.69 0.548 -2.491S0.727 -2.291 0.907 -2.291H8.309Z' id='g0-33'/>
+<path d='M0.946 -2.291C1.006 -2.291 1.225 -2.291 1.225 -2.491S1.006 -2.69 0.946 -2.69V-3.995C0.946 -4.154 0.946 -4.344 0.747 -4.344S0.548 -4.154 0.548 -3.995V-0.986C0.548 -0.827 0.548 -0.638 0.747 -0.638S0.946 -0.827 0.946 -0.986V-2.291Z' id='g0-55'/>
+<path d='M3.298 2.391C3.298 2.361 3.298 2.341 3.128 2.172C1.883 0.917 1.564 -0.966 1.564 -2.491C1.564 -4.224 1.943 -5.958 3.168 -7.203C3.298 -7.323 3.298 -7.342 3.298 -7.372C3.298 -7.442 3.258 -7.472 3.198 -7.472C3.098 -7.472 2.202 -6.795 1.614 -5.529C1.106 -4.433 0.986 -3.328 0.986 -2.491C0.986 -1.714 1.096 -0.508 1.644 0.618C2.242 1.843 3.098 2.491 3.198 2.491C3.258 2.491 3.298 2.461 3.298 2.391Z' id='g2-40'/>
+<path d='M2.879 -2.491C2.879 -3.268 2.77 -4.473 2.222 -5.599C1.624 -6.824 0.767 -7.472 0.667 -7.472C0.608 -7.472 0.568 -7.432 0.568 -7.372C0.568 -7.342 0.568 -7.323 0.757 -7.143C1.733 -6.157 2.301 -4.573 2.301 -2.491C2.301 -0.787 1.933 0.966 0.697 2.222C0.568 2.341 0.568 2.361 0.568 2.391C0.568 2.451 0.608 2.491 0.667 2.491C0.767 2.491 1.664 1.813 2.252 0.548C2.76 -0.548 2.879 -1.654 2.879 -2.491Z' id='g2-41'/>
+<path d='M8.269 -6.426C8.269 -6.884 7.502 -6.814 7.193 -6.814H3.437C2.939 -6.814 2.052 -6.526 1.893 -5.988C1.913 -5.928 1.933 -5.918 1.993 -5.918C2.212 -5.918 2.511 -6.097 2.65 -6.247C2.959 -6.247 3.258 -6.267 3.567 -6.267H4.184C4.184 -6.267 4.144 -6.087 4.144 -6.077C3.756 -4.254 3.168 -2.71 2.73 -1.733C2.67 -1.604 2.132 -0.359 1.993 -0.239C1.554 -0.239 1.225 -0.478 1.046 -0.867C1.016 -0.927 1.016 -0.966 0.946 -0.966C0.717 -0.966 0.169 -0.648 0.169 -0.478C0.169 -0.458 0.179 -0.438 0.189 -0.418C0.369 0.05 0.817 0.319 1.305 0.319C1.813 0.319 2.401 -0.05 2.72 -0.418C3.049 -0.797 3.706 -2.431 3.965 -3.029H5.888C5.878 -3.019 5.868 -3.009 5.868 -2.999C5.868 -2.959 5.928 -2.929 5.968 -2.929C6.187 -2.929 6.755 -3.208 6.755 -3.517C6.755 -3.587 6.685 -3.577 6.565 -3.577H4.174C4.433 -4.473 4.772 -5.35 4.951 -6.267H6.267C6.516 -6.267 7.213 -6.316 7.392 -6.097C7.412 -6.037 7.382 -5.938 7.412 -5.888C7.432 -5.868 7.462 -5.858 7.492 -5.858C7.731 -5.858 8.269 -6.157 8.269 -6.426Z' id='g0-70'/>
+<path d='M3.875 -2.77L1.883 -4.752C1.763 -4.872 1.743 -4.892 1.664 -4.892C1.564 -4.892 1.465 -4.802 1.465 -4.692C1.465 -4.623 1.484 -4.603 1.594 -4.493L3.587 -2.491L1.594 -0.488C1.484 -0.379 1.465 -0.359 1.465 -0.289C1.465 -0.179 1.564 -0.09 1.664 -0.09C1.743 -0.09 1.763 -0.11 1.883 -0.229L3.866 -2.212L5.928 -0.149C5.948 -0.139 6.017 -0.09 6.077 -0.09C6.197 -0.09 6.276 -0.179 6.276 -0.289C6.276 -0.309 6.276 -0.349 6.247 -0.399C6.237 -0.418 4.653 -1.983 4.154 -2.491L5.978 -4.314C6.027 -4.374 6.177 -4.503 6.227 -4.563C6.237 -4.583 6.276 -4.623 6.276 -4.692C6.276 -4.802 6.197 -4.892 6.077 -4.892C5.998 -4.892 5.958 -4.852 5.848 -4.742L3.875 -2.77Z' id='g0-2'/>
+<path d='M5.46 -2.291C5.629 -2.291 5.808 -2.291 5.808 -2.491S5.629 -2.69 5.46 -2.69H1.235C1.355 -4.025 2.501 -4.981 3.905 -4.981H5.46C5.629 -4.981 5.808 -4.981 5.808 -5.181S5.629 -5.38 5.46 -5.38H3.885C2.182 -5.38 0.827 -4.085 0.827 -2.491S2.182 0.399 3.885 0.399H5.46C5.629 0.399 5.808 0.399 5.808 0.199S5.629 0 5.46 0H3.905C2.501 0 1.355 -0.956 1.235 -2.291H5.46Z' id='g0-50'/>
+<path d='M2.819 -6.147C2.819 -6.545 3.078 -7.183 4.164 -7.253C4.214 -7.263 4.254 -7.303 4.254 -7.362C4.254 -7.472 4.174 -7.472 4.065 -7.472C3.068 -7.472 2.162 -6.964 2.152 -6.227V-3.955C2.152 -3.567 2.152 -3.248 1.753 -2.919C1.405 -2.63 1.026 -2.61 0.807 -2.6C0.757 -2.59 0.717 -2.55 0.717 -2.491C0.717 -2.391 0.777 -2.391 0.877 -2.381C1.534 -2.341 2.012 -1.983 2.122 -1.494C2.152 -1.385 2.152 -1.365 2.152 -1.006V0.966C2.152 1.385 2.152 1.704 2.63 2.082C3.019 2.381 3.676 2.491 4.065 2.491C4.174 2.491 4.254 2.491 4.254 2.381C4.254 2.281 4.194 2.281 4.095 2.271C3.467 2.232 2.979 1.913 2.849 1.405C2.819 1.315 2.819 1.295 2.819 0.936V-1.156C2.819 -1.614 2.74 -1.783 2.421 -2.102C2.212 -2.311 1.923 -2.411 1.644 -2.491C2.461 -2.72 2.819 -3.178 2.819 -3.756V-6.147Z' id='g0-102'/>
+<path d='M2.152 1.166C2.152 1.564 1.893 2.202 0.807 2.271C0.757 2.281 0.717 2.321 0.717 2.381C0.717 2.491 0.827 2.491 0.917 2.491C1.883 2.491 2.809 2.002 2.819 1.245V-1.026C2.819 -1.415 2.819 -1.733 3.218 -2.062C3.567 -2.351 3.945 -2.371 4.164 -2.381C4.214 -2.391 4.254 -2.431 4.254 -2.491C4.254 -2.59 4.194 -2.59 4.095 -2.6C3.437 -2.64 2.959 -2.999 2.849 -3.487C2.819 -3.597 2.819 -3.616 2.819 -3.975V-5.948C2.819 -6.366 2.819 -6.685 2.341 -7.064C1.943 -7.372 1.255 -7.472 0.917 -7.472C0.827 -7.472 0.717 -7.472 0.717 -7.362C0.717 -7.263 0.777 -7.263 0.877 -7.253C1.504 -7.213 1.993 -6.894 2.122 -6.386C2.152 -6.296 2.152 -6.276 2.152 -5.918V-3.826C2.152 -3.367 2.232 -3.198 2.55 -2.879C2.76 -2.67 3.049 -2.57 3.328 -2.491C2.511 -2.262 2.152 -1.803 2.152 -1.225V1.166Z' id='g0-103'/>
+<path d='M0.558 -3.407C0.558 -1.345 2.172 0.219 4.025 0.219C5.649 0.219 6.625 -1.166 6.625 -2.321C6.625 -2.421 6.625 -2.491 6.496 -2.491C6.386 -2.491 6.386 -2.431 6.376 -2.331C6.296 -0.907 5.23 -0.09 4.144 -0.09C3.537 -0.09 1.584 -0.428 1.584 -3.397C1.584 -6.376 3.527 -6.715 4.134 -6.715C5.22 -6.715 6.107 -5.808 6.306 -4.354C6.326 -4.214 6.326 -4.184 6.466 -4.184C6.625 -4.184 6.625 -4.214 6.625 -4.423V-6.785C6.625 -6.954 6.625 -7.024 6.516 -7.024C6.476 -7.024 6.436 -7.024 6.356 -6.904L5.858 -6.167C5.489 -6.526 4.981 -7.024 4.025 -7.024C2.162 -7.024 0.558 -5.44 0.558 -3.407Z' id='g2-67'/>
+<path d='M2.262 -3.148H3.945C5.141 -3.148 6.217 -3.955 6.217 -4.951C6.217 -5.928 5.23 -6.804 3.866 -6.804H0.349V-6.496H0.588C1.355 -6.496 1.375 -6.386 1.375 -6.027V-0.777C1.375 -0.418 1.355 -0.309 0.588 -0.309H0.349V0C0.697 -0.03 1.435 -0.03 1.813 -0.03S2.939 -0.03 3.288 0V-0.309H3.049C2.281 -0.309 2.262 -0.418 2.262 -0.777V-3.148ZM2.232 -3.407V-6.097C2.232 -6.426 2.252 -6.496 2.72 -6.496H3.606C5.191 -6.496 5.191 -5.44 5.191 -4.951C5.191 -4.483 5.191 -3.407 3.606 -3.407H2.232Z' id='g2-80'/>
+<path d='M3.318 -0.757C3.357 -0.359 3.626 0.06 4.095 0.06C4.304 0.06 4.912 -0.08 4.912 -0.887V-1.445H4.663V-0.887C4.663 -0.309 4.413 -0.249 4.304 -0.249C3.975 -0.249 3.935 -0.697 3.935 -0.747V-2.74C3.935 -3.158 3.935 -3.547 3.577 -3.915C3.188 -4.304 2.69 -4.463 2.212 -4.463C1.395 -4.463 0.707 -3.995 0.707 -3.337C0.707 -3.039 0.907 -2.869 1.166 -2.869C1.445 -2.869 1.624 -3.068 1.624 -3.328C1.624 -3.447 1.574 -3.776 1.116 -3.786C1.385 -4.134 1.873 -4.244 2.192 -4.244C2.68 -4.244 3.248 -3.856 3.248 -2.969V-2.6C2.74 -2.57 2.042 -2.54 1.415 -2.242C0.667 -1.903 0.418 -1.385 0.418 -0.946C0.418 -0.139 1.385 0.11 2.012 0.11C2.67 0.11 3.128 -0.289 3.318 -0.757ZM3.248 -2.391V-1.395C3.248 -0.448 2.531 -0.11 2.082 -0.11C1.594 -0.11 1.186 -0.458 1.186 -0.956C1.186 -1.504 1.604 -2.331 3.248 -2.391Z' id='g2-97'/>
+<path d='M3.786 -0.548V0.11L5.25 0V-0.309C4.553 -0.309 4.473 -0.379 4.473 -0.867V-6.914L3.039 -6.804V-6.496C3.736 -6.496 3.816 -6.426 3.816 -5.938V-3.786C3.527 -4.144 3.098 -4.403 2.56 -4.403C1.385 -4.403 0.339 -3.427 0.339 -2.142C0.339 -0.877 1.315 0.11 2.451 0.11C3.088 0.11 3.537 -0.229 3.786 -0.548ZM3.786 -3.218V-1.176C3.786 -0.996 3.786 -0.976 3.676 -0.807C3.377 -0.329 2.929 -0.11 2.501 -0.11C2.052 -0.11 1.694 -0.369 1.455 -0.747C1.196 -1.156 1.166 -1.724 1.166 -2.132C1.166 -2.501 1.186 -3.098 1.474 -3.547C1.684 -3.856 2.062 -4.184 2.6 -4.184C2.949 -4.184 3.367 -4.035 3.676 -3.587C3.786 -3.417 3.786 -3.397 3.786 -3.218Z' id='g2-100'/>
+<path d='M1.763 -4.403L0.369 -4.294V-3.985C1.016 -3.985 1.106 -3.925 1.106 -3.437V-0.757C1.106 -0.309 0.996 -0.309 0.329 -0.309V0C0.648 -0.01 1.186 -0.03 1.425 -0.03C1.773 -0.03 2.122 -0.01 2.461 0V-0.309C1.803 -0.309 1.763 -0.359 1.763 -0.747V-4.403ZM1.803 -6.137C1.803 -6.456 1.554 -6.665 1.275 -6.665C0.966 -6.665 0.747 -6.396 0.747 -6.137C0.747 -5.868 0.966 -5.609 1.275 -5.609C1.554 -5.609 1.803 -5.818 1.803 -6.137Z' id='g2-105'/>
+<path d='M1.763 -6.914L0.329 -6.804V-6.496C1.026 -6.496 1.106 -6.426 1.106 -5.938V-0.757C1.106 -0.309 0.996 -0.309 0.329 -0.309V0C0.658 -0.01 1.186 -0.03 1.435 -0.03S2.172 -0.01 2.54 0V-0.309C1.873 -0.309 1.763 -0.309 1.763 -0.757V-6.914Z' id='g2-108'/>
+<path d='M1.096 -3.427V-0.757C1.096 -0.309 0.986 -0.309 0.319 -0.309V0C0.667 -0.01 1.176 -0.03 1.445 -0.03C1.704 -0.03 2.222 -0.01 2.56 0V-0.309C1.893 -0.309 1.783 -0.309 1.783 -0.757V-2.59C1.783 -3.626 2.491 -4.184 3.128 -4.184C3.756 -4.184 3.866 -3.646 3.866 -3.078V-0.757C3.866 -0.309 3.756 -0.309 3.088 -0.309V0C3.437 -0.01 3.945 -0.03 4.214 -0.03C4.473 -0.03 4.991 -0.01 5.33 0V-0.309C4.812 -0.309 4.563 -0.309 4.553 -0.608V-2.511C4.553 -3.367 4.553 -3.676 4.244 -4.035C4.105 -4.204 3.776 -4.403 3.198 -4.403C2.471 -4.403 2.002 -3.975 1.724 -3.357V-4.403L0.319 -4.294V-3.985C1.016 -3.985 1.096 -3.915 1.096 -3.427Z' id='g2-110'/>
+<path d='M4.692 -2.132C4.692 -3.407 3.696 -4.463 2.491 -4.463C1.245 -4.463 0.279 -3.377 0.279 -2.132C0.279 -0.847 1.315 0.11 2.481 0.11C3.686 0.11 4.692 -0.867 4.692 -2.132ZM2.491 -0.139C2.062 -0.139 1.624 -0.349 1.355 -0.807C1.106 -1.245 1.106 -1.853 1.106 -2.212C1.106 -2.6 1.106 -3.138 1.345 -3.577C1.614 -4.035 2.082 -4.244 2.481 -4.244C2.919 -4.244 3.347 -4.025 3.606 -3.597S3.866 -2.59 3.866 -2.212C3.866 -1.853 3.866 -1.315 3.646 -0.877C3.427 -0.428 2.989 -0.139 2.491 -0.139Z' id='g2-111'/>
+<path d='M1.664 -3.308V-4.403L0.279 -4.294V-3.985C0.976 -3.985 1.056 -3.915 1.056 -3.427V-0.757C1.056 -0.309 0.946 -0.309 0.279 -0.309V0C0.667 -0.01 1.136 -0.03 1.415 -0.03C1.813 -0.03 2.281 -0.03 2.68 0V-0.309H2.471C1.733 -0.309 1.714 -0.418 1.714 -0.777V-2.311C1.714 -3.298 2.132 -4.184 2.889 -4.184C2.959 -4.184 2.979 -4.184 2.999 -4.174C2.969 -4.164 2.77 -4.045 2.77 -3.786C2.77 -3.507 2.979 -3.357 3.198 -3.357C3.377 -3.357 3.626 -3.477 3.626 -3.796S3.318 -4.403 2.889 -4.403C2.162 -4.403 1.803 -3.736 1.664 -3.308Z' id='g2-114'/>
+<path d='M1.724 -3.985H3.148V-4.294H1.724V-6.127H1.474C1.465 -5.31 1.166 -4.244 0.189 -4.204V-3.985H1.036V-1.235C1.036 -0.01 1.963 0.11 2.321 0.11C3.029 0.11 3.308 -0.598 3.308 -1.235V-1.803H3.059V-1.255C3.059 -0.518 2.76 -0.139 2.391 -0.139C1.724 -0.139 1.724 -1.046 1.724 -1.215V-3.985Z' id='g2-116'/>
+<path d='M6.844 -3.258C6.994 -3.258 7.183 -3.258 7.183 -3.457S6.994 -3.656 6.854 -3.656H0.887C0.747 -3.656 0.558 -3.656 0.558 -3.457S0.747 -3.258 0.897 -3.258H6.844ZM6.854 -1.325C6.994 -1.325 7.183 -1.325 7.183 -1.524S6.994 -1.724 6.844 -1.724H0.897C0.747 -1.724 0.558 -1.724 0.558 -1.524S0.747 -1.325 0.887 -1.325H6.854Z' id='g2-61'/>
+<path d='M1.913 -2.491C1.913 -2.78 1.674 -3.019 1.385 -3.019S0.857 -2.78 0.857 -2.491S1.096 -1.963 1.385 -1.963S1.913 -2.202 1.913 -2.491Z' id='g0-1'/>
+<path d='M1.325 -0.827C1.863 -1.405 2.152 -1.654 2.511 -1.963C2.511 -1.973 3.128 -2.501 3.487 -2.859C4.433 -3.786 4.653 -4.264 4.653 -4.304C4.653 -4.403 4.563 -4.403 4.543 -4.403C4.473 -4.403 4.443 -4.384 4.394 -4.294C4.095 -3.816 3.885 -3.656 3.646 -3.656S3.288 -3.806 3.138 -3.975C2.949 -4.204 2.78 -4.403 2.451 -4.403C1.704 -4.403 1.245 -3.477 1.245 -3.268C1.245 -3.218 1.275 -3.158 1.365 -3.158S1.474 -3.208 1.494 -3.268C1.684 -3.726 2.262 -3.736 2.341 -3.736C2.55 -3.736 2.74 -3.666 2.969 -3.587C3.367 -3.437 3.477 -3.437 3.736 -3.437C3.377 -3.009 2.54 -2.291 2.351 -2.132L1.455 -1.295C0.777 -0.628 0.428 -0.06 0.428 0.01C0.428 0.11 0.528 0.11 0.548 0.11C0.628 0.11 0.648 0.09 0.707 -0.02C0.936 -0.369 1.235 -0.638 1.554 -0.638C1.783 -0.638 1.883 -0.548 2.132 -0.259C2.301 -0.05 2.481 0.11 2.77 0.11C3.756 0.11 4.334 -1.156 4.334 -1.425C4.334 -1.474 4.294 -1.524 4.214 -1.524C4.125 -1.524 4.105 -1.465 4.075 -1.395C3.846 -0.747 3.208 -0.558 2.879 -0.558C2.68 -0.558 2.501 -0.618 2.291 -0.687C1.953 -0.817 1.803 -0.857 1.594 -0.857C1.574 -0.857 1.415 -0.857 1.325 -0.827Z' id='g1-122'/>
+<path d='M1.913 -3.766C1.913 -4.055 1.674 -4.294 1.385 -4.294S0.857 -4.055 0.857 -3.766S1.096 -3.238 1.385 -3.238S1.913 -3.477 1.913 -3.766ZM1.724 -0.11C1.724 0.169 1.724 0.946 1.086 1.684C1.016 1.763 1.016 1.783 1.016 1.813C1.016 1.883 1.066 1.923 1.116 1.923C1.225 1.923 1.943 1.126 1.943 -0.03C1.943 -0.319 1.923 -1.056 1.385 -1.056C1.036 -1.056 0.857 -0.787 0.857 -0.528S1.026 0 1.385 0C1.435 0 1.455 0 1.465 -0.01C1.534 -0.02 1.644 -0.04 1.724 -0.11Z' id='g2-59'/>
+<path d='M3.656 -3.985H4.513C4.712 -3.985 4.812 -3.985 4.812 -4.184C4.812 -4.294 4.712 -4.294 4.543 -4.294H3.716L3.925 -5.43C3.965 -5.639 4.105 -6.346 4.164 -6.466C4.254 -6.655 4.423 -6.804 4.633 -6.804C4.672 -6.804 4.932 -6.804 5.121 -6.625C4.682 -6.585 4.583 -6.237 4.583 -6.087C4.583 -5.858 4.762 -5.738 4.951 -5.738C5.21 -5.738 5.499 -5.958 5.499 -6.336C5.499 -6.795 5.041 -7.024 4.633 -7.024C4.294 -7.024 3.666 -6.844 3.367 -5.858C3.308 -5.649 3.278 -5.549 3.039 -4.294H2.351C2.162 -4.294 2.052 -4.294 2.052 -4.105C2.052 -3.985 2.142 -3.985 2.331 -3.985H2.989L2.242 -0.05C2.062 0.917 1.893 1.823 1.375 1.823C1.335 1.823 1.086 1.823 0.897 1.644C1.355 1.614 1.445 1.255 1.445 1.106C1.445 0.877 1.265 0.757 1.076 0.757C0.817 0.757 0.528 0.976 0.528 1.355C0.528 1.803 0.966 2.042 1.375 2.042C1.923 2.042 2.321 1.455 2.501 1.076C2.819 0.448 3.049 -0.757 3.059 -0.827L3.656 -3.985Z' id='g1-102'/>
+<path d='M1.524 -2.082L1.913 -6.625C1.913 -6.954 1.644 -7.133 1.385 -7.133S0.857 -6.954 0.857 -6.625L1.245 -2.092C1.255 -1.943 1.265 -1.863 1.385 -1.863C1.484 -1.863 1.514 -1.913 1.524 -2.082ZM1.913 -0.528C1.913 -0.817 1.674 -1.056 1.385 -1.056S0.857 -0.817 0.857 -0.528S1.096 0 1.385 0S1.913 -0.239 1.913 -0.528Z' id='g2-33'/>
+</defs>
+</svg>
+
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</html>
