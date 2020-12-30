@@ -2,390 +2,83 @@
 <html lang="en-US">
 <head>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-  <meta name="generator" content="Madoko, version 1.0.1" />
+  <meta name="generator" content="Madoko, version 1.2.0" />
   <meta name="viewport" content="initial-scale=1.0" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Contact - David K. Zhang - Personal Website</title>
-  <style type="text/css"  class="link">
-  /*# sourceURL=../resources/css/DZ_MADOKO.css */
+  <title>David K. Zhang - Personal Website</title>
+  <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/litera/bootstrap.min.css"  class="link">
   
-  .madoko .toc>.tocblock .tocblock .tocblock {
-    margin-left: 2.25em;
-  }
-  .madoko .toc>.tocblock .tocblock {
-    margin-left: 1.5em;
-  }
-  .madoko .toc-contents>.tocblock>.tocitem {
-    font-weight: bold;
-  }
-  .madoko .toc {
-    margin-top: 1em;
-  }
-  .madoko p.para-continue {
-    margin-bottom: 0pt;
-  }
-  .madoko .para-block+p {
-    margin-top: 0pt;
-  }
-  .madoko ul.para-block, .madoko ol.para-block {
-    margin-top: 0pt;
-    margin-bottom: 0pt;
-  }
-  .madoko ul.para-end, .madoko ol.para-end {
-    margin-bottom: 1em;
-  }
-  .madoko dl {
-    margin-left: 0em;
-  }
-  .madoko blockquote {
-    font-style: italic;
-  }
-  .madoko a.localref {
-    text-decoration: none;
-  }
-  .madoko a.localref:hover {
-    text-decoration: underline;
-  }
-  .madoko .footnotes {
-    font-size: smaller;
-    margin-top: 2em;
-  }
-  .madoko .footnotes hr {
-    width: 50%;
-    text-align: left;
-  }
-  .madoko .footnote { 
-    margin-left: 1em;
-  }
-  .madoko .footnote-before {
-    margin-left: -1em;
-    width: 1em;
-    display: inline-block;
-  }
-  .madoko .align-center, .madoko .align-center>p {
-    text-align: center !important;
-  }
-  .madoko .align-center pre {
-    text-align: left;
-  }
-  .madoko .align-center>* {
-    margin-left: auto !important;
-    margin-right: auto !important;
-  }
-  .madoko .align-left, .madoko .align-left>p {
-    text-align: left !important;
-  }
-  .madoko .align-left>* {
-    margin-left: 0pt !important;
-    margin-right: auto !important;
-  }
-  .madoko .align-right, .madoko .align-right>p {
-    text-align: right !important;
-  }
-  .madoko .align-right>* {
-    margin-left: auto !important;
-    margin-right: 0pt !important;
-  }
-  .madoko .align-center>table,
-  .madoko .align-left>table,
-  .madoko .align-right>table {
-    text-align: left !important;
-  }
-  .madoko .equation-before {
-    float: right;
-  }
-  .madoko .bibitem {
-    font-size: smaller;
-  }
-  .madoko .bibsearch {
-    font-size: x-small;
-    text-decoration:none;
-    color: black;
-    font-family: "Segoe UI Symbol", Symbola, serif;
-  }
-  .madoko .block, .madoko .figure, .madoko .bibitem, .madoko .equation, .madoko div.math {
-    margin-top: 1ex;
-    margin-bottom: 1ex;
-  }
-  .madoko .figure {
-    padding: 0.5em;
-    margin-left: 0pt;
-    margin-right: 0pt;
-  }
-  .madoko .hidden {
-    display: none;
-  }
-  .madoko .invisible {
-    visibility: hidden;
-  }
-  .madoko.preview .invisible {
-    visibility: visible;
-    opacity: 0.5;
-  }
-  .madoko code.code, .madoko span.code {
-    white-space: pre-wrap;
-  }
-  .madoko hr, hr.madoko {
-    border: none;
-    border-bottom: black solid 1px;
-    margin-bottom: 0.5ex;
-  }
-  .madoko .framed>*:first-child {
-    margin-top: 0pt;
-  }
-  .madoko .framed>*:last-child {
-    margin-bottom: 0pt;
-  }
-  .madoko ul.list-style-type-dash {
-      list-style-type: none !important;
-  }
-  .madoko ul.list-style-type-dash > li:before {
-      content: "\2013"; 
-      position: absolute;
-      margin-left: -1em; 
-  }
-  .madoko table.madoko {
-    border-collapse: collapse;
-  }
-  .madoko td, .madoko th {
-    padding: 0ex 0.5ex;
-    margin: 0pt;
-    vertical-align: top;
-  }
-  .madoko .cell-border-left {
-    border-left: 1px solid black;
-  }
-  .madoko .cell-border-right {
-    border-right: 1px solid black;
-  }
-  .madoko thead>tr:first-child>.cell-line,
-  .madoko tbody:first-child>tr:first-child>.cell-line {
-    border-top: 1px solid black;
-    border-bottom: none;
-  }
-  .madoko .cell-line, .madoko .cell-double-line {
-    border-bottom: 1px solid black;
-    border-top: none;
-  }
-  .madoko .cell-double-line {
-    border-top: 1px solid black;
-    padding-top: 1.5px !important;
-  }
-  .madoko .input-mathpre .MathJax_Display {
-    text-align: left !important;
-  }
-  .madoko div.input-mathpre {
-    text-align: left;
-    margin-top: 1.5ex;
-    margin-bottom: 1ex;
-  }
-  .madoko .math-rendering {
-    color: gray;
-  }
-  .madoko .mathdisplay {
-    text-align: center;
-  }
-  .madoko .pretty table {
-    border-collapse: collapse;
-  }
-  .madoko .pretty td {
-    padding: 0em;
-  }
-  .madoko .pretty td.empty {
-    min-width: 1.5ex;
-  }
-  .madoko .pretty td.expander {
-    width: 100em;
-  }
-  .madoko .symbol {
-    font-family: "Segoe UI Symbol", Symbola, serif;
-  }
-  body.madoko {  
-    -webkit-text-size-adjust: 100%;       
-    text-rendering: optimizeLegibility;
-  }
-  body.madoko {
-    max-width: 88ex; 
-    margin: 1em auto;
-    padding: 0em 2em;  
-  }
-  body.preview.madoko {
-    padding: 0em 1em;
-  }
-  .madoko h1, .madoko h2, .madoko h3, .madoko h4 { 
-    margin-top: 1.22em; 
-    margin-bottom: 1ex;
-  }
-  .madoko h1+p, .madoko h2+p, .madoko h3+p, .madoko h4+p, .madoko h5+p  { 
-    margin-top: 1ex;    
-  }
-  .madoko h5, .madoko h6 { 
-    margin-top: 1ex;
-    font-size: 1em;
-  }
-  .madoko h5 { 
-    margin-bottom: 0.5ex;
-  }
-  .madoko h5 + p {
-    margin-top: 0.5ex;
-  }
-  .madoko h6 { 
-    margin-bottom: 0pt;
-  }
-  .madoko h6 + p {
-    margin-top: 0pt;
-  }
-  .madoko pre, .madoko code, .madoko kbd, .madoko samp, .madoko tt, 
-  .madoko .monospace, .madoko .token-indent, .madoko .reveal pre, .madoko .reveal code, .madoko .email {
-    font-family: Consolas,"Andale Mono WT","Andale Mono",Lucida Console,Monaco,monospace,monospace;
-    font-size: 0.85em;
-  }
-  .madoko pre code, .madoko .token-indent {
-    font-size: 0.95em;
-  }
-  .madoko pre code {
-    font-family: inherit !important;
-  }
-  .madoko ol.linenums li {
-    background-color: white;
-    list-style-type: decimal;
-  }
-  .madoko .remote {
-    background-color: #F0FFF0;
-  }
-  .madoko .remote + * {
-    margin-top: 0pt;
-  }
-  @media print {
-    body.madoko {
-      font-size: 10pt;
-    }
-    @page {
-      margin: 0.5in 0.5in;
-    }
-  }
-  @media only screen and (max-device-width:1024px) {
-    body.madoko {
-      padding: 0em 0.5em;    
-    }
-    .madoko li {
-      text-align: left;
-    }
-  }
-  
-    </style>
-  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/readable/bootstrap.min.css"  class="link">
-  <link rel="icon" href="/resources/favicon.png">  
-      <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-      <![endif]-->
-      <style>
-      body.madoko {
-          padding: 0pt;
-          padding-top: 60px;
-          margin: 0pt;
-          max-width: 100%;
-      }
-      .footer {
-          padding-top: 36px;
-          padding-bottom: 36px;
-          margin-top: 36px;
-          border-top: 1px solid #eee;
-      }
-      </style>
   </head>
 <body class="madoko">
 
-<div class="body madoko" style="line-adjust:0">
+<div class="body madoko" style="-webkit-text-size-adjust:100%;text-rendering:optimizeLegibility;max-width:50em;margin:1em auto;padding:0em 2em;line-adjust:0">
+<nav class="navbar fixed-top navbar-expand-sm navbar-light bg-light">
+  <a class="navbar-brand" href="http://www.dkzhang.com/index.html">
+    <img src="http://www.dkzhang.com/resources/favicon.png" height="35" class=" align-top" alt="David K. Zhang Logo"
+      loading="lazy">
+    David K. Zhang
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
-<nav class="nav navbar navbar-default navbar-fixed-top" data-line="3;../include/navbar/DZ_Navbar_Contact.html:2">
-<div class="container" data-line="3;../include/navbar/DZ_Navbar_Contact.html:3">
-<div class="navbar-header" data-line="3;../include/navbar/DZ_Navbar_Contact.html:4"><button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-  <span class="sr-only">Toggle navigation</span>
-  <span class="icon-bar"></span>
-  <span class="icon-bar"></span>
-  <span class="icon-bar"></span>
-</button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="http://www.dkzhang.com/index.html">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="http://www.dkzhang.com/projects.html">Projects</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="http://www.dkzhang.com/publications.html">Publications</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          Notes
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <h6 class="dropdown-header">Differential Geometry</h6>
+          <a class="dropdown-item" href="http://www.dkzhang.com/notes/autoparallel-curves.html">
+            Autoparallel Curves and the Levi-Civita Connection
+          </a>
+          <div class="dropdown-divider"></div>
+          <h6 class="dropdown-header">Computational Physics</h6>
+          <a class="dropdown-item" href="http://www.dkzhang.com/notes/eigen-derivatives.html">
+            Derivatives of Generalized Eigenvalues and Eigenvectors
+          </a>
+          <a class="dropdown-item" href="http://www.dkzhang.com/notes/gaussian-integrals.html">
+            Gaussian Integrals and Beyond
+          </a>
+          <a class="dropdown-item" href="http://www.dkzhang.com/notes/ecg-matelems.html">
+            Matrix Elements of ECG Basis Functions
+          </a>
+        </div>
+      </li>
+    </ul>
+    <ul class="navbar-nav navbar-right">
+      <li class="nav-item">
+        <a class="nav-link" href="http://www.dkzhang.com/contact.html">Contact</a>
+      </li>
+    </ul>
+  </div>
+</nav>
 
 
-<p class="p noindent" data-line="3;../include/navbar/DZ_Navbar_Contact.html:11"><span data-line="3;../include/navbar/DZ_Navbar_Contact.html:11"></span><a class="navbar-brand" href="/index.html"><span data-line="3;../include/navbar/DZ_Navbar_Contact.html:11"></span>
-  <span data-line="3;../include/navbar/DZ_Navbar_Contact.html:12"></span><img src="/resources/favicon_crop.png" style="max-height:38px" alt="David K. Zhang - Logo" /><span data-line="3;../include/navbar/DZ_Navbar_Contact.html:12"></span>
-<span data-line="3;../include/navbar/DZ_Navbar_Contact.html:13"></span></a></p></div><div id="navbar" class="navbar-collapse collapse">
-<ul class="nav navbar-nav">
-<li><a href="/index.html">Home</a></li>
-<li><a href="/projects.html">Current Projects</a></li>
-<li><a href="/publications.html">Publications</a></li>
-<li class="dropdown">
-<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Lecture Notes <span class="caret"></span></a>
-<ul class="dropdown-menu">
-<li class="dropdown-header">Vanderbilt - Pure Mathematics</li>
-<li><a href="/notes/math-2500.html">MATH 2500 - Multivariable Calculus and Linear Algebra I</a></li>
-<li><a href="/notes/math-2501.html">MATH 2501 - Multivariable Calculus and Linear Algebra II</a></li>
-<li role="separator" class="divider"></li>
-<li class="dropdown-header">Personal - Pure Mathematics</li>
-<li><a href="/notes/combinatory-logic.html">Mathematical Birdwatching (and Combinatory Logic)</a></li>
-<li><a href="/notes/representation-theory.html">Representation Theory of Finite Groups</a></li>
-<li><a href="/notes/surreal-numbers.html">Theory of Surreal Numbers</a></li>
-<li role="separator" class="divider"></li>
-<li class="dropdown-header">Personal - Physics</li>
-<li><a href="/notes/normal-modes.html">Normal Modes of Oscillatory Systems</a></li>
-<li><a href="/notes/quantum-gases.html">Statistical Mechanics of Free Quantum Gases</a></li>
-<li role="separator" class="divider"></li>
-<li class="dropdown-header">Research - Computational Quantum Mechanics</li>
-<li><a href="/notes/eigen-derivatives.html">Derivatives of Generalized Eigenvalues and Eigenvectors</a></li>
-<li><a href="/notes/gaussian-integrals.html">Gaussian Integrals and Beyond</a></li>
-<li><a href="/notes/ecg-matelems.html">Matrix Elements of ECG Basis Functions</a></li>
-</ul>
-</li>
-</ul>
-<ul class="nav navbar-nav navbar-right">
-<li class="active"><a href="/contact.html">Contact</a></li>
-</ul>
-</div>
-</div></nav>
-<div class="mathdefs input-mathdefs" data-line="5"></div>
-<div class="container" data-line="11">
-<h2 id="sec-contact-information" class="clearnum h1" data-line="13" data-heading-depth="1" style="display:block"><span data-line="13"></span>Contact Information</h2>
-<p class="p noindent" data-line="15"><span data-line="15"></span><strong class="strong-star2">University e-mail address:</strong><span data-line="15"></span> <span data-line="15"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.2387em;height:0.9950em;width:13.7001em" viewBox='34.669 54.612 130.477 9.476' ><desc>$\dkz@\vandy$</desc><g id='page1'><use x='34.869' xlink:href='#g0-100' y='61.836'/><use x='40.383' xlink:href='#g0-97' y='61.836'/><use x='45.069' xlink:href='#g0-118' y='61.836'/><use x='50.308' xlink:href='#g0-105' y='61.836'/><use x='53.065' xlink:href='#g0-100' y='61.836'/><use x='58.579' xlink:href='#g0-46' y='61.836'/><use x='61.336' xlink:href='#g0-107' y='61.836'/><use x='66.575' xlink:href='#g0-46' y='61.836'/><use x='69.332' xlink:href='#g0-122' y='61.836'/><use x='73.743' xlink:href='#g0-104' y='61.836'/><use x='79.257' xlink:href='#g0-97' y='61.836'/><use x='84.22' xlink:href='#g0-110' y='61.836'/><use x='89.734' xlink:href='#g0-103' y='61.836'/><use x='94.922' xlink:href='#g0-64' y='61.836'/><use x='102.642' xlink:href='#g0-118' y='61.836'/><use x='107.327' xlink:href='#g0-97' y='61.836'/><use x='112.289' xlink:href='#g0-110' y='61.836'/><use x='117.804' xlink:href='#g0-100' y='61.836'/><use x='123.318' xlink:href='#g0-101' y='61.836'/><use x='127.729' xlink:href='#g0-114' y='61.836'/><use x='131.617' xlink:href='#g0-98' y='61.836'/><use x='137.131' xlink:href='#g0-105' y='61.836'/><use x='139.888' xlink:href='#g0-108' y='61.836'/><use x='142.645' xlink:href='#g0-116' y='61.836'/><use x='146.505' xlink:href='#g0-46' y='61.836'/><use x='149.262' xlink:href='#g0-101' y='61.836'/><use x='153.673' xlink:href='#g0-100' y='61.836'/><use x='159.187' xlink:href='#g0-117' y='61.836'/></g></svg><span data-line="15"></span><br>
-<span data-line="16"></span><strong class="strong-star2">Personal e-mail address:</strong><span data-line="16"></span> <span data-line="16"></span><svg  class="math-inline math-render-svg math" style="vertical-align:-0.2387em;height:0.9950em;width:10.7623em" viewBox='88.467 54.612 102.498 9.476' ><desc>$\text{me}@\mysite$</desc><g id='page2'><use x='88.667' xlink:href='#g0-109' y='61.836'/><use x='96.939' xlink:href='#g0-101' y='61.836'/><use x='101.398' xlink:href='#g0-64' y='61.836'/><use x='109.117' xlink:href='#g0-100' y='61.836'/><use x='114.631' xlink:href='#g0-97' y='61.836'/><use x='119.317' xlink:href='#g0-118' y='61.836'/><use x='124.556' xlink:href='#g0-105' y='61.836'/><use x='127.313' xlink:href='#g0-100' y='61.836'/><use x='132.827' xlink:href='#g0-45' y='61.836'/><use x='136.136' xlink:href='#g0-107' y='61.836'/><use x='141.374' xlink:href='#g0-45' y='61.836'/><use x='144.683' xlink:href='#g0-122' y='61.836'/><use x='149.094' xlink:href='#g0-104' y='61.836'/><use x='154.608' xlink:href='#g0-97' y='61.836'/><use x='159.571' xlink:href='#g0-110' y='61.836'/><use x='165.085' xlink:href='#g0-103' y='61.836'/><use x='170.048' xlink:href='#g0-46' y='61.836'/><use x='172.805' xlink:href='#g0-99' y='61.836'/><use x='177.216' xlink:href='#g0-111' y='61.836'/><use x='182.179' xlink:href='#g0-109' y='61.836'/></g></svg><span data-line="16"></span><br>
-</p>
-<p class="p indent" data-line="18"><span data-line="18"></span><em class="em-low1">(To avoid detection by spammers, these e-mail addresses deliberately cannot be
-copy/pasted.)</em><span data-line="19"></span>
-</p>
-<p class="p indent" data-line="21"><span data-line="21"></span>Feel free to contact me for corrections, questions, comments, or suggestions
-regarding anything on this site!
-</p>
-<div class="footer" data-line="24;../include/DZ_Footer.mdk:2">
-<p class="p noindent" data-line="24;../include/DZ_Footer.mdk:3"><span data-line="24;../include/DZ_Footer.mdk:3"></span>&#169;<span data-line="24;../include/DZ_Footer.mdk:3"></span> David Kai Zhang 2016</p></div></div><span data-line=""></span></div>
-<svg id='math-svg-paths' style='display:none' version='1.1' viewBox='0 0 0 0' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>
-<defs>
-<path d='M1.913 -0.528C1.913 -0.817 1.674 -1.056 1.385 -1.056S0.857 -0.817 0.857 -0.528S1.096 0 1.385 0S1.913 -0.239 1.913 -0.528Z' id='g0-46'/>
-<path d='M5.858 -4.553C5.858 -4.782 5.848 -4.792 5.619 -4.792H5.45C5.29 -4.792 5.28 -4.802 5.22 -4.872C4.762 -5.499 4.244 -5.639 3.856 -5.639C2.829 -5.639 1.883 -4.712 1.883 -3.457S2.829 -1.275 3.856 -1.275C4.394 -1.275 4.872 -1.564 5.171 -1.983C5.27 -1.465 5.788 -1.275 6.167 -1.275C7.044 -1.275 7.183 -2.301 7.183 -3.367C7.183 -5.699 5.479 -7.024 3.875 -7.024C2.052 -7.024 0.558 -5.44 0.558 -3.457C0.558 -1.584 1.933 0.11 3.925 0.11C4.443 0.11 5.081 0.04 5.719 -0.11C5.978 -0.169 7.173 -0.518 7.173 -0.677C7.173 -0.777 7.103 -0.777 6.944 -0.777H6.854C6.695 -0.777 6.675 -0.777 6.625 -0.747C5.778 -0.349 4.852 -0.11 3.915 -0.11C2.102 -0.11 0.807 -1.674 0.807 -3.457C0.807 -5.36 2.232 -6.804 3.866 -6.804C5.23 -6.804 6.934 -5.709 6.934 -3.308C6.934 -2.391 6.864 -1.494 6.207 -1.494C5.858 -1.494 5.858 -2.002 5.858 -2.152V-4.553ZM5.171 -2.61C5.171 -2.431 5.171 -2.391 5.031 -2.182C4.593 -1.554 4.085 -1.494 3.885 -1.494C3.168 -1.494 2.57 -2.351 2.57 -3.457S3.158 -5.42 3.885 -5.42C4.204 -5.42 4.682 -5.26 5.041 -4.702C5.171 -4.513 5.171 -4.483 5.171 -4.304V-2.61Z' id='g0-64'/>
-<path d='M3.318 -0.757C3.357 -0.359 3.626 0.06 4.095 0.06C4.304 0.06 4.912 -0.08 4.912 -0.887V-1.445H4.663V-0.887C4.663 -0.309 4.413 -0.249 4.304 -0.249C3.975 -0.249 3.935 -0.697 3.935 -0.747V-2.74C3.935 -3.158 3.935 -3.547 3.577 -3.915C3.188 -4.304 2.69 -4.463 2.212 -4.463C1.395 -4.463 0.707 -3.995 0.707 -3.337C0.707 -3.039 0.907 -2.869 1.166 -2.869C1.445 -2.869 1.624 -3.068 1.624 -3.328C1.624 -3.447 1.574 -3.776 1.116 -3.786C1.385 -4.134 1.873 -4.244 2.192 -4.244C2.68 -4.244 3.248 -3.856 3.248 -2.969V-2.6C2.74 -2.57 2.042 -2.54 1.415 -2.242C0.667 -1.903 0.418 -1.385 0.418 -0.946C0.418 -0.139 1.385 0.11 2.012 0.11C2.67 0.11 3.128 -0.289 3.318 -0.757ZM3.248 -2.391V-1.395C3.248 -0.448 2.531 -0.11 2.082 -0.11C1.594 -0.11 1.186 -0.458 1.186 -0.956C1.186 -1.504 1.604 -2.331 3.248 -2.391Z' id='g0-97'/>
-<path d='M1.714 -3.756V-6.914L0.279 -6.804V-6.496C0.976 -6.496 1.056 -6.426 1.056 -5.938V0H1.305C1.315 -0.01 1.395 -0.149 1.664 -0.618C1.813 -0.389 2.232 0.11 2.969 0.11C4.154 0.11 5.191 -0.867 5.191 -2.152C5.191 -3.417 4.214 -4.403 3.078 -4.403C2.301 -4.403 1.873 -3.935 1.714 -3.756ZM1.743 -1.136V-3.188C1.743 -3.377 1.743 -3.387 1.853 -3.547C2.242 -4.105 2.79 -4.184 3.029 -4.184C3.477 -4.184 3.836 -3.925 4.075 -3.547C4.334 -3.138 4.364 -2.57 4.364 -2.162C4.364 -1.793 4.344 -1.196 4.055 -0.747C3.846 -0.438 3.467 -0.11 2.929 -0.11C2.481 -0.11 2.122 -0.349 1.883 -0.717C1.743 -0.927 1.743 -0.956 1.743 -1.136Z' id='g0-98'/>
-<path d='M3.786 -0.548V0.11L5.25 0V-0.309C4.553 -0.309 4.473 -0.379 4.473 -0.867V-6.914L3.039 -6.804V-6.496C3.736 -6.496 3.816 -6.426 3.816 -5.938V-3.786C3.527 -4.144 3.098 -4.403 2.56 -4.403C1.385 -4.403 0.339 -3.427 0.339 -2.142C0.339 -0.877 1.315 0.11 2.451 0.11C3.088 0.11 3.537 -0.229 3.786 -0.548ZM3.786 -3.218V-1.176C3.786 -0.996 3.786 -0.976 3.676 -0.807C3.377 -0.329 2.929 -0.11 2.501 -0.11C2.052 -0.11 1.694 -0.369 1.455 -0.747C1.196 -1.156 1.166 -1.724 1.166 -2.132C1.166 -2.501 1.186 -3.098 1.474 -3.547C1.684 -3.856 2.062 -4.184 2.6 -4.184C2.949 -4.184 3.367 -4.035 3.676 -3.587C3.786 -3.417 3.786 -3.397 3.786 -3.218Z' id='g0-100'/>
-<path d='M1.116 -2.511C1.176 -3.995 2.012 -4.244 2.351 -4.244C3.377 -4.244 3.477 -2.899 3.477 -2.511H1.116ZM1.106 -2.301H3.885C4.105 -2.301 4.134 -2.301 4.134 -2.511C4.134 -3.497 3.597 -4.463 2.351 -4.463C1.196 -4.463 0.279 -3.437 0.279 -2.192C0.279 -0.857 1.325 0.11 2.471 0.11C3.686 0.11 4.134 -0.996 4.134 -1.186C4.134 -1.285 4.055 -1.305 4.005 -1.305C3.915 -1.305 3.895 -1.245 3.875 -1.166C3.527 -0.139 2.63 -0.139 2.531 -0.139C2.032 -0.139 1.634 -0.438 1.405 -0.807C1.106 -1.285 1.106 -1.943 1.106 -2.301Z' id='g0-101'/>
-<path d='M2.212 -1.714C1.345 -1.714 1.345 -2.71 1.345 -2.939C1.345 -3.208 1.355 -3.527 1.504 -3.776C1.584 -3.895 1.813 -4.174 2.212 -4.174C3.078 -4.174 3.078 -3.178 3.078 -2.949C3.078 -2.68 3.068 -2.361 2.919 -2.112C2.839 -1.993 2.61 -1.714 2.212 -1.714ZM1.056 -1.325C1.056 -1.365 1.056 -1.594 1.225 -1.793C1.614 -1.514 2.022 -1.484 2.212 -1.484C3.138 -1.484 3.826 -2.172 3.826 -2.939C3.826 -3.308 3.666 -3.676 3.417 -3.905C3.776 -4.244 4.134 -4.294 4.314 -4.294C4.334 -4.294 4.384 -4.294 4.413 -4.284C4.304 -4.244 4.254 -4.134 4.254 -4.015C4.254 -3.846 4.384 -3.726 4.543 -3.726C4.643 -3.726 4.832 -3.796 4.832 -4.025C4.832 -4.194 4.712 -4.513 4.324 -4.513C4.125 -4.513 3.686 -4.453 3.268 -4.045C2.849 -4.374 2.431 -4.403 2.212 -4.403C1.285 -4.403 0.598 -3.716 0.598 -2.949C0.598 -2.511 0.817 -2.132 1.066 -1.923C0.936 -1.773 0.757 -1.445 0.757 -1.096C0.757 -0.787 0.887 -0.408 1.196 -0.209C0.598 -0.04 0.279 0.389 0.279 0.787C0.279 1.504 1.265 2.052 2.481 2.052C3.656 2.052 4.692 1.544 4.692 0.767C4.692 0.418 4.553 -0.09 4.045 -0.369C3.517 -0.648 2.939 -0.648 2.331 -0.648C2.082 -0.648 1.654 -0.648 1.584 -0.658C1.265 -0.697 1.056 -1.006 1.056 -1.325ZM2.491 1.823C1.484 1.823 0.797 1.315 0.797 0.787C0.797 0.329 1.176 -0.04 1.614 -0.07H2.202C3.059 -0.07 4.174 -0.07 4.174 0.787C4.174 1.325 3.467 1.823 2.491 1.823Z' id='g0-103'/>
-<path d='M1.096 -0.757C1.096 -0.309 0.986 -0.309 0.319 -0.309V0C0.667 -0.01 1.176 -0.03 1.445 -0.03C1.704 -0.03 2.222 -0.01 2.56 0V-0.309C1.893 -0.309 1.783 -0.309 1.783 -0.757V-2.59C1.783 -3.626 2.491 -4.184 3.128 -4.184C3.756 -4.184 3.866 -3.646 3.866 -3.078V-0.757C3.866 -0.309 3.756 -0.309 3.088 -0.309V0C3.437 -0.01 3.945 -0.03 4.214 -0.03C4.473 -0.03 4.991 -0.01 5.33 0V-0.309C4.812 -0.309 4.563 -0.309 4.553 -0.608V-2.511C4.553 -3.367 4.553 -3.676 4.244 -4.035C4.105 -4.204 3.776 -4.403 3.198 -4.403C2.361 -4.403 1.923 -3.806 1.753 -3.427V-6.914L0.319 -6.804V-6.496C1.016 -6.496 1.096 -6.426 1.096 -5.938V-0.757Z' id='g0-104'/>
-<path d='M1.763 -4.403L0.369 -4.294V-3.985C1.016 -3.985 1.106 -3.925 1.106 -3.437V-0.757C1.106 -0.309 0.996 -0.309 0.329 -0.309V0C0.648 -0.01 1.186 -0.03 1.425 -0.03C1.773 -0.03 2.122 -0.01 2.461 0V-0.309C1.803 -0.309 1.763 -0.359 1.763 -0.747V-4.403ZM1.803 -6.137C1.803 -6.456 1.554 -6.665 1.275 -6.665C0.966 -6.665 0.747 -6.396 0.747 -6.137C0.747 -5.868 0.966 -5.609 1.275 -5.609C1.554 -5.609 1.803 -5.818 1.803 -6.137Z' id='g0-105'/>
-<path d='M1.056 -0.757C1.056 -0.309 0.946 -0.309 0.279 -0.309V0C0.608 -0.01 1.076 -0.03 1.365 -0.03C1.664 -0.03 2.062 -0.02 2.461 0V-0.309C1.793 -0.309 1.684 -0.309 1.684 -0.757V-1.783L2.321 -2.331C3.088 -1.275 3.507 -0.717 3.507 -0.538C3.507 -0.349 3.337 -0.309 3.148 -0.309V0C3.427 -0.01 4.015 -0.03 4.224 -0.03C4.513 -0.03 4.802 -0.02 5.091 0V-0.309C4.722 -0.309 4.503 -0.309 4.125 -0.837L2.859 -2.62C2.849 -2.64 2.8 -2.7 2.8 -2.73C2.8 -2.77 3.507 -3.367 3.606 -3.447C4.234 -3.955 4.653 -3.975 4.862 -3.985V-4.294C4.573 -4.264 4.443 -4.264 4.164 -4.264C3.806 -4.264 3.188 -4.284 3.049 -4.294V-3.985C3.238 -3.975 3.337 -3.866 3.337 -3.736C3.337 -3.537 3.198 -3.417 3.118 -3.347L1.714 -2.132V-6.914L0.279 -6.804V-6.496C0.976 -6.496 1.056 -6.426 1.056 -5.938V-0.757Z' id='g0-107'/>
-<path d='M1.763 -6.914L0.329 -6.804V-6.496C1.026 -6.496 1.106 -6.426 1.106 -5.938V-0.757C1.106 -0.309 0.996 -0.309 0.329 -0.309V0C0.658 -0.01 1.186 -0.03 1.435 -0.03S2.172 -0.01 2.54 0V-0.309C1.873 -0.309 1.763 -0.309 1.763 -0.757V-6.914Z' id='g0-108'/>
-<path d='M1.096 -3.427V-0.757C1.096 -0.309 0.986 -0.309 0.319 -0.309V0C0.667 -0.01 1.176 -0.03 1.445 -0.03C1.704 -0.03 2.222 -0.01 2.56 0V-0.309C1.893 -0.309 1.783 -0.309 1.783 -0.757V-2.59C1.783 -3.626 2.491 -4.184 3.128 -4.184C3.756 -4.184 3.866 -3.646 3.866 -3.078V-0.757C3.866 -0.309 3.756 -0.309 3.088 -0.309V0C3.437 -0.01 3.945 -0.03 4.214 -0.03C4.473 -0.03 4.991 -0.01 5.33 0V-0.309C4.812 -0.309 4.563 -0.309 4.553 -0.608V-2.511C4.553 -3.367 4.553 -3.676 4.244 -4.035C4.105 -4.204 3.776 -4.403 3.198 -4.403C2.471 -4.403 2.002 -3.975 1.724 -3.357V-4.403L0.319 -4.294V-3.985C1.016 -3.985 1.096 -3.915 1.096 -3.427Z' id='g0-110'/>
-<path d='M1.664 -3.308V-4.403L0.279 -4.294V-3.985C0.976 -3.985 1.056 -3.915 1.056 -3.427V-0.757C1.056 -0.309 0.946 -0.309 0.279 -0.309V0C0.667 -0.01 1.136 -0.03 1.415 -0.03C1.813 -0.03 2.281 -0.03 2.68 0V-0.309H2.471C1.733 -0.309 1.714 -0.418 1.714 -0.777V-2.311C1.714 -3.298 2.132 -4.184 2.889 -4.184C2.959 -4.184 2.979 -4.184 2.999 -4.174C2.969 -4.164 2.77 -4.045 2.77 -3.786C2.77 -3.507 2.979 -3.357 3.198 -3.357C3.377 -3.357 3.626 -3.477 3.626 -3.796S3.318 -4.403 2.889 -4.403C2.162 -4.403 1.803 -3.736 1.664 -3.308Z' id='g0-114'/>
-<path d='M1.724 -3.985H3.148V-4.294H1.724V-6.127H1.474C1.465 -5.31 1.166 -4.244 0.189 -4.204V-3.985H1.036V-1.235C1.036 -0.01 1.963 0.11 2.321 0.11C3.029 0.11 3.308 -0.598 3.308 -1.235V-1.803H3.059V-1.255C3.059 -0.518 2.76 -0.139 2.391 -0.139C1.724 -0.139 1.724 -1.046 1.724 -1.215V-3.985Z' id='g0-116'/>
-<path d='M3.895 -0.787V0.11L5.33 0V-0.309C4.633 -0.309 4.553 -0.379 4.553 -0.867V-4.403L3.088 -4.294V-3.985C3.786 -3.985 3.866 -3.915 3.866 -3.427V-1.654C3.866 -0.787 3.387 -0.11 2.66 -0.11C1.823 -0.11 1.783 -0.578 1.783 -1.096V-4.403L0.319 -4.294V-3.985C1.096 -3.985 1.096 -3.955 1.096 -3.068V-1.574C1.096 -0.797 1.096 0.11 2.61 0.11C3.168 0.11 3.606 -0.169 3.895 -0.787Z' id='g0-117'/>
-<path d='M4.144 -3.318C4.234 -3.547 4.403 -3.975 5.061 -3.985V-4.294C4.832 -4.274 4.543 -4.264 4.314 -4.264C4.075 -4.264 3.616 -4.284 3.447 -4.294V-3.985C3.816 -3.975 3.925 -3.746 3.925 -3.557C3.925 -3.467 3.905 -3.427 3.866 -3.318L2.849 -0.777L1.733 -3.557C1.674 -3.686 1.674 -3.706 1.674 -3.726C1.674 -3.985 2.062 -3.985 2.242 -3.985V-4.294C1.943 -4.284 1.385 -4.264 1.156 -4.264C0.887 -4.264 0.488 -4.274 0.189 -4.294V-3.985C0.817 -3.985 0.857 -3.925 0.986 -3.616L2.421 -0.08C2.481 0.06 2.501 0.11 2.63 0.11S2.8 0.02 2.839 -0.08L4.144 -3.318Z' id='g0-118'/>
-<path d='M3.885 -3.995C3.975 -4.105 3.975 -4.125 3.975 -4.164C3.975 -4.294 3.895 -4.294 3.716 -4.294H0.528L0.418 -2.69H0.667C0.727 -3.706 0.917 -4.075 2.012 -4.075H3.148L0.369 -0.319C0.279 -0.209 0.279 -0.189 0.279 -0.139C0.279 0 0.349 0 0.538 0H3.826L3.995 -1.863H3.746C3.656 -0.687 3.447 -0.249 2.291 -0.249H1.116L3.885 -3.995Z' id='g0-122'/>
-<path d='M2.75 -1.863V-2.441H0.11V-1.863H2.75Z' id='g0-45'/>
-<path d='M1.166 -2.172C1.166 -3.796 1.983 -4.214 2.511 -4.214C2.6 -4.214 3.228 -4.204 3.577 -3.846C3.168 -3.816 3.108 -3.517 3.108 -3.387C3.108 -3.128 3.288 -2.929 3.567 -2.929C3.826 -2.929 4.025 -3.098 4.025 -3.397C4.025 -4.075 3.268 -4.463 2.501 -4.463C1.255 -4.463 0.339 -3.387 0.339 -2.152C0.339 -0.877 1.325 0.11 2.481 0.11C3.816 0.11 4.134 -1.086 4.134 -1.186S4.035 -1.285 4.005 -1.285C3.915 -1.285 3.895 -1.245 3.875 -1.186C3.587 -0.259 2.939 -0.139 2.57 -0.139C2.042 -0.139 1.166 -0.568 1.166 -2.172Z' id='g0-99'/>
-<path d='M1.096 -3.427V-0.757C1.096 -0.309 0.986 -0.309 0.319 -0.309V0C0.667 -0.01 1.176 -0.03 1.445 -0.03C1.704 -0.03 2.222 -0.01 2.56 0V-0.309C1.893 -0.309 1.783 -0.309 1.783 -0.757V-2.59C1.783 -3.626 2.491 -4.184 3.128 -4.184C3.756 -4.184 3.866 -3.646 3.866 -3.078V-0.757C3.866 -0.309 3.756 -0.309 3.088 -0.309V0C3.437 -0.01 3.945 -0.03 4.214 -0.03C4.473 -0.03 4.991 -0.01 5.33 0V-0.309C4.663 -0.309 4.553 -0.309 4.553 -0.757V-2.59C4.553 -3.626 5.26 -4.184 5.898 -4.184C6.526 -4.184 6.635 -3.646 6.635 -3.078V-0.757C6.635 -0.309 6.526 -0.309 5.858 -0.309V0C6.207 -0.01 6.715 -0.03 6.984 -0.03C7.243 -0.03 7.761 -0.01 8.1 0V-0.309C7.582 -0.309 7.333 -0.309 7.323 -0.608V-2.511C7.323 -3.367 7.323 -3.676 7.014 -4.035C6.874 -4.204 6.545 -4.403 5.968 -4.403C5.131 -4.403 4.692 -3.806 4.523 -3.427C4.384 -4.294 3.646 -4.403 3.198 -4.403C2.471 -4.403 2.002 -3.975 1.724 -3.357V-4.403L0.319 -4.294V-3.985C1.016 -3.985 1.096 -3.915 1.096 -3.427Z' id='g0-109'/>
-<path d='M4.692 -2.132C4.692 -3.407 3.696 -4.463 2.491 -4.463C1.245 -4.463 0.279 -3.377 0.279 -2.132C0.279 -0.847 1.315 0.11 2.481 0.11C3.686 0.11 4.692 -0.867 4.692 -2.132ZM2.491 -0.139C2.062 -0.139 1.624 -0.349 1.355 -0.807C1.106 -1.245 1.106 -1.853 1.106 -2.212C1.106 -2.6 1.106 -3.138 1.345 -3.577C1.614 -4.035 2.082 -4.244 2.481 -4.244C2.919 -4.244 3.347 -4.025 3.606 -3.597S3.866 -2.59 3.866 -2.212C3.866 -1.853 3.866 -1.315 3.646 -0.877C3.427 -0.428 2.989 -0.139 2.491 -0.139Z' id='g0-111'/>
-</defs>
-</svg>
 
+<div class="title" style="text-align:center;margin-top:5.5em;color:gray;margin-bottom:2.5em">
+<div class="h4" style="font-weight:normal">New site, who dis?</div></div><hr />
+
+
+
+<div style="text-align:right;color:gray;font-size:medium">&#169; David K. Zhang 2016 &#8211; 2021</div><script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+
+
+
+<span data-line=""></span></div>
 </body>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
 </html>
