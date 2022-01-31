@@ -1,128 +1,139 @@
 <!DOCTYPE html>
 <html lang="en-US">
-<head>
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-  <meta name="generator" content="Madoko, version 1.2.3" />
-  <meta name="viewport" content="initial-scale=1.0" />
-  <title>Projects - David K. Zhang - Personal Website</title>
-  <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/litera/bootstrap.min.css"  class="link">
-  
-  </head>
-<body class="madoko">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>David K. Zhang - Projects</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5.1.3/dist/litera/bootstrap.min.css" integrity="sha384-jWh2BIV7iyVvMfp6tT2MlPY25mY5ow68HOIK/tjzAwX3LtHpnRcXovTJ3vNx4imh" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css" integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ" crossorigin="anonymous">
+        <style>@import url('https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
-<div class="body madoko" style="-webkit-text-size-adjust:100%;text-rendering:optimizeLegibility;max-width:50em;margin:1em auto;padding:0em 2em;line-adjust:0">
+a:not([class]) { text-decoration: none; }
+a:not([class]):hover { text-decoration: underline; }
 
-<div class="input-mathdefs" data-line="4;DZMathDefs.mdk:1" data-line-first="4;DZMathDefs.mdk:2"></div><nav class="navbar fixed-top navbar-expand-sm navbar-light bg-light">
-  <a class="navbar-brand" href="https://www.dkzhang.com/index.html">
-    <img src="https://www.dkzhang.com/resources/favicon.png" height="35" class="align-top" alt="David K. Zhang Logo"
-      loading="lazy" style="margin-right:7px">
-    David K. Zhang
-  </a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+.katex { font-size: 1.05em; }
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a class="nav-link" href="https://www.dkzhang.com/index.html">Home</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="https://www.dkzhang.com/projects.html">Projects</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="https://www.dkzhang.com/publications.html">Publications</a>
-      </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false">
-          Notes
-        </a>
-        <div class="dropdown-menu animate" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="https://www.dkzhang.com/notes/autoparallel-curves.html">
-            Autoparallel Curves and the Levi-Civita Connection
-          </a>
-          <a class="dropdown-item" href="https://www.dkzhang.com/notes/algebraic-geometry.html">
-            Notes on Algebraic Geometry
-          </a>
-          <a class="dropdown-item" href="https://www.dkzhang.com/notes/nonlinear-optimization.html">
-            Quasi-Newton Methods for Nonlinear Optimization
-          </a>
-          <div class="dropdown-divider"></div>
-          <h6 class="dropdown-header">Vanderbilt University</h6>
-          <a class="dropdown-item" href="https://www.dkzhang.com/notes/math-2500.html">
-            MATH 2500: Multivariable Calculus and Linear Algebra
-          </a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="https://www.dkzhang.com/notes/misc-thoughts.html">
-            Miscellaneous Thoughts
-          </a>
-        </div>
-      </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false">
-          Data
-        </a>
-        <div class="dropdown-menu animate" aria-labelledby="navbarDropdown">
-          <h6 class="dropdown-header">PCREO Database</h6>
-          <a class="dropdown-item" href="https://www.dkzhang.com/data/pcreo-database-50-59.html">
-            50&#8211;59 Points
-          </a>
-          <a class="dropdown-item" href="https://www.dkzhang.com/data/pcreo-database-60-69.html">
-            60&#8211;69 Points
-          </a>
-          <a class="dropdown-item" href="https://www.dkzhang.com/data/pcreo-database-70-79.html">
-            70&#8211;79 Points
-          </a>
-          <a class="dropdown-item" href="https://www.dkzhang.com/data/pcreo-database-80-89.html">
-            80&#8211;89 Points
-          </a>
-          <a class="dropdown-item" href="https://www.dkzhang.com/data/pcreo-database-90-99.html">
-            90&#8211;99 Points
-          </a>
-        </div>
-      </li>
-    </ul>
-    <ul class="navbar-nav navbar-right">
-      <li class="nav-item">
-        <a class="nav-link" href="https://www.dkzhang.com/about.html">About</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="https://www.dkzhang.com/contact.html">Contact</a>
-      </li>
-    </ul>
-  </div>
+h1.page-title {
+    text-align: center;
+    font-size: 2.0rem;
+    padding: 1.0rem;
+}
+
+p {
+    font-family: 'STIX Two Text', serif;
+    text-align: justify;
+}
+
+.sans p {
+    font-family: var(--bs-font-sans-serif);
+    text-align: justify;
+}
+
+li {
+    font-family: 'STIX Two Text', serif;
+}
+
+.navbar { padding: 0 0.5rem; }
+
+.navbar li { font-family: var(--bs-font-sans-serif); }
+
+.container-lg { max-width: 960px; }
+
+.card-header { padding: 0.30rem 0.70rem 0.10rem; }
+.card-body   { padding: 0.35rem 0.70rem; }
+
+.card-header p:last-child { margin-bottom: 0; }
+.card-body   p:last-child { margin-bottom: 0; }
+.card-body  ul:last-child { margin-bottom: 0; }
+.card-body  ol:last-child { margin-bottom: 0; }
+
+.card-body p+ul { margin-top: -0.5rem; }
+.card-body p+ol { margin-top: -0.5rem; }
+.card-body ul+p { margin-top: -0.5rem; }
+.card-body ol+p { margin-top: -0.5rem; }
+
+.card-body .katex-display { margin: -0.5rem 0 0.5rem; }
+</style>
+    </head>
+    <body>
+        <nav class="navbar fixed-top navbar-expand-md navbar-light bg-light d-print-none">
+    <a class="navbar-brand" href="/">
+        <img src="/resources/favicon_crop.png"
+             class="align-top" alt="David K. Zhang Logo"
+             loading="lazy" style="height: 2.0rem;">
+        David K. Zhang
+    </a>
+    <button class="navbar-toggler" type="button"
+            data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false"
+            aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="/index.html">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/projects.html">Projects</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/publications.html">Publications</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle"
+                    href="#"
+                    id="notesDropdown" role="button"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    Notes
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="notesDropdown">
+                    <li><a class="dropdown-item" href="/misc.html">Miscellaneous Thoughts</a></li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle"
+                    href="#"
+                    id="dataDropdown" role="button"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    Data
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="dataDropdown">
+                    <li><a class="dropdown-item" href="/misc.html">Miscellaneous Thoughts</a></li>
+                </ul>
+            </li>
+        </ul>
+        <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/about.html">About</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/contact.html">Contact</a>
+            </li>
+        </ul>
+    </div>
 </nav>
 
-
-
-<div class="title" data-line="7" style="text-align:center;margin-top:5.5em;margin-bottom:2em">
-<div class="h4" data-line="8" style="font-weight:normal"><span data-line="9"></span>Here<span data-line="9"></span>&#39;<span data-line="9"></span>s what I<span data-line="9"></span>&#39;<span data-line="9"></span>m working on.</div></div>
-<p class="p body-font noindent" data-line="13" style="text-align:justify;font-family:inherit"><span data-line="13"></span>I<span data-line="13"></span>&#39;<span data-line="13"></span>m currently working with<span data-line="13"></span>&nbsp;<a href="http://theory.stanford.edu/~aiken/">Alex Aiken</a><span data-line="13"></span> to design and implement a<span data-line="13"></span>&nbsp;<a href="https://github.com/dzhang314/LegionSolvers">linear solver library</a><span data-line="13"></span> for the<span data-line="13"></span>&nbsp;<a href="https://legion.stanford.edu/">Legion parallel programming system</a><span data-line="13"></span>.</p>
-<p class="p body-font indent" data-line="16" style="text-align:justify;font-family:inherit"><span data-line="16"></span>In the spring of 2020, I worked with the<span data-line="16"></span>&nbsp;<a href="https://lcls.slac.stanford.edu/">LCLS Advanced Methods Group</a><span data-line="16"></span> at<span data-line="16"></span>&nbsp;<a href="https://www6.slac.stanford.edu/">SLAC</a><span data-line="16"></span> to develop an iterative inversion algorithm for the<span data-line="16"></span>&nbsp;<a href="https://en.wikipedia.org/wiki/Non-uniform_discrete_Fourier_transform">non-uniform fast Fourier transform</a><span data-line="16"></span>, targeting applications in<span data-line="16"></span>&nbsp;<a href="https://dx.doi.org/10.1073%2Fpnas.1513738112">single-molecule diffraction imaging</a><span data-line="16"></span> as part of the<span data-line="16"></span>&nbsp;<a href="https://lcls.slac.stanford.edu/exafel">Exascale Computing Project</a><span data-line="16"></span>.</p>
-<p class="p body-font indent" data-line="19" style="text-align:justify;font-family:inherit"><span data-line="19"></span>I also develop open-source scientific software in my spare time. I<span data-line="19"></span>&#39;<span data-line="19"></span>m the author of several Julia packages, all available in<span data-line="19"></span>&nbsp;<a href="https://github.com/JuliaRegistries/General">the general Julia package registry</a><span data-line="19"></span>.</p>
-<ul class="ul body-font list-star compact" data-line="22" style="font-family:inherit">
-<li class="li ul-li list-star-li compact-li" data-line="22"><span data-line="22"></span><a href="https://github.com/dzhang314/MultiFloats.jl"><strong class="strong-star2">MultiFloats.jl</strong></a><span data-line="22"></span> is the world<span data-line="22"></span>&#39;<span data-line="22"></span>s fastest<span data-line="22"></span>*<span data-line="22"></span> library for extended-precision floating-point arithmetic.
-</li>
-<li class="li ul-li list-star-li compact-li" data-line="23"><span data-line="23"></span><a href="https://github.com/dzhang314/DZOptimization.jl"><strong class="strong-star2">DZOptimization.jl</strong></a><span data-line="23"></span> is a high-performance library for smooth local nonlinear optimization.
-</li>
-<li class="li ul-li list-star-li compact-li" data-line="24"><span data-line="24"></span><a href="https://github.com/dzhang314/RungeKuttaToolKit.jl"><strong class="strong-star2">RungeKuttaToolKit.jl</strong></a><span data-line="24"></span> is a library of tools for deriving new Runge<span data-line="24"></span>&#8211;<span data-line="24"></span>Kutta methods.
-</li>
-<li class="li ul-li list-star-li compact-li" data-line="25"><span data-line="25"></span><a href="https://github.com/dzhang314/AssemblyView.jl"><strong class="strong-star2">AssemblyView.jl</strong></a><span data-line="25"></span> is a utility for displaying, analyzing, and summarizing x86 assembly code.</li></ul>
-
-<p class="p body-font noindent" data-line="28" style="text-align:justify;font-family:inherit;margin-bottom:2em"><span data-line="28"></span>(<span data-line="28"></span>*<span data-line="28"></span>At least, it<span data-line="28"></span>&#39;<span data-line="28"></span>s the fastest library that I know of!)</p><hr />
-
-
-
-<div data-line="31;DZFooter.mdk:3" style="text-align:right;color:gray;font-size:medium"><span data-line="31;DZFooter.mdk:4"></span>&#169;<span data-line="31;DZFooter.mdk:4"></span> David K. Zhang 2016<span data-line="31;DZFooter.mdk:4"></span> <span data-line="31;DZFooter.mdk:4"></span>&#8211;<span data-line="31;DZFooter.mdk:4"></span> 2021</div><script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
-
-
-
-<span data-line=""></span></div>
-</body>
-
+        <div class="container-lg">
+            <div class="d-print-none" style="padding-top: 4.0rem;"></div>
+            <main><h1 class="page-title">Here&rsquo;s what I&rsquo;m working on.</h1>
+<p>I’m currently working with <a href="http://theory.stanford.edu/~aiken/">Alex Aiken</a> to design and implement a <a href="https://github.com/dzhang314/LegionSolvers">linear solver library</a> for the <a href="https://legion.stanford.edu/">Legion parallel programming system</a>.</p>
+<p>In the spring of 2020, I worked with the <a href="https://lcls.slac.stanford.edu/">LCLS Advanced Methods Group</a> at <a href="https://www6.slac.stanford.edu/">SLAC</a> to develop an iterative inversion algorithm for the <a href="https://en.wikipedia.org/wiki/Non-uniform_discrete_Fourier_transform">non-uniform fast Fourier transform</a>, targeting applications in <a href="https://dx.doi.org/10.1073%2Fpnas.1513738112">single-molecule diffraction imaging</a> as part of the <a href="https://lcls.slac.stanford.edu/exafel">Exascale Computing Project</a>.</p>
+<p>I also develop open-source scientific software in my spare time. I’m the author of several <a href="https://julialang.org/">Julia</a> packages, all available in <a href="https://github.com/JuliaRegistries/General">the general Julia package registry</a>.</p>
+<ul>
+<li><a href="https://github.com/dzhang314/MultiFloats.jl"><strong>MultiFloats.jl</strong></a> is the world’s fastest* library for extended-precision floating-point arithmetic.</li>
+<li><a href="https://github.com/dzhang314/DZOptimization.jl"><strong>DZOptimization.jl</strong></a> is a high-performance library for smooth local nonlinear optimization.</li>
+<li><a href="https://github.com/dzhang314/RungeKuttaToolKit.jl"><strong>RungeKuttaToolKit.jl</strong></a> is a library of tools for deriving new Runge–Kutta methods.</li>
+<li><a href="https://github.com/dzhang314/AssemblyView.jl"><strong>AssemblyView.jl</strong></a> is a utility for displaying, analyzing, and summarizing x86 assembly code.</li>
+</ul>
+<p>(*At least, it’s the fastest library that I know of!)</p>
+</main>
+            <hr>
+            <footer>
+                <span class="float-end text-secondary">&copy; David K. Zhang 2016&ndash;2022</span>
+            </footer>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        
+    </body>
 </html>
