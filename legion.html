@@ -92,7 +92,7 @@ li {
                     <li><a class="dropdown-item" href="/misc.html">Miscellaneous Thoughts</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><h1 class="dropdown-header">Computer Science</h1></li>
-                    <li><a class="dropdown-item" href="/legion.html">Legion Programming</a></li>
+                    <li><a class="dropdown-item" href="/legion.html">Programming in Legion</a></li>
                 </ul>
             </li>
             <li class="nav-item dropdown">
@@ -120,8 +120,24 @@ li {
             <main><h1 class="page-title">Notes on Programming in Legion</h1>
 <div class="text-center">
     David K. Zhang<br>
-    Last Modified 2022-02-05
+    Last Modified 2022-02-06
 </div><br>
+<p>Construct a region <eq><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>=</mo><mi>I</mi><mo>×</mo><mi>F</mi></mrow><annotation encoding="application/x-tex">R = I \times F</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">F</span></span></span></span></eq>:</p>
+<p><code>LogicalRegion create_logical_region(*, IndexSpace I, FieldSpace F);</code></p>
+<p>This function takes an optional argument <code>bool task_local = false</code>. (<strong>TODO:</strong> What does this argument do?)</p>
+<p><code>void destroy_index_space(*, IndexSpace I);</code>
+<code>void destroy_index_partition(*, IndexPartition P);</code>
+<code>void destroy_field_space(*, FieldSpace F);</code>
+<code>void destroy_logical_region(*, LogicalRegion R);</code></p>
+<p>All of the above <code>destroy_*</code> methods in Legion take an optional <code>bool unordered = false</code> parameter. Setting <code>unordered = true</code> informs Legion that this call to <code>destroy_*</code> may occur simultaneously with use of the resource being destroyed. This is used when the call to <code>destroy_*</code> is performed by a thread other than the one using the resource being destroyed, e.g., a garbage collector. In addition, <code>destroy_index_space</code> and <code>destroy_index_partition</code> take another optional parameter <code>bool recurse = true</code> that controls whether subspaces of the given index space <code>I</code> (i.e., children of <code>I</code> in the index tree) should also be destroyed.</p>
+<p><code>bool is_index_partition_disjoint(IndexPartition P);</code>
+<code>bool is_index_partition_complete(IndexPartition P);</code>
+<code>bool has_parent_index_partition(IndexSpace I);</code>
+<code>size_t get_field_size(FieldSpace F, FieldID fid);</code>
+<code>void get_field_space_fields(FieldSpace F, std::vector&lt;FieldID&gt; &amp;fids);</code>
+<code>void get_field_space_fields(FieldSpace F, std::set&lt;FieldID&gt; &amp;fids);</code></p>
+<p>These functions do exactly what you think they do.</p>
+<p><code>LogicalPartition get_logical_partition(LogicalRegion R, IndexPartition P);</code></p>
 </main>
             <div class="d-print-none">
                 <hr>
