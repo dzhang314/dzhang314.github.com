@@ -8,40 +8,18 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha256-UF1fgpAiu3tPJN/uCqEUHNe7pnr+QR0SQDNfgglgtcM=" crossorigin="anonymous">
         <style>@import url('https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
-a:not([class]) { text-decoration: none; }
+a:not([class])       { text-decoration: none; }
 a:not([class]):hover { text-decoration: underline; }
 
 .katex { font-size: 1.05em; }
-
-h1 {
-    font-size: 2.0rem;
-}
-
-h1.page-title {
-    text-align: center;
-    font-size: 2.5rem;
-    padding: 1.0rem;
-}
-
-p {
-    font-family: 'STIX Two Text', serif;
-    text-align: justify;
-}
-
-.sans p {
-    font-family: var(--bs-font-sans-serif);
-    text-align: justify;
-}
-
-li {
-    font-family: 'STIX Two Text', serif;
-}
-
 .navbar { padding: 0 0.5rem; }
-
-.navbar li { font-family: var(--bs-font-sans-serif); }
-
 .container-lg { max-width: 960px; }
+h1 { text-align: center; font-size: 2.5rem; padding: 1.0rem; }
+
+p          { font-family: 'STIX Two Text', serif;    text-align: justify; }
+li         { font-family: 'STIX Two Text', serif; }
+.sans p    { font-family: var(--bs-font-sans-serif); text-align: justify; }
+.navbar li { font-family: var(--bs-font-sans-serif); }
 
 .card-header { padding: 0.30rem 0.70rem 0.10rem; }
 .card-body   { padding: 0.35rem 0.70rem; }
@@ -61,20 +39,15 @@ li {
 
 pre {
     color: black;
-    background-color: var(--bs-gray-100);
-    font-size: 1.0rem;
+    background-color: var(--bs-gray-200);
+    font-size: 0.8rem;
+    padding: 0.5rem;
 }
 
-code {
-    color: black;
-    background-color: var(--bs-gray-100);
-    font-size: 1.0rem;
-}
-
-.keyword { color: var(--bs-blue); filter: brightness(0.6); }
+.keyword     { color: var(--bs-blue);  filter: brightness(0.6); }
 .return-type { color: var(--bs-green); filter: brightness(0.5); }
-.func-name { color: var(--bs-red); filter: brightness(0.5); }
-.arg { color: var(--bs-purple); }
+.func-name   { color: var(--bs-red);   filter: brightness(0.5); }
+.arg         { color: var(--bs-purple); }
 </style>
     </head>
     <body>
@@ -105,7 +78,7 @@ code {
                     Notes
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="notesDropdown">
-                    <li><h1 class="dropdown-header">Mathematics</h1></li>
+                    <li><h6 class="dropdown-header">Mathematics</h6></li>
                     <li><a class="dropdown-item" href="/groups.html">Group Theory</a></li>
                     <li><a class="dropdown-item" href="/rings.html">Ring Theory</a></li>
                     <li><a class="dropdown-item" href="/linalg.html">Linear Algebra</a></li>
@@ -115,7 +88,7 @@ code {
                     <li><a class="dropdown-item" href="/numbertheory.html">Number Theory</a></li>
                     <li><a class="dropdown-item" href="/misc.html">Miscellaneous Thoughts</a></li>
                     <li><hr class="dropdown-divider"></li>
-                    <li><h1 class="dropdown-header">Computer Science</h1></li>
+                    <li><h6 class="dropdown-header">Computer Science</h6></li>
                     <li><a class="dropdown-item" href="/ecc.html">Error-Correcting Codes</a></li>
                     <li><a class="dropdown-item" href="/legion.html">Programming in Legion</a></li>
                 </ul>
@@ -142,7 +115,7 @@ code {
 
         <div class="container-lg">
             <div class="d-print-none" style="padding-top: 4.0rem;"></div>
-            <main><h1 class="page-title">Your new reading list.</h1>
+            <main><h1>Your new reading list.</h1>
 <hr>
 <p><em><strong>Binding energies and structures of two-dimensional excitonic complexes in transition metal dichalcogenides</strong></em><br>
 Daniel W. Kidd, David K. Zhang. and Kálmán Varga<br>
@@ -170,7 +143,7 @@ trions but fails to predict the experimental binding energy of the biexciton.
 Using high-accuracy variational calculations, it is demonstrated that the
 biexciton binding energy in transition metal dichalcogenides is smaller than the
 trion binding energy, contradicting experimental findings. It is also shown that
-the biexciton has bound excited states and that the binding energy of the <eq><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">L=0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">L</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span></eq>
+the biexciton has bound excited states and that the binding energy of the <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">L=0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">L</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span>
 excited state is in very good agreement with experimental data. This excited
 state corresponds to a hole attached to a negative trion and may be a possible
 resolution of the discrepancy between theory and experiment.</p>
@@ -209,8 +182,8 @@ highly expensive operations such as symbolic matrix inversion. This imposes a
 severe limit on the complexity of LMMs that can be derived. In this
 presentation, we present a generalized algorithm for deriving LMMs based upon
 Taylor series expansion. By our approach, we show that the derivation of a LMM
-containing <eq><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">k + 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span></eq> terms is reducible to the numerical solution of a
-<eq><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>×</mo><mi>k</mi></mrow><annotation encoding="application/x-tex">k \times k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span></eq> linear system, allowing for the efficient derivation of methods
+containing <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">k + 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> terms is reducible to the numerical solution of a
+<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>×</mo><mi>k</mi></mrow><annotation encoding="application/x-tex">k \times k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span> linear system, allowing for the efficient derivation of methods
 including hundreds or thousands of terms. Furthermore, we show that this
 algorithm is trivially generalizable to methods including arbitrarily many
 off-grid points, and that it can be generalized to create LMMs for directly

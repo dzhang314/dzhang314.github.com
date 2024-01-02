@@ -8,40 +8,18 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha256-UF1fgpAiu3tPJN/uCqEUHNe7pnr+QR0SQDNfgglgtcM=" crossorigin="anonymous">
         <style>@import url('https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
-a:not([class]) { text-decoration: none; }
+a:not([class])       { text-decoration: none; }
 a:not([class]):hover { text-decoration: underline; }
 
 .katex { font-size: 1.05em; }
-
-h1 {
-    font-size: 2.0rem;
-}
-
-h1.page-title {
-    text-align: center;
-    font-size: 2.5rem;
-    padding: 1.0rem;
-}
-
-p {
-    font-family: 'STIX Two Text', serif;
-    text-align: justify;
-}
-
-.sans p {
-    font-family: var(--bs-font-sans-serif);
-    text-align: justify;
-}
-
-li {
-    font-family: 'STIX Two Text', serif;
-}
-
 .navbar { padding: 0 0.5rem; }
-
-.navbar li { font-family: var(--bs-font-sans-serif); }
-
 .container-lg { max-width: 960px; }
+h1 { text-align: center; font-size: 2.5rem; padding: 1.0rem; }
+
+p          { font-family: 'STIX Two Text', serif;    text-align: justify; }
+li         { font-family: 'STIX Two Text', serif; }
+.sans p    { font-family: var(--bs-font-sans-serif); text-align: justify; }
+.navbar li { font-family: var(--bs-font-sans-serif); }
 
 .card-header { padding: 0.30rem 0.70rem 0.10rem; }
 .card-body   { padding: 0.35rem 0.70rem; }
@@ -61,20 +39,15 @@ li {
 
 pre {
     color: black;
-    background-color: var(--bs-gray-100);
-    font-size: 1.0rem;
+    background-color: var(--bs-gray-200);
+    font-size: 0.8rem;
+    padding: 0.5rem;
 }
 
-code {
-    color: black;
-    background-color: var(--bs-gray-100);
-    font-size: 1.0rem;
-}
-
-.keyword { color: var(--bs-blue); filter: brightness(0.6); }
+.keyword     { color: var(--bs-blue);  filter: brightness(0.6); }
 .return-type { color: var(--bs-green); filter: brightness(0.5); }
-.func-name { color: var(--bs-red); filter: brightness(0.5); }
-.arg { color: var(--bs-purple); }
+.func-name   { color: var(--bs-red);   filter: brightness(0.5); }
+.arg         { color: var(--bs-purple); }
 </style>
     </head>
     <body>
@@ -105,7 +78,7 @@ code {
                     Notes
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="notesDropdown">
-                    <li><h1 class="dropdown-header">Mathematics</h1></li>
+                    <li><h6 class="dropdown-header">Mathematics</h6></li>
                     <li><a class="dropdown-item" href="/groups.html">Group Theory</a></li>
                     <li><a class="dropdown-item" href="/rings.html">Ring Theory</a></li>
                     <li><a class="dropdown-item" href="/linalg.html">Linear Algebra</a></li>
@@ -115,7 +88,7 @@ code {
                     <li><a class="dropdown-item" href="/numbertheory.html">Number Theory</a></li>
                     <li><a class="dropdown-item" href="/misc.html">Miscellaneous Thoughts</a></li>
                     <li><hr class="dropdown-divider"></li>
-                    <li><h1 class="dropdown-header">Computer Science</h1></li>
+                    <li><h6 class="dropdown-header">Computer Science</h6></li>
                     <li><a class="dropdown-item" href="/ecc.html">Error-Correcting Codes</a></li>
                     <li><a class="dropdown-item" href="/legion.html">Programming in Legion</a></li>
                 </ul>
@@ -142,7 +115,7 @@ code {
 
         <div class="container-lg">
             <div class="d-print-none" style="padding-top: 4.0rem;"></div>
-            <main><h1 class="page-title">Hey! I’m David.</h1>
+            <main><h1>Hey! I’m David.</h1>
 <p>This is where you’ll find the things I do and the notes I write.</p>
 <p>I’m a fifth-year Ph.D. student at <a href="https://www.stanford.edu/" style="color: #B83A4B;">Stanford University</a> in the <a href="https://icme.stanford.edu/" style="color: #d17d00;">Institute for Computational and Mathematical Engineering</a>. You’ve probably seen me if you live in the area; I’m the guy with the big hair and the ukulele. On the rare occasion that I’m not holding an impromptu uke concert, I also <a href="https://stanfordotone.com/" style="color: #1277b0;">direct an a cappella group</a> and <a href="https://ramshead.stanford.edu/" style="color: #6a00b5;">perform in musical theatre productions</a>.</p>
 <p>I previously studied mathematics, physics, computer science, and scientific computing at <a href="https://www.vanderbilt.edu/" style="color: #bf9539;">Vanderbilt University</a>. If you were a freshman in 2015, you might have known me as the guy who played guitar in the Hank House north stairwell. (I had to downsize when I flew out to Cali — couldn’t fit my guitar on the plane.)</p>
