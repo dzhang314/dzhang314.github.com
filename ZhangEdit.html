@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZhangEdit</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5/dist/litera/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css" crossorigin="anonymous">
+    <style>
+
+        /* Import STIX Two Text and Fira Code fonts from Google Fonts. */
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+        /* Use STIX Two Text as main text font. */
+        p  { font-family: 'STIX Two Text', serif; text-align: justify; }
+        li { font-family: 'STIX Two Text', serif; text-align: justify; }
+
+        /* Slightly increase equation size to better match STIX Two Text. */
+        .katex { font-size: 1.05em; }
+
+        /* Center h1 headings for use as page titles. */
+        h1 { text-align: center; font-size: 2.5rem; padding: 1.0rem; }
+
+        /* Adjust card spacing for visual symmetry. */
+        .card        { margin: 1rem 0rem 1rem; }
+        .card hr     { margin: 0.1rem 0; }
+        .card-header { padding: 0.3rem 0.7rem 0.1rem; }
+        .card-body   { padding: 0.4rem 0.7rem; }
+
+        /* Tighten spacing around paragraphs, lists,
+           and display-mode equations inside cards. */
+        .card-body .katex-display { margin: -0.5rem 0 0.5rem; }
+        .card-header p:last-child { margin-bottom: 0; }
+        .card-body   p:last-child { margin-bottom: 0; }
+        .card-body  ul:last-child { margin-bottom: 0; }
+        .card-body  ol:last-child { margin-bottom: 0; }
+        .card-body p+ul { margin-top: -0.5rem; }
+        .card-body p+ol { margin-top: -0.5rem; }
+        .card-body ul+p { margin-top: -0.5rem; }
+        .card-body ol+p { margin-top: -0.5rem; }
+
+    </style>
+    <script type="module">
+
+        //////////////////////////////////////////////////////////// MARKDOWN-IT
+
+        import markdownIt from "https://cdn.jsdelivr.net/npm/markdown-it@14/+esm";
+
+        const md = markdownIt({ typographer: true });
+
+        ////////////////////////////////////////////////////////////////// KATEX
+
+        import katex from "https://cdn.jsdelivr.net/npm/katex/+esm";
+
+        function isKatexOpen(str, idx) {
+            if (str[idx] === '$') {
+                const prevChar = str[idx - 1];
+                if (prevChar === undefined) { return true; }
+                const code = prevChar.charCodeAt(0);
+                return (code !== 0x5c && (code < 0x30 || code > 0x39));
+            }
+            return ((str[idx] === '\\' && str[idx + 1] === '('));
+        }
+
+        function isKatexClose(str, idx) {
+            if (str[idx] === '$') {
+                const nextChar = str[idx + 1];
+                if (nextChar === undefined) { return true; }
+                const code = nextChar.charCodeAt(0);
+                return (code < 0x30 || code > 0x39);
+            }
+            return ((str[idx] === '\\' && str[idx + 1] === ')'));
+        }
+
+        function katexInlineRule(regex) {
+            return function (state, silent) {
+                if (!isKatexOpen(state.src, state.pos)) { return false; }
+                regex.lastIndex = state.pos;
+                const match = regex.exec(state.src);
+                if (match === null) { return false; }
+                if (!isKatexClose(state.src, regex.lastIndex - 1)) { return false; }
+                if (!silent) {
+                    const token = state.push('math_inline', 'math', 0);
+                    token.content = match[1];
+                }
+                state.pos = regex.lastIndex;
+                return true;
+            }
+        }
+
+        function findLineIndex(state, startLine, endLine, charIndex) {
+            for (let i = startLine; i < endLine; ++i) {
+                const lineStartIndex = state.bMarks[i] + state.tShift[i];
+                const lineEndIndex = state.eMarks[i];
+                if (lineStartIndex <= charIndex && charIndex <= lineEndIndex) {
+                    return i;
+                }
+            }
+        }
+
+        function katexBlockRule(regex) {
+            return function (state, startLine, endLine, silent) {
+                regex.lastIndex = state.bMarks[startLine] + state.tShift[startLine];
+                const match = regex.exec(state.src);
+                if (match === null) { return false; }
+                if (!silent) {
+                    const lastLine = findLineIndex(
+                        state, startLine, endLine, regex.lastIndex - 1
+                    );
+                    const oldParentType = state.parentType;
+                    const oldLineMax = state.lineMax;
+                    state.lineMax = lastLine;
+                    state.parentType = 'math';
+
+                    let token = state.push('math_block', 'math', 0);
+                    token.block = true;
+                    token.content = match[1];
+                    token.map = [startLine, lastLine + 1];
+
+                    state.parentType = oldParentType;
+                    state.lineMax = oldLineMax;
+                    state.line = lastLine + 1;
+                }
+                return true;
+            }
+        }
+
+        md.inline.ruler.before('escape', 'math_inline',
+            katexInlineRule(/\$((?:[^\s\\])|(?:\S.*?[^\s\\]))\$/gy)
+        );
+        md.inline.ruler.before('escape', 'math_inline',
+            katexInlineRule(/\\\((.+?)\\\)/gy)
+        );
+        md.block.ruler.before('fence', 'math_block',
+            katexBlockRule(/\\\[([\s\S]+?)\\\]/gmy)
+        );
+        md.block.ruler.before('fence', 'math_block',
+            katexBlockRule(/\${2}([^$]*?[^\\])\${2}/gmy)
+        );
+
+        const KATEX_MACROS = {};
+
+        KATEX_MACROS["\\N"] = "{\\mathbb{N}}";
+        KATEX_MACROS["\\Z"] = "{\\mathbb{Z}}";
+        KATEX_MACROS["\\Q"] = "{\\mathbb{Q}}";
+        KATEX_MACROS["\\R"] = "{\\mathbb{R}}";
+        KATEX_MACROS["\\C"] = "{\\mathbb{C}}";
+        KATEX_MACROS["\\K"] = "{\\mathbb{K}}";
+        KATEX_MACROS["\\F"] = "{\\mathbb{F}}";
+        KATEX_MACROS["\\dd"] = "{\\,\\mathrm{d}}";
+
+        function katexRenderer(displayMode) {
+            return function (tokens, idx) {
+                return katex.renderToString(tokens[idx].content, {
+                    displayMode: displayMode,
+                    macros: KATEX_MACROS,
+                    throwOnError: false,
+                    strict: true
+                });
+            }
+        }
+
+        md.renderer.rules['math_inline'] = katexRenderer(false);
+        md.renderer.rules['math_block'] = katexRenderer(true);
+
+        ////////////////////////////////////////////////// MARKDOWN-IT-CONTAINER
+
+        import markdownItContainer from "https://cdn.jsdelivr.net/npm/markdown-it-container/+esm";
+
+        function addContainerType(name, regex, startTag, endTag) {
+            md.use(markdownItContainer, name, {
+                validate: function (params) {
+                    return params.trim().match(regex);
+                },
+                render: function (tokens, idx) {
+                    if (tokens[idx].nesting === 1) {
+                        return startTag + '\n';
+                    } else {
+                        return endTag + '\n';
+                    }
+                }
+            });
+        }
+
+        addContainerType('card', /^card$/,
+            '<div class="card bg-light border-dark">',
+            '</div>'
+        );
+        addContainerType('card-header', /^card-header$/,
+            '<div class="card-header bg-dark text-white">',
+            '</div>'
+        );
+        addContainerType('card-body', /^card-body$/,
+            '<div class="card-body">',
+            '</div>'
+        );
+
+        ///////////////////////////////////////////////////////////////// MONACO
+
+        import * as monaco from "https://cdn.jsdelivr.net/npm/monaco-editor/+esm";
+
+        const editor = monaco.editor.create(document.getElementById('editor'), {
+            value: [
+                "# Welcome to ZhangEdit!",
+                "",
+                "ZhangEdit is an in-browser Markdown editor with live preview",
+                "that includes a few extensions, including:",
+                "",
+                "- mathematics typesetting powered by [KaTeX](https://katex.org/)",
+                "- display boxes powered by [Bootstrap](https://getbootstrap.com/)",
+                "",
+                "Examples of these features are provided below.",
+                "",
+                ":::::: card",
+                "::: card-header",
+                "**Quadratic Formula**",
+                ":::",
+                "::: card-body",
+                "**Theorem**: Let $a, b, c \\in \\C$ be real or complex numbers ",
+                "with $a \\ne 0$. For any $x \\in \\C$, the quadratic equation ",
+                "$ax^2 + bx + c = 0$ is satisfied if and only if",
+                "",
+                "\\[ x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}. \\]",
+                ":::",
+                "::::::",
+                ""
+            ].join('\n'),
+            language: "markdown",
+            theme: "vs-dark",
+            fontFamily: "Fira Code",
+            fontLigatures: true,
+            fontSize: 13,
+            minimap: { enabled: false }
+        });
+
+        function renderMarkdown() {
+            const renderedHTML = md.render(editor.getValue());
+            document.getElementById("preview").innerHTML = renderedHTML;
+        }
+
+        editor.onDidChangeModelContent(renderMarkdown);
+        renderMarkdown();
+
+    </script>
+</head>
+
+<body style="display: flex; height: 100vh; margin: 0;">
+    <div id="editor" style="flex: 1; height: 100%;"></div>
+    <div id="preview" style="flex: 1; height: 100%; margin: 1.0rem;"></div>
+</body>
+
+</html>
