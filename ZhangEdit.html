@@ -256,6 +256,8 @@
 
         });
 
+        window.addEventListener("resize", () => { editor.layout(); });
+
         function renderMarkdown() {
             const renderedHTML = md.render(editor.getValue());
             document.getElementById("preview").innerHTML = renderedHTML;
@@ -264,7 +266,148 @@
         editor.onDidChangeModelContent(renderMarkdown);
         renderMarkdown();
 
-        window.addEventListener("resize", () => { editor.layout(); });
+        ///////////////////////////////////////////////////// KEYBOARD SHORTCUTS
+
+        function isCtrlShortcut(event, lower, upper) {
+            // ALT and SHIFT should not be pressed.
+            if (event.altKey) { return false; }
+            if (event.shiftKey) { return false; }
+            // Either CTRL or META should be pressed, but not both.
+            if (event.ctrlKey == event.metaKey) { return false; }
+            // The desired letter should be pressed.
+            return (event.key === lower) || (event.key === upper);
+        }
+
+        function isFormatChar(char) {
+            return (char === '*') || (char === '_');
+        }
+
+        function trimSelection(model, selection) {
+            let text = model.getValueInRange(selection);
+            let start = selection.startColumn;
+            while (isFormatChar(text.at(0))) {
+                text = text.slice(1);
+                start++;
+            }
+            let end = selection.endColumn;
+            while (isFormatChar(text.at(-1))) {
+                text = text.slice(0, -1);
+                end--;
+            }
+            return new monaco.Selection(
+                selection.startLineNumber, start,
+                selection.endLineNumber, end
+            );
+        }
+
+        function expandSelection(model, selection) {
+            let start = selection.startColumn;
+            const startLine = selection.startLineNumber;
+            let end = selection.endColumn;
+            const endLine = selection.endLineNumber;
+            const endMax = model.getLineMaxColumn(endLine);
+            while ((start > 1) && (end < endMax)) {
+                const charBefore = model.getValueInRange(new monaco.Range(
+                    startLine, start - 1, startLine, start
+                ));
+                const charAfter = model.getValueInRange(new monaco.Range(
+                    endLine, end, endLine, end + 1
+                ));
+                if ((charBefore === charAfter) && isFormatChar(charBefore)) {
+                    --start;
+                    ++end;
+                } else {
+                    break;
+                }
+            }
+            return new monaco.Selection(startLine, start, endLine, end);
+        }
+
+        function runLengths(string) {
+            const result = [];
+            if (string.length > 0) {
+                let currentChar = string[0];
+                let currentLength = 1;
+                for (let i = 1; i < string.length; i++) {
+                    if (string[i] === currentChar) {
+                        ++currentLength;
+                    } else {
+                        result.push(currentLength);
+                        currentChar = string[i];
+                        currentLength = 1;
+                    }
+                }
+                result.push(currentLength);
+            }
+            return result;
+        }
+
+        function parseMarkdownFormat(formatString) {
+            let isBold = false;
+            let isItalic = false;
+            for (let length of runLengths(formatString)) {
+                if (length >= 2) {
+                    isBold = true;
+                }
+                if (length % 2 === 1) {
+                    isItalic = true;
+                }
+            }
+            return { bold: isBold, italic: isItalic };
+        }
+
+        function generateMarkdownFormat(format) {
+            if (format.bold && format.italic) {
+                return "_**";
+            } else if (format.bold) {
+                return "**";
+            } else if (format.italic) {
+                return "_";
+            } else {
+                return "";
+            }
+        }
+
+        function transformFormat(transformation) {
+            console.log("entered transformFormat");
+            const model = editor.getModel();
+            const userSelection = editor.getSelection();
+            const contentSelection = trimSelection(model, userSelection);
+            const content = model.getValueInRange(contentSelection);
+            const fullSelection = expandSelection(model, contentSelection);
+            const formatString = model.getValueInRange(new monaco.Range(
+                fullSelection.startLineNumber, fullSelection.startColumn,
+                contentSelection.startLineNumber, contentSelection.startColumn
+            ));
+            const format = parseMarkdownFormat(formatString);
+            const newFormatString = transformation(format, formatString);
+            const reverseFormatString =
+                newFormatString.split("").reverse().join("");
+            const newText = newFormatString + content + reverseFormatString;
+            editor.executeEdits('', [{
+                range: fullSelection,
+                text: newText,
+                forceMoveMarkers: true
+            }]);
+            editor.setSelection(new monaco.Selection(
+                fullSelection.startLineNumber,
+                fullSelection.startColumn + newFormatString.length,
+                fullSelection.endLineNumber,
+                fullSelection.endColumn + (
+                    newFormatString.length - 2 * formatString.length
+                )
+            ));
+        }
+
+        document.addEventListener("keydown", event => {
+            if (isCtrlShortcut(event, 'b', 'B')) {
+                event.preventDefault();
+                transformFormat((format, string) => {
+                    format.bold = !format.bold;
+                    return generateMarkdownFormat(format);
+                });
+            }
+        });
 
     </script>
 </head>
