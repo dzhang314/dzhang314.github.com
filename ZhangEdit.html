@@ -51,15 +51,16 @@
     </style>
     <script type="module">
 
+        import markdownIt from "https://cdn.jsdelivr.net/npm/markdown-it@14/+esm";
+        import markdownItContainer from "https://cdn.jsdelivr.net/npm/markdown-it-container/+esm";
+        import katex from "https://cdn.jsdelivr.net/npm/katex/+esm";
+        import * as monaco from "https://cdn.jsdelivr.net/npm/monaco-editor/+esm";
+
         //////////////////////////////////////////////////////////// MARKDOWN-IT
 
-        import markdownIt from "https://cdn.jsdelivr.net/npm/markdown-it@14/+esm";
-
-        const md = markdownIt({ typographer: true });
+        const md = markdownIt({ html: true, typographer: true });
 
         ////////////////////////////////////////////////////////////////// KATEX
-
-        import katex from "https://cdn.jsdelivr.net/npm/katex/+esm";
 
         function isKatexOpen(str, idx) {
             if (str[idx] === '$') {
@@ -180,8 +181,6 @@
 
         ////////////////////////////////////////////////// MARKDOWN-IT-CONTAINER
 
-        import markdownItContainer from "https://cdn.jsdelivr.net/npm/markdown-it-container/+esm";
-
         function addContainerType(name, regex, startTag, endTag) {
             md.use(markdownItContainer, name, {
                 validate: function (params) {
@@ -212,8 +211,6 @@
 
         ///////////////////////////////////////////////////////////////// MONACO
 
-        import * as monaco from "https://cdn.jsdelivr.net/npm/monaco-editor/+esm";
-
         const editor = monaco.editor.create(document.getElementById('editor'), {
 
             value: [
@@ -239,7 +236,7 @@
                 "\\[ x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}. \\]",
                 ":::",
                 "::::::",
-                ""
+                "DEV 01"
             ].join('\n'),
 
             language: "markdown",
@@ -250,12 +247,29 @@
             fontLigatures: true,
             fontSize: 13,
 
+            // Disable code editing features that are
+            // not helpful for composing natural language.
             codeLens: false,
             quickSuggestions: false,
             minimap: { enabled: false }
 
         });
 
+        // Disable Monaco built-in key bindings that ZhangEdit overrides.
+        monaco.editor.addKeybindingRule({
+            keybinding: monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyB,
+            command: null
+        });
+        monaco.editor.addKeybindingRule({
+            keybinding: monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyI,
+            command: null
+        });
+        monaco.editor.addKeybindingRule({
+            keybinding: monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyD,
+            command: null
+        });
+
+        // Automatically resize Monaco editor window when window is resized.
         window.addEventListener("resize", () => { editor.layout(); });
 
         function renderMarkdown() {
@@ -345,7 +359,7 @@
         function parseMarkdownFormat(formatString) {
             let isBold = false;
             let isItalic = false;
-            for (let length of runLengths(formatString)) {
+            for (const length of runLengths(formatString)) {
                 if (length >= 2) {
                     isBold = true;
                 }
@@ -369,7 +383,6 @@
         }
 
         function transformFormat(transformation) {
-            console.log("entered transformFormat");
             const model = editor.getModel();
             const userSelection = editor.getSelection();
             const contentSelection = trimSelection(model, userSelection);
@@ -405,6 +418,25 @@
                 transformFormat((format, string) => {
                     format.bold = !format.bold;
                     return generateMarkdownFormat(format);
+                });
+            }
+        });
+
+        document.addEventListener("keydown", event => {
+            if (isCtrlShortcut(event, 'i', 'I')) {
+                event.preventDefault();
+                transformFormat((format, string) => {
+                    format.italic = !format.italic;
+                    return generateMarkdownFormat(format);
+                });
+            }
+        });
+
+        document.addEventListener("keydown", event => {
+            if (isCtrlShortcut(event, 'd', 'D')) {
+                event.preventDefault();
+                transformFormat((format, string) => {
+                    return (string === "___") ? "" : "___";
                 });
             }
         });
