@@ -46,7 +46,11 @@
         #editor, #preview { flex: 1; min-width: 0; height: 100%; }
 
         /* Add margin around preview pane. */
-        #preview { margin: 1.0rem; max-width: 960px; }
+        #preview { margin: 1.0rem; max-width: 720px; }
+
+        /* Hide file input and editor when printing. */
+        #fileInput { display: none; }
+        @media print { #editor { display: none; } }
 
     </style>
     <script type="module">
@@ -216,30 +220,87 @@
             if ((typeof saved === "string") && (saved.length > 0)) {
                 return saved;
             }
-            return [
-                "# Welcome to ZhangEdit!",
-                "",
-                "ZhangEdit is an in-browser Markdown editor with live preview",
-                "that includes a few extensions, including:",
-                "",
-                "- mathematics typesetting powered by [KaTeX](https://katex.org/)",
-                "- display boxes powered by [Bootstrap](https://getbootstrap.com/)",
-                "",
-                "Examples of these features are provided below.",
-                "",
-                ":::::: card",
-                "::: card-header",
-                "**Quadratic Formula**",
-                ":::",
-                "::: card-body",
-                "**Theorem**: Let $a, b, c \\in \\C$ be real or complex numbers ",
-                "with $a \\ne 0$. For any $x \\in \\C$, the quadratic equation ",
-                "$ax^2 + bx + c = 0$ is satisfied if and only if",
-                "\\[ x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}. \\]",
-                ":::",
-                "::::::",
-                ""
-            ].join('\n');
+            return `\
+# Welcome to ZhangEdit!
+
+**ZhangEdit** is an in-browser Markdown editor with live
+rendering that provides a few handy extensions, including:
+
+- [KaTeX][1] mathematics typesetting
+- [Bootstrap][2] display boxes
+
+Under the hood, **ZhangEdit** is powered by [Monaco][3],
+the text editing engine developed by Microsoft for
+[VS Code][4], and [markdown-it][5], an extensible Markdown
+parser and renderer.
+
+I designed **ZhangEdit** to typeset my own technical
+notes in a style that is easy to read and to skim.
+**ZhangEdit** produces documents with the highly-legible
+[STIX text fonts][6], which are optimized for both screen
+and print media, and uses [Bootstrap cards][7] to create
+display boxes that call attention to important information.
+
+:::::: card
+::: card-header
+**Discriminant**
+:::
+::: card-body
+**Definition**: Let $a, b, c \\in \\C$ be real or complex
+numbers. The ___discriminant___ of the quadratic polynomial
+$ax^2 + bx + c$, denoted by $\\Delta(a, b, c)$, is the quantity
+\\[ \\Delta(a, b, c) \\coloneqq b^2 - 4ac. \\]
+:::
+::::::
+
+:::::: card
+::: card-header
+**Quadratic Formula**
+:::
+::: card-body
+**Theorem**: Let $a, b, c \\in \\C$ be real or complex numbers
+with $a \\ne 0$. For any $x \\in \\C$, the quadratic equation
+$ax^2 + bx + c = 0$ is satisfied if and only if
+\\[ x = \\frac{-b \\pm \\sqrt{\\Delta(a, b, c)}}{2a}. \\]
+:::
+::::::
+
+I use display boxes to present useful definitions and
+important results that will be referred to in the future.
+To facilitate their use as reference tools, I always ensure
+that display boxes can be read independently, free of
+unstated assumptions or hidden references to text buried
+elsewhere in the document.
+
+In addition to the default keyboard shortcuts provided by
+[Monaco][3], **ZhangEdit** also provides its own commands:
+
+- Use **Ctrl+B** to create ___bold text___
+  or to embolden the currently selected text.
+- Use **Ctrl+I** to create ___italic text___
+  or to italicize the currently selected text.
+- Use **Ctrl+D** to create ___definition text___,
+  a special style of bold and italic text
+  that I use for stating formal definitions.
+- Use **Ctrl+S** to ___save___ the current document
+  to a Markdown file on your computer.
+- Use **Ctrl+O** to ___open___ a Markdown file from
+  your computer in **ZhangEdit**, replacing the
+  current document.
+
+To save a formatted **ZhangEdit** document to your computer,
+use your browser's built-in print function (usually
+**Ctrl+P**). The code editor will automatically be hidden
+from the printed document.
+
+[1]: https://katex.org/
+[2]: https://getbootstrap.com/
+[3]: https://microsoft.github.io/monaco-editor/
+[4]: https://code.visualstudio.com/
+[5]: https://markdown-it.github.io/
+[6]: https://www.stixfonts.org/
+[7]: https://getbootstrap.com/docs/5.3/components/card/
+`;
         }
 
         const editor = monaco.editor.create(document.getElementById("editor"), {
@@ -512,9 +573,9 @@
 </head>
 
 <body>
+    <input type="file" id="fileInput" accept=".md">
     <div id="editor"></div>
     <div id="preview"></div>
-    <input type="file" id="fileInput" style="display: none;" accept=".md">
 </body>
 
 </html>
