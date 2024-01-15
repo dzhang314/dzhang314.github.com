@@ -41,6 +41,13 @@
         .card-body ul+p { margin-top: -0.5rem; }
         .card-body ol+p { margin-top: -0.5rem; }
 
+        /* Use flexbox to create two-pane layout. */
+        body { display: flex; height: 100vh; margin: 0; }
+        #editor, #preview { flex: 1; min-width: 0; height: 100%; }
+
+        /* Add margin around preview pane. */
+        #preview { margin: 1.0rem; max-width: 960px; }
+
     </style>
     <script type="module">
 
@@ -243,12 +250,14 @@
         editor.onDidChangeModelContent(renderMarkdown);
         renderMarkdown();
 
+        window.addEventListener("resize", () => { editor.layout(); });
+
     </script>
 </head>
 
-<body style="display: flex; height: 100vh; margin: 0;">
-    <div id="editor" style="flex: 1; height: 100%;"></div>
-    <div id="preview" style="flex: 1; height: 100%; margin: 1.0rem;"></div>
+<body>
+    <div id="editor"></div>
+    <div id="preview"></div>
 </body>
 
 </html>
