@@ -211,9 +211,12 @@
 
         ///////////////////////////////////////////////////////////////// MONACO
 
-        const editor = monaco.editor.create(document.getElementById('editor'), {
-
-            value: [
+        function getInitialDocument() {
+            const saved = localStorage.getItem("ZhangEditDocument");
+            if ((typeof saved === "string") && (saved.length > 0)) {
+                return saved;
+            }
+            return [
                 "# Welcome to ZhangEdit!",
                 "",
                 "ZhangEdit is an in-browser Markdown editor with live preview",
@@ -232,13 +235,16 @@
                 "**Theorem**: Let $a, b, c \\in \\C$ be real or complex numbers ",
                 "with $a \\ne 0$. For any $x \\in \\C$, the quadratic equation ",
                 "$ax^2 + bx + c = 0$ is satisfied if and only if",
-                "",
                 "\\[ x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}. \\]",
                 ":::",
                 "::::::",
-                "DEV 01"
-            ].join('\n'),
+                ""
+            ].join('\n');
+        }
 
+        const editor = monaco.editor.create(document.getElementById("editor"), {
+
+            value: getInitialDocument(),
             language: "markdown",
             theme: "vs-dark",
             wordWrap: "on",
@@ -248,7 +254,7 @@
             fontSize: 13,
 
             // Disable code editing features that are
-            // not helpful for composing natural language.
+            // unsuited for composing natural language.
             codeLens: false,
             quickSuggestions: false,
             minimap: { enabled: false }
@@ -261,11 +267,19 @@
             command: null
         });
         monaco.editor.addKeybindingRule({
+            keybinding: monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyD,
+            command: null
+        });
+        monaco.editor.addKeybindingRule({
             keybinding: monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyI,
             command: null
         });
         monaco.editor.addKeybindingRule({
-            keybinding: monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyD,
+            keybinding: monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyO,
+            command: null
+        });
+        monaco.editor.addKeybindingRule({
+            keybinding: monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS,
             command: null
         });
 
@@ -285,9 +299,11 @@
         }
 
         // Re-render Markdown whenever editor content changes.
+        const preview = document.getElementById("preview");
         function renderMarkdown() {
-            document.getElementById("preview").innerHTML =
-                md.render(preprocessMarkdown(editor.getValue()));
+            const content = editor.getValue();
+            localStorage.setItem("ZhangEditDocument", content);
+            preview.innerHTML = md.render(preprocessMarkdown(content));
         }
         editor.onDidChangeModelContent(renderMarkdown);
         renderMarkdown();
@@ -303,6 +319,45 @@
             // The desired letter should be pressed.
             return (event.key === lower) || (event.key === upper);
         }
+
+        /////////////////////////////////////////////////////////////// FILE I/O
+
+        function saveMarkdown() {
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(new Blob(
+                [editor.getValue()],
+                { type: "text/markdown;charset=utf-8" }
+            ));
+            link.download = "ZhangEdit-Document.md";
+            link.click();
+            URL.revokeObjectURL(link.href);
+        }
+
+        document.addEventListener("keydown", event => {
+            if (isCtrlShortcut(event, 's', 'S')) {
+                event.preventDefault();
+                saveMarkdown();
+            }
+        });
+
+        const fileInput = document.getElementById("fileInput");
+        document.addEventListener("keydown", event => {
+            if (isCtrlShortcut(event, 'o', 'O')) {
+                event.preventDefault();
+                fileInput.click();
+            }
+        });
+
+        fileInput.addEventListener("change", event => {
+            const file = event.target.files[0];
+            if (!file) { return; }
+            fileInput.value = null;
+            const reader = new FileReader();
+            reader.onload = (e) => { editor.setValue(e.target.result); };
+            reader.readAsText(file);
+        });
+
+        //////////////////////////////////////////////////////// TEXT FORMATTING
 
         function isFormatChar(char) {
             return (char === '*') || (char === '_');
@@ -459,6 +514,7 @@
 <body>
     <div id="editor"></div>
     <div id="preview"></div>
+    <input type="file" id="fileInput" style="display: none;" accept=".md">
 </body>
 
 </html>
