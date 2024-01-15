@@ -149,13 +149,19 @@
 
         const KATEX_MACROS = {};
 
-        KATEX_MACROS["\\N"] = "{\\mathbb{N}}";
-        KATEX_MACROS["\\Z"] = "{\\mathbb{Z}}";
-        KATEX_MACROS["\\Q"] = "{\\mathbb{Q}}";
-        KATEX_MACROS["\\R"] = "{\\mathbb{R}}";
-        KATEX_MACROS["\\C"] = "{\\mathbb{C}}";
-        KATEX_MACROS["\\K"] = "{\\mathbb{K}}";
-        KATEX_MACROS["\\F"] = "{\\mathbb{F}}";
+        for (const fieldLetter of "NZQRCKF") {
+            KATEX_MACROS[`\\${fieldLetter}`] = `{\\mathbb{${fieldLetter}}}`;
+        }
+
+        for (const vectorLetter of "abcdefghijklmnopqrstuvwxyz") {
+            KATEX_MACROS[`\\v${vectorLetter}`] = `{\\mathbf{${vectorLetter}}}`;
+        }
+
+        for (const vectorLetter of "ABCDEFGHIJKLMNOPQRSTUVWXYZ") {
+            KATEX_MACROS[`\\v${vectorLetter}`] = `{\\mathbf{${vectorLetter}}}`;
+        }
+
+        KATEX_MACROS["\\vo"] = "{\\mathbf{0}}";
         KATEX_MACROS["\\dd"] = "{\\,\\mathrm{d}}";
 
         function katexRenderer(displayMode) {
