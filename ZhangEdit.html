@@ -42,14 +42,24 @@
         .card-body ol+p { margin-top: -0.5rem; }
 
         /* Use flexbox to create two-pane layout. */
-        body { display: flex; height: 100vh; margin: 0; }
-        #editor, #preview { flex: 1; min-width: 0; height: 100%; }
+        body { display: flex; height: 100vh; overflow: hidden; margin: 0; }
+        #editor, #preview { flex: 1; height: 100%; min-width: 0; }
 
-        /* Add margin around preview pane. */
-        #preview { margin: 1.0rem; max-width: 720px; }
+        /* Constrain width of preview pane for ease of reading and printing. */
+        /* 19cm corresponds to an A4 page with 1cm margins on each side. */
+        #preview { max-width: 19cm; }
 
-        /* Hide file input and editor when printing. */
+        /* Allow preview pane to scroll and hide scrollbar. */
+        /* Add extra bottom padding to allow scrolling to a blank canvas. */
+        @media screen {
+            #preview { overflow-y: scroll; scrollbar-width: none; }
+            #preview::-webkit-scrollbar { display: none; }
+            #preview { margin: 1.0rem; padding-bottom: 100vh; }
+        }
+
+        /* Center preview pane and hide editor when printing. */
         #fileInput { display: none; }
+        @media print { #preview { margin: auto; } }
         @media print { #editor { display: none; } }
 
     </style>
