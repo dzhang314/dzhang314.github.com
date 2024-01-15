@@ -21,10 +21,10 @@
         .katex { font-size: 1.05em; }
 
         /* Center h1 headings for use as page titles. */
-        h1 { text-align: center; font-size: 2.5rem; padding: 1.0rem; }
+        h1 { text-align: center; padding: 1rem; }
 
         /* Adjust card spacing for visual symmetry. */
-        .card        { margin: 1rem 0rem 1rem; }
+        .card        { margin: 1rem 0; }
         .card hr     { margin: 0.1rem 0; }
         .card-header { padding: 0.3rem 0.7rem 0.1rem; }
         .card-body   { padding: 0.4rem 0.7rem; }
@@ -43,23 +43,21 @@
 
         /* Use flexbox to create two-pane layout. */
         body { display: flex; height: 100vh; overflow: hidden; margin: 0; }
-        #editor, #preview { flex: 1; height: 100%; min-width: 0; }
+        #editor, #outerPreview { flex: 1; height: 100%; min-width: 0; }
 
-        /* Constrain width of preview pane for ease of reading and printing. */
+        /* Center and constrain width of preview pane for ease of printing. */
         /* 19cm corresponds to an A4 page with 1cm margins on each side. */
-        #preview { max-width: 19cm; }
+        #innerPreview { margin: auto; max-width: 19cm; }
 
-        /* Allow preview pane to scroll and hide scrollbar. */
+        /* Allow preview pane to scroll. */
         /* Add extra bottom padding to allow scrolling to a blank canvas. */
         @media screen {
-            #preview { overflow-y: scroll; scrollbar-width: none; }
-            #preview::-webkit-scrollbar { display: none; }
-            #preview { margin: 1.0rem; padding-bottom: 100vh; }
+            #outerPreview { overflow-y: scroll; padding: 0.5rem; }
+            #innerPreview { padding-bottom: 100vh; }
         }
 
-        /* Center preview pane and hide editor when printing. */
+        /* Hide file input and editor when printing. */
         #fileInput { display: none; }
-        @media print { #preview { margin: auto; } }
         @media print { #editor { display: none; } }
 
     </style>
@@ -370,11 +368,11 @@ from the printed document.
         }
 
         // Re-render Markdown whenever editor content changes.
-        const preview = document.getElementById("preview");
+        const innerPreview = document.getElementById("innerPreview");
         function renderMarkdown() {
             const content = editor.getValue();
             localStorage.setItem("ZhangEditDocument", content);
-            preview.innerHTML = md.render(preprocessMarkdown(content));
+            innerPreview.innerHTML = md.render(preprocessMarkdown(content));
         }
         editor.onDidChangeModelContent(renderMarkdown);
         renderMarkdown();
@@ -585,7 +583,7 @@ from the printed document.
 <body>
     <input type="file" id="fileInput" accept=".md">
     <div id="editor"></div>
-    <div id="preview"></div>
+    <div id="outerPreview"><div id="innerPreview"></div></div>
 </body>
 
 </html>
