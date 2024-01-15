@@ -215,6 +215,7 @@
         import * as monaco from "https://cdn.jsdelivr.net/npm/monaco-editor/+esm";
 
         const editor = monaco.editor.create(document.getElementById('editor'), {
+
             value: [
                 "# Welcome to ZhangEdit!",
                 "",
@@ -240,12 +241,19 @@
                 "::::::",
                 ""
             ].join('\n'),
+
             language: "markdown",
             theme: "vs-dark",
+            wordWrap: "on",
+
             fontFamily: "Fira Code",
             fontLigatures: true,
             fontSize: 13,
+
+            codeLens: false,
+            quickSuggestions: false,
             minimap: { enabled: false }
+
         });
 
         function renderMarkdown() {
