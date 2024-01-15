@@ -272,11 +272,23 @@
         // Automatically resize Monaco editor window when window is resized.
         window.addEventListener("resize", () => { editor.layout(); });
 
-        function renderMarkdown() {
-            const renderedHTML = md.render(editor.getValue());
-            document.getElementById("preview").innerHTML = renderedHTML;
+        function preprocessMarkdown(string) {
+            const result = [];
+            const startRegex = /^(?![ ]{4})(\\\[|^\$\$)/;
+            for (const line of string.split('\n')) {
+                if (startRegex.test(line)) {
+                    result.push("");
+                }
+                result.push(line);
+            }
+            return result.join('\n');
         }
 
+        // Re-render Markdown whenever editor content changes.
+        function renderMarkdown() {
+            document.getElementById("preview").innerHTML =
+                md.render(preprocessMarkdown(editor.getValue()));
+        }
         editor.onDidChangeModelContent(renderMarkdown);
         renderMarkdown();
 
