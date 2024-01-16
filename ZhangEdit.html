@@ -466,7 +466,7 @@ from the printed document.
         document.addEventListener("keydown", event => {
             if (isCtrlShortcut(event, 'b', 'B')) {
                 event.preventDefault();
-                transformFormat((format, string) => {
+                transformFormat((format, _) => {
                     format.bold = !format.bold;
                     return generateMarkdownFormat(format);
                 });
@@ -476,7 +476,7 @@ from the printed document.
         document.addEventListener("keydown", event => {
             if (isCtrlShortcut(event, 'i', 'I')) {
                 event.preventDefault();
-                transformFormat((format, string) => {
+                transformFormat((format, _) => {
                     format.italic = !format.italic;
                     return generateMarkdownFormat(format);
                 });
@@ -486,9 +486,7 @@ from the printed document.
         document.addEventListener("keydown", event => {
             if (isCtrlShortcut(event, 'd', 'D')) {
                 event.preventDefault();
-                transformFormat((format, string) =>
-                    (string === "___") ? "" : "___"
-                );
+                transformFormat((_, string) => (string === "___") ? "" : "___");
             }
         });
 
