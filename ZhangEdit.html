@@ -70,165 +70,109 @@
 
         //////////////////////////////////////////////////////////// MARKDOWN-IT
 
-        const md = markdownIt({ html: true, typographer: true });
+        const md = markdownIt({ html: true, linkify: true, typographer: true });
 
-        ////////////////////////////////////////////////////////////////// KATEX
+        ////////////////////////////////////////////////// MARKDOWN-IT-CONTAINER
 
-        function isKatexOpen(str, idx) {
-            if (str[idx] === '$') {
-                const prevChar = str[idx - 1];
-                if (prevChar === undefined) { return true; }
-                const code = prevChar.charCodeAt(0);
-                return (code !== 0x5c && (code < 0x30 || code > 0x39));
-            }
-            return ((str[idx] === '\\' && str[idx + 1] === '('));
+        function addContainer(name, classes) {
+            md.use(markdownItContainer, name, {
+                validate: params => params.trim() === name,
+                render: (tokens, idx) => tokens[idx].nesting === 1
+                    ? `<div class="${classes}">\n` : "</div>\n"
+            });
         }
 
-        function isKatexClose(str, idx) {
-            if (str[idx] === '$') {
-                const nextChar = str[idx + 1];
-                if (nextChar === undefined) { return true; }
-                const code = nextChar.charCodeAt(0);
-                return (code < 0x30 || code > 0x39);
-            }
-            return ((str[idx] === '\\' && str[idx + 1] === ')'));
-        }
+        addContainer("card", "card bg-light border-dark");
+        addContainer("card-header", "card-header bg-dark text-white");
+        addContainer("card-body", "card-body");
 
-        function katexInlineRule(regex) {
-            return function (state, silent) {
-                if (!isKatexOpen(state.src, state.pos)) { return false; }
+        /////////////////////////////////////////////////////////// KATEX MACROS
+
+        const MACROS = {};
+        const UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const LOWERCASE = "abcdefghijklmnopqrstuvwxyz";
+
+        for (const x of "NZQRCKF") MACROS[`\\${x}`] = `{\\mathbb{${x}}}`;
+        for (const x of LOWERCASE) MACROS[`\\v${x}`] = `{\\mathbf{${x}}}`;
+        for (const x of UPPERCASE) MACROS[`\\v${x}`] = `{\\mathbf{${x}}}`;
+
+        MACROS["\\vo"] = "{\\mathbf{0}}";
+        MACROS["\\dd"] = "{\\,\\mathrm{d}}";
+
+        /////////////////////////////////////////////////////////// KATEX PARSER
+
+        function addKatexInlineRule(regex) {
+            md.inline.ruler.before("escape", "math_inline", (state, silent) => {
                 regex.lastIndex = state.pos;
                 const match = regex.exec(state.src);
-                if (match === null) { return false; }
-                if (!isKatexClose(state.src, regex.lastIndex - 1)) { return false; }
+                if (match === null) return false;
                 if (!silent) {
                     const token = state.push('math_inline', 'math', 0);
                     token.content = match[1];
                 }
                 state.pos = regex.lastIndex;
                 return true;
-            }
+            });
         }
 
         function findLineIndex(state, startLine, endLine, charIndex) {
             for (let i = startLine; i < endLine; ++i) {
-                const lineStartIndex = state.bMarks[i] + state.tShift[i];
-                const lineEndIndex = state.eMarks[i];
-                if (lineStartIndex <= charIndex && charIndex <= lineEndIndex) {
+                const startIndex = state.bMarks[i] + state.tShift[i];
+                if (startIndex <= charIndex && charIndex <= state.eMarks[i]) {
                     return i;
                 }
             }
         }
 
-        function katexBlockRule(regex) {
-            return function (state, startLine, endLine, silent) {
-                regex.lastIndex = state.bMarks[startLine] + state.tShift[startLine];
-                const match = regex.exec(state.src);
-                if (match === null) { return false; }
-                if (!silent) {
-                    const lastLine = findLineIndex(
-                        state, startLine, endLine, regex.lastIndex - 1
-                    );
-                    const oldParentType = state.parentType;
-                    const oldLineMax = state.lineMax;
-                    state.lineMax = lastLine;
-                    state.parentType = 'math';
-
-                    let token = state.push('math_block', 'math', 0);
-                    token.block = true;
-                    token.content = match[1];
-                    token.map = [startLine, lastLine + 1];
-
-                    state.parentType = oldParentType;
-                    state.lineMax = oldLineMax;
-                    state.line = lastLine + 1;
+        function addKatexBlockRule(regex) {
+            md.block.ruler.before("fence", "math_block",
+                (state, startLine, endLine, silent) => {
+                    regex.lastIndex =
+                        state.bMarks[startLine] + state.tShift[startLine];
+                    const match = regex.exec(state.src);
+                    if (match === null) return false;
+                    if (!silent) {
+                        const lastLine = findLineIndex(
+                            state, startLine, endLine, regex.lastIndex - 1
+                        );
+                        const oldParentType = state.parentType;
+                        const oldLineMax = state.lineMax;
+                        state.lineMax = lastLine;
+                        state.parentType = 'math';
+                        let token = state.push('math_block', 'math', 0);
+                        token.block = true;
+                        token.content = match[1];
+                        token.map = [startLine, lastLine + 1];
+                        state.parentType = oldParentType;
+                        state.lineMax = oldLineMax;
+                        state.line = lastLine + 1;
+                    }
+                    return true;
                 }
-                return true;
-            }
+            );
         }
 
-        md.inline.ruler.before('escape', 'math_inline',
-            katexInlineRule(/\$((?:[^\s\\])|(?:\S.*?[^\s\\]))\$/gy)
-        );
-        md.inline.ruler.before('escape', 'math_inline',
-            katexInlineRule(/\\\((.+?)\\\)/gy)
-        );
-        md.block.ruler.before('fence', 'math_block',
-            katexBlockRule(/\\\[([\s\S]+?)\\\]/gmy)
-        );
-        md.block.ruler.before('fence', 'math_block',
-            katexBlockRule(/\${2}([^$]*?[^\\])\${2}/gmy)
-        );
+        addKatexInlineRule(/\$((?:[^\s\\])|(?:\S.*?[^\s\\]))\$/gy);
+        addKatexInlineRule(/\\\((.+?)\\\)/gy);
+        addKatexBlockRule(/\\\[([\s\S]+?)\\\]/gmy);
+        addKatexBlockRule(/\${2}([^$]*?[^\\])\${2}/gmy);
 
-        const KATEX_MACROS = {};
-
-        for (const fieldLetter of "NZQRCKF") {
-            KATEX_MACROS[`\\${fieldLetter}`] = `{\\mathbb{${fieldLetter}}}`;
-        }
-
-        for (const vectorLetter of "abcdefghijklmnopqrstuvwxyz") {
-            KATEX_MACROS[`\\v${vectorLetter}`] = `{\\mathbf{${vectorLetter}}}`;
-        }
-
-        for (const vectorLetter of "ABCDEFGHIJKLMNOPQRSTUVWXYZ") {
-            KATEX_MACROS[`\\v${vectorLetter}`] = `{\\mathbf{${vectorLetter}}}`;
-        }
-
-        KATEX_MACROS["\\vo"] = "{\\mathbf{0}}";
-        KATEX_MACROS["\\dd"] = "{\\,\\mathrm{d}}";
+        ///////////////////////////////////////////////////////// KATEX RENDERER
 
         function katexRenderer(displayMode) {
-            return function (tokens, idx) {
-                return katex.renderToString(tokens[idx].content, {
-                    displayMode: displayMode,
-                    macros: KATEX_MACROS,
-                    throwOnError: false,
-                    strict: true
-                });
-            }
-        }
-
-        md.renderer.rules['math_inline'] = katexRenderer(false);
-        md.renderer.rules['math_block'] = katexRenderer(true);
-
-        ////////////////////////////////////////////////// MARKDOWN-IT-CONTAINER
-
-        function addContainerType(name, regex, startTag, endTag) {
-            md.use(markdownItContainer, name, {
-                validate: function (params) {
-                    return params.trim().match(regex);
-                },
-                render: function (tokens, idx) {
-                    if (tokens[idx].nesting === 1) {
-                        return startTag + '\n';
-                    } else {
-                        return endTag + '\n';
-                    }
-                }
+            return (tokens, idx) => katex.renderToString(tokens[idx].content, {
+                displayMode, macros: MACROS, strict: true, throwOnError: false
             });
         }
 
-        addContainerType('card', /^card$/,
-            '<div class="card bg-light border-dark">',
-            '</div>'
-        );
-        addContainerType('card-header', /^card-header$/,
-            '<div class="card-header bg-dark text-white">',
-            '</div>'
-        );
-        addContainerType('card-body', /^card-body$/,
-            '<div class="card-body">',
-            '</div>'
-        );
+        md.renderer.rules["math_inline"] = katexRenderer(false);
+        md.renderer.rules["math_block"] = katexRenderer(true);
 
         ///////////////////////////////////////////////////////////////// MONACO
 
         function getInitialDocument() {
-            const saved = localStorage.getItem("ZhangEditDocument");
-            if ((typeof saved === "string") && (saved.length > 0)) {
-                return saved;
-            }
-            return `\
+            const doc = localStorage.getItem("ZhangEditDocument");
+            return ((typeof doc === "string") && (doc.length > 0)) ? doc : `\
 # Welcome to ZhangEdit!
 
 **ZhangEdit** is an in-browser Markdown editor with live
@@ -307,61 +251,24 @@ from the printed document.
 [4]: https://code.visualstudio.com/
 [5]: https://markdown-it.github.io/
 [6]: https://www.stixfonts.org/
-[7]: https://getbootstrap.com/docs/5.3/components/card/
-`;
+[7]: https://getbootstrap.com/docs/5.3/components/card/\n`;
         }
 
         const editor = monaco.editor.create(document.getElementById("editor"), {
-
             value: getInitialDocument(),
-            language: "markdown",
-            theme: "vs-dark",
-            wordWrap: "on",
-
-            fontFamily: "Fira Code",
-            fontLigatures: true,
-            fontSize: 13,
-
-            // Disable code editing features that are
-            // unsuited for composing natural language.
-            codeLens: false,
-            quickSuggestions: false,
+            theme: "vs-dark", language: "markdown", wordWrap: "on",
+            fontFamily: "Fira Code", fontLigatures: true, fontSize: 13,
+            codeLens: false, quickSuggestions: false,
             minimap: { enabled: false }
-
-        });
-
-        // Disable Monaco built-in key bindings that ZhangEdit overrides.
-        monaco.editor.addKeybindingRule({
-            keybinding: monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyB,
-            command: null
-        });
-        monaco.editor.addKeybindingRule({
-            keybinding: monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyD,
-            command: null
-        });
-        monaco.editor.addKeybindingRule({
-            keybinding: monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyI,
-            command: null
-        });
-        monaco.editor.addKeybindingRule({
-            keybinding: monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyO,
-            command: null
-        });
-        monaco.editor.addKeybindingRule({
-            keybinding: monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS,
-            command: null
         });
 
         // Automatically resize Monaco editor window when window is resized.
-        window.addEventListener("resize", () => { editor.layout(); });
+        window.addEventListener("resize", () => editor.layout());
 
         function preprocessMarkdown(string) {
             const result = [];
-            const startRegex = /^(?![ ]{4})(\\\[|^\$\$)/;
             for (const line of string.split('\n')) {
-                if (startRegex.test(line)) {
-                    result.push("");
-                }
+                if (/^\\\[|^\$\$/.test(line)) result.push("");
                 result.push(line);
             }
             return result.join('\n');
@@ -381,31 +288,39 @@ from the printed document.
 
         function isCtrlShortcut(event, lower, upper) {
             // ALT and SHIFT should not be pressed.
-            if (event.altKey) { return false; }
-            if (event.shiftKey) { return false; }
+            if (event.altKey) return false;
+            if (event.shiftKey) return false;
             // Either CTRL or META should be pressed, but not both.
-            if (event.ctrlKey == event.metaKey) { return false; }
+            if (event.ctrlKey == event.metaKey) return false;
             // The desired letter should be pressed.
             return (event.key === lower) || (event.key === upper);
         }
 
-        /////////////////////////////////////////////////////////////// FILE I/O
-
-        function saveMarkdown() {
-            const link = document.createElement("a");
-            link.href = URL.createObjectURL(new Blob(
-                [editor.getValue()],
-                { type: "text/markdown;charset=utf-8" }
-            ));
-            link.download = "ZhangEdit-Document.md";
-            link.click();
-            URL.revokeObjectURL(link.href);
+        // Disable Monaco built-in shortcuts that ZhangEdit overrides.
+        function disableCtrlShortcut(keyCode) {
+            monaco.editor.addKeybindingRule({
+                keybinding: monaco.KeyMod.CtrlCmd | keyCode, command: null
+            });
         }
+        disableCtrlShortcut(monaco.KeyCode.KeyB);
+        disableCtrlShortcut(monaco.KeyCode.KeyD);
+        disableCtrlShortcut(monaco.KeyCode.KeyI);
+        disableCtrlShortcut(monaco.KeyCode.KeyO);
+        disableCtrlShortcut(monaco.KeyCode.KeyS);
+
+        /////////////////////////////////////////////////////////////// FILE I/O
 
         document.addEventListener("keydown", event => {
             if (isCtrlShortcut(event, 's', 'S')) {
                 event.preventDefault();
-                saveMarkdown();
+                const link = document.createElement("a");
+                link.href = URL.createObjectURL(new Blob(
+                    [editor.getValue()],
+                    { type: "text/markdown;charset=utf-8" }
+                ));
+                link.download = "ZhangEdit-Document.md";
+                link.click();
+                URL.revokeObjectURL(link.href);
             }
         });
 
@@ -419,10 +334,10 @@ from the printed document.
 
         fileInput.addEventListener("change", event => {
             const file = event.target.files[0];
-            if (!file) { return; }
+            if (!file) return;
             fileInput.value = null;
             const reader = new FileReader();
-            reader.onload = (e) => { editor.setValue(e.target.result); };
+            reader.onload = e => editor.setValue(e.target.result);
             reader.readAsText(file);
         });
 
@@ -571,9 +486,9 @@ from the printed document.
         document.addEventListener("keydown", event => {
             if (isCtrlShortcut(event, 'd', 'D')) {
                 event.preventDefault();
-                transformFormat((format, string) => {
-                    return (string === "___") ? "" : "___";
-                });
+                transformFormat((format, string) =>
+                    (string === "___") ? "" : "___"
+                );
             }
         });
 
