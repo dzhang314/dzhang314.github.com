@@ -421,31 +421,24 @@ from the printed document.
 
         function transformFormat(transformation) {
             const model = editor.getModel();
-            const userSelection = editor.getSelection();
-            const contentSelection = trimSelection(model, userSelection);
-            const content = model.getValueInRange(contentSelection);
-            const fullSelection = expandSelection(model, contentSelection);
-            const formatString = model.getValueInRange(new monaco.Range(
+            const shortSelection = trimSelection(model, editor.getSelection());
+            const fullSelection = expandSelection(model, shortSelection);
+            const oldFormatString = model.getValueInRange(new monaco.Range(
                 fullSelection.startLineNumber, fullSelection.startColumn,
-                contentSelection.startLineNumber, contentSelection.startColumn
+                shortSelection.startLineNumber, shortSelection.startColumn
             ));
-            const format = parseMarkdownFormat(formatString);
-            const newFormatString = transformation(format, formatString);
-            const reverseFormatString =
-                newFormatString.split("").reverse().join("");
-            const newText = newFormatString + content + reverseFormatString;
+            const format = parseMarkdownFormat(oldFormatString);
+            const newFormatString = transformation(format, oldFormatString);
             editor.executeEdits("", [{
                 range: fullSelection,
-                text: newText,
-                forceMoveMarkers: true
+                text: newFormatString + model.getValueInRange(shortSelection) +
+                    newFormatString.split("").reverse().join("")
             }]);
             editor.setSelection(new monaco.Selection(
-                fullSelection.startLineNumber,
-                fullSelection.startColumn + newFormatString.length,
-                fullSelection.endLineNumber,
-                fullSelection.endColumn + (
-                    newFormatString.length - 2 * formatString.length
-                )
+                fullSelection.startLineNumber, fullSelection.startColumn +
+                    newFormatString.length,
+                fullSelection.endLineNumber, fullSelection.endColumn +
+                    newFormatString.length - 2 * oldFormatString.length
             ));
         }
 
@@ -453,12 +446,10 @@ from the printed document.
             format.bold = !format.bold;
             return generateMarkdownFormat(format);
         }));
-
         addCtrlShortcut('i', 'I', () => transformFormat((format, string) => {
             format.italic = !format.italic;
             return generateMarkdownFormat(format);
         }));
-
         addCtrlShortcut('d', 'D', () => transformFormat((format, string) =>
             (string === "___") ? "" : "___"
         ));
