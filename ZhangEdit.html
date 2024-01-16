@@ -10,12 +10,12 @@
     <style>
 
         /* Import STIX Two Text and Fira Code fonts from Google Fonts. */
-        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+        @import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap");
+        @import url("https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,700;1,400;1,700&display=swap");
 
         /* Use STIX Two Text as main text font. */
-        p  { font-family: 'STIX Two Text', serif; text-align: justify; }
-        li { font-family: 'STIX Two Text', serif; text-align: justify; }
+        p  { font-family: "STIX Two Text", serif; text-align: justify; }
+        li { font-family: "STIX Two Text", serif; text-align: justify; }
 
         /* Slightly increase equation size to better match STIX Two Text. */
         .katex { font-size: 1.05em; }
@@ -77,7 +77,7 @@
         function addContainer(name, classes) {
             md.use(markdownItContainer, name, {
                 validate: params => params.trim() === name,
-                render: (tokens, idx) => tokens[idx].nesting === 1
+                render: (tokens, i) => tokens[i].nesting === 1
                     ? `<div class="${classes}">\n` : "</div>\n"
             });
         }
@@ -160,13 +160,13 @@
         ///////////////////////////////////////////////////////// KATEX RENDERER
 
         function katexRenderer(displayMode) {
-            return (tokens, idx) => katex.renderToString(tokens[idx].content, {
+            return (tokens, i) => katex.renderToString(tokens[i].content, {
                 displayMode, macros: MACROS, strict: true, throwOnError: false
             });
         }
 
-        md.renderer.rules["math_inline"] = katexRenderer(false);
-        md.renderer.rules["math_block"] = katexRenderer(true);
+        md.renderer.rules.math_inline = katexRenderer(false);
+        md.renderer.rules.math_block = katexRenderer(true);
 
         ///////////////////////////////////////////////////////////////// MONACO
 
@@ -296,12 +296,21 @@ from the printed document.
             return (event.key === lower) || (event.key === upper);
         }
 
-        // Disable Monaco built-in shortcuts that ZhangEdit overrides.
+        function addCtrlShortcut(lower, upper, action) {
+            document.addEventListener("keydown", event => {
+                if (isCtrlShortcut(event, lower, upper)) {
+                    event.preventDefault();
+                    action();
+                }
+            });
+        }
+
         function disableCtrlShortcut(keyCode) {
             monaco.editor.addKeybindingRule({
                 keybinding: monaco.KeyMod.CtrlCmd | keyCode, command: null
             });
         }
+
         disableCtrlShortcut(monaco.KeyCode.KeyB);
         disableCtrlShortcut(monaco.KeyCode.KeyD);
         disableCtrlShortcut(monaco.KeyCode.KeyI);
@@ -310,27 +319,19 @@ from the printed document.
 
         /////////////////////////////////////////////////////////////// FILE I/O
 
-        document.addEventListener("keydown", event => {
-            if (isCtrlShortcut(event, 's', 'S')) {
-                event.preventDefault();
-                const link = document.createElement("a");
-                link.href = URL.createObjectURL(new Blob(
-                    [editor.getValue()],
-                    { type: "text/markdown;charset=utf-8" }
-                ));
-                link.download = "ZhangEdit-Document.md";
-                link.click();
-                URL.revokeObjectURL(link.href);
-            }
+        addCtrlShortcut('s', 'S', () => {
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(new Blob(
+                [editor.getValue()],
+                { type: "text/markdown;charset=utf-8" }
+            ));
+            link.download = "ZhangEdit-Document.md";
+            link.click();
+            URL.revokeObjectURL(link.href);
         });
 
         const fileInput = document.getElementById("fileInput");
-        document.addEventListener("keydown", event => {
-            if (isCtrlShortcut(event, 'o', 'O')) {
-                event.preventDefault();
-                fileInput.click();
-            }
-        });
+        addCtrlShortcut('o', 'O', fileInput.click);
 
         fileInput.addEventListener("change", event => {
             const file = event.target.files[0];
@@ -343,9 +344,7 @@ from the printed document.
 
         //////////////////////////////////////////////////////// TEXT FORMATTING
 
-        function isFormatChar(char) {
-            return (char === '*') || (char === '_');
-        }
+        const isFormatChar = char => (char === '*') || (char === '_');
 
         function trimSelection(model, selection) {
             let text = model.getValueInRange(selection);
@@ -463,32 +462,19 @@ from the printed document.
             ));
         }
 
-        document.addEventListener("keydown", event => {
-            if (isCtrlShortcut(event, 'b', 'B')) {
-                event.preventDefault();
-                transformFormat((format, _) => {
-                    format.bold = !format.bold;
-                    return generateMarkdownFormat(format);
-                });
-            }
-        });
+        addCtrlShortcut('b', 'B', () => transformFormat((format, string) => {
+            format.bold = !format.bold;
+            return generateMarkdownFormat(format);
+        }));
 
-        document.addEventListener("keydown", event => {
-            if (isCtrlShortcut(event, 'i', 'I')) {
-                event.preventDefault();
-                transformFormat((format, _) => {
-                    format.italic = !format.italic;
-                    return generateMarkdownFormat(format);
-                });
-            }
-        });
+        addCtrlShortcut('i', 'I', () => transformFormat((format, string) => {
+            format.italic = !format.italic;
+            return generateMarkdownFormat(format);
+        }));
 
-        document.addEventListener("keydown", event => {
-            if (isCtrlShortcut(event, 'd', 'D')) {
-                event.preventDefault();
-                transformFormat((_, string) => (string === "___") ? "" : "___");
-            }
-        });
+        addCtrlShortcut('d', 'D', () => transformFormat((format, string) =>
+            (string === "___") ? "" : "___"
+        ));
 
     </script>
 </head>
