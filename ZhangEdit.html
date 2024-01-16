@@ -107,7 +107,7 @@
                 const match = regex.exec(state.src);
                 if (match === null) return false;
                 if (!silent) {
-                    const token = state.push('math_inline', 'math', 0);
+                    const token = state.push("math_inline", "math", 0);
                     token.content = match[1];
                 }
                 state.pos = regex.lastIndex;
@@ -138,8 +138,8 @@
                         const oldParentType = state.parentType;
                         const oldLineMax = state.lineMax;
                         state.lineMax = lastLine;
-                        state.parentType = 'math';
-                        let token = state.push('math_block', 'math', 0);
+                        state.parentType = "math";
+                        let token = state.push("math_block", "math", 0);
                         token.block = true;
                         token.content = match[1];
                         token.map = [startLine, lastLine + 1];
@@ -447,7 +447,7 @@ from the printed document.
             const reverseFormatString =
                 newFormatString.split("").reverse().join("");
             const newText = newFormatString + content + reverseFormatString;
-            editor.executeEdits('', [{
+            editor.executeEdits("", [{
                 range: fullSelection,
                 text: newText,
                 forceMoveMarkers: true
