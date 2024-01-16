@@ -390,9 +390,8 @@ from the printed document.
         function runLengths(string) {
             const result = [];
             if (string.length > 0) {
-                let currentChar = string[0];
-                let currentLength = 1;
-                for (let i = 1; i < string.length; i++) {
+                let currentChar = string[0], currentLength = 1;
+                for (let i = 1; i < string.length; ++i) {
                     if (string[i] === currentChar) {
                         ++currentLength;
                     } else {
@@ -407,29 +406,17 @@ from the printed document.
         }
 
         function parseMarkdownFormat(formatString) {
-            let isBold = false;
-            let isItalic = false;
+            let bold = false, italic = false;
             for (const length of runLengths(formatString)) {
-                if (length >= 2) {
-                    isBold = true;
-                }
-                if (length % 2 === 1) {
-                    isItalic = true;
-                }
+                bold ||= length >= 2;
+                italic ||= length % 2 === 1;
             }
-            return { bold: isBold, italic: isItalic };
+            return { bold, italic };
         }
 
         function generateMarkdownFormat(format) {
-            if (format.bold && format.italic) {
-                return "_**";
-            } else if (format.bold) {
-                return "**";
-            } else if (format.italic) {
-                return "_";
-            } else {
-                return "";
-            }
+            return (format.bold && format.italic) ? "_**" :
+                format.bold ? "**" : format.italic ? "_" : "";
         }
 
         function transformFormat(transformation) {
