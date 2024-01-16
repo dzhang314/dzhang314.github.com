@@ -331,7 +331,7 @@ from the printed document.
         });
 
         const fileInput = document.getElementById("fileInput");
-        addCtrlShortcut('o', 'O', fileInput.click);
+        addCtrlShortcut('o', 'O', () => fileInput.click());
 
         fileInput.addEventListener("change", event => {
             const file = event.target.files[0];
