@@ -98,6 +98,14 @@
 
         MACROS["\\vo"] = "{\\mathbf{0}}";
         MACROS["\\dd"] = "{\\,\\mathrm{d}}";
+        MACROS["\\dv"] = "{\\frac{\\mathrm{d}{#1}}{\\mathrm{d}{#2}}}";
+        MACROS["\\ddv"] = "{\\frac{\\mathrm{d}^2{#1}}{\\mathrm{d}{#2}\\,\\mathrm{d}{#3}}}";
+        MACROS["\\dddv"] = "{\\frac{\\mathrm{d}^3{#1}}{\\mathrm{d}{#2}\\,\\mathrm{d}{#3}\\,\\mathrm{d}{#4}}}";
+        MACROS["\\ddddv"] = "{\\frac{\\mathrm{d}^4{#1}}{\\mathrm{d}{#2}\\,\\mathrm{d}{#3}\\,\\mathrm{d}{#4}\\,\\mathrm{d}{#5}}}";
+        MACROS["\\pdv"] = "{\\frac{\\partial{#1}}{\\partial{#2}}}";
+        MACROS["\\pddv"] = "{\\frac{\\partial^2{#1}}{\\partial{#2}\\,\\partial{#3}}}";
+        MACROS["\\pdddv"] = "{\\frac{\\partial^3{#1}}{\\partial{#2}\\,\\partial{#3}\\,\\partial{#4}}}";
+        MACROS["\\pddddv"] = "{\\frac{\\partial^4{#1}}{\\partial{#2}\\,\\partial{#3}\\,\\partial{#4}\\,\\partial{#5}}}";
 
         /////////////////////////////////////////////////////////// KATEX PARSER
 
