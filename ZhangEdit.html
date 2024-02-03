@@ -96,7 +96,8 @@
         for (const x of LOWERCASE) MACROS[`\\v${x}`] = `{\\mathbf{${x}}}`;
         for (const x of UPPERCASE) MACROS[`\\v${x}`] = `{\\mathbf{${x}}}`;
 
-        MACROS["\\vo"] = "{\\mathbf{0}}";
+        MACROS["\\vzero"] = "{\\mathbf{0}}";
+        MACROS["\\vone"] = "{\\mathbf{1}}";
 
         MACROS["\\injto"] = "\\hookrightarrow";
         MACROS["\\surjto"] = "\\rightarrow\\!\\!\\!\\!\\!\\rightarrow";
