@@ -106,10 +106,10 @@
         MACROS["\\hash"] = "\\mathbin{\\#}";
 
         MACROS["\\dd"] = "{\\mathrm{d}}";
-        MACROS["\\dv"] = "{\\frac{\\mathrm{d}{#1}}{\\mathrm{d}{#2}}}";
-        MACROS["\\ddv"] = "{\\frac{\\mathrm{d}^2{#1}}{\\mathrm{d}{#2}\\,\\mathrm{d}{#3}}}";
-        MACROS["\\dddv"] = "{\\frac{\\mathrm{d}^3{#1}}{\\mathrm{d}{#2}\\,\\mathrm{d}{#3}\\,\\mathrm{d}{#4}}}";
-        MACROS["\\ddddv"] = "{\\frac{\\mathrm{d}^4{#1}}{\\mathrm{d}{#2}\\,\\mathrm{d}{#3}\\,\\mathrm{d}{#4}\\,\\mathrm{d}{#5}}}";
+        MACROS["\\dv"] = "{\\frac{\\dd{#1}}{\\dd{#2}}}";
+        MACROS["\\ddv"] = "{\\frac{\\dd^2{#1}}{\\dd{#2}\\,\\dd{#3}}}";
+        MACROS["\\dddv"] = "{\\frac{\\dd^3{#1}}{\\dd{#2}\\,\\dd{#3}\\,\\dd{#4}}}";
+        MACROS["\\ddddv"] = "{\\frac{\\dd^4{#1}}{\\dd{#2}\\,\\dd{#3}\\,\\dd{#4}\\,\\dd{#5}}}";
         MACROS["\\pdv"] = "{\\frac{\\partial{#1}}{\\partial{#2}}}";
         MACROS["\\pddv"] = "{\\frac{\\partial^2{#1}}{\\partial{#2}\\,\\partial{#3}}}";
         MACROS["\\pdddv"] = "{\\frac{\\partial^3{#1}}{\\partial{#2}\\,\\partial{#3}\\,\\partial{#4}}}";
@@ -284,8 +284,9 @@ from the printed document.
         function preprocessMarkdown(string) {
             const result = [];
             for (const line of string.split('\n')) {
-                if (/^\\\[|^\$\$/.test(line)) result.push("");
-                result.push(line);
+                if (/^\s*\\\[|^\s*\$\$/.test(line)) { result.push(""); }
+                result.push(line.replaceAll("&qed;",
+                    `<span class="float-end">&#8718;</span>`));
             }
             return result.join('\n');
         }
