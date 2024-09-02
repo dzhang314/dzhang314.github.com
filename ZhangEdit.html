@@ -17,6 +17,9 @@
         p  { font-family: "STIX Two Text", serif; text-align: justify; }
         li { font-family: "STIX Two Text", serif; text-align: justify; }
 
+        /* Use Fira Code as monospace font for code blocks. */
+        code { font-family: "Fira Code", monospace; font-size: 1.0rem; }
+
         /* Slightly increase equation size to better match STIX Two Text. */
         .katex { font-size: 1.05em; }
 
@@ -200,10 +203,13 @@ rendering that provides a few handy extensions, including:
 Under the hood, **ZhangEdit** is powered by [Monaco][3],
 the text editing engine developed by Microsoft for
 [VS Code][4], and [markdown-it][5], an extensible Markdown
-parser and renderer.
+parser and renderer. Aside from these dependencies,
+**ZhangEdit** is self-contained in a [single HTML file][8]
+and does not transmit any data outside of your computer or
+web browser.
 
 I designed **ZhangEdit** to typeset my own technical
-notes in a style that is easy to read and to skim.
+notes in a style that is easy to read and skim.
 **ZhangEdit** produces documents with the highly-legible
 [STIX text fonts][6], which are optimized for both screen
 and print media, and uses [Bootstrap cards][7] to create
@@ -233,33 +239,25 @@ $ax^2 + bx + c = 0$ is satisfied if and only if
 :::
 ::::::
 
-I use display boxes to present useful definitions and
-important results that will be referred to in the future.
-To facilitate their use as reference tools, I always ensure
-that display boxes can be read independently, free of
-unstated assumptions or hidden references to text buried
-elsewhere in the document.
-
 In addition to the default keyboard shortcuts provided by
 [Monaco][3], **ZhangEdit** also provides its own commands:
 
-- Use **Ctrl+B** to create ___bold text___
+- Use **Ctrl+B** to create **bold text**
   or to embolden the currently selected text.
-- Use **Ctrl+I** to create ___italic text___
+- Use **Ctrl+I** to create _italic text_
   or to italicize the currently selected text.
 - Use **Ctrl+D** to create ___definition text___,
   a special style of bold and italic text
-  that I use for stating formal definitions.
+  that I use for mathematical definitions.
 - Use **Ctrl+S** to ___save___ the current document
   to a Markdown file on your computer.
 - Use **Ctrl+O** to ___open___ a Markdown file from
   your computer in **ZhangEdit**, replacing the
   current document.
 
-To save a formatted **ZhangEdit** document to your computer,
-use your browser's built-in print function (usually
-**Ctrl+P**). The code editor will automatically be hidden
-from the printed document.
+To export a formatted **ZhangEdit** document, use your web
+browser's built-in print function (usually **Ctrl+P**).
+The text editor will not be displayed in the printed document.
 
 [1]: https://katex.org/
 [2]: https://getbootstrap.com/
@@ -267,7 +265,8 @@ from the printed document.
 [4]: https://code.visualstudio.com/
 [5]: https://markdown-it.github.io/
 [6]: https://www.stixfonts.org/
-[7]: https://getbootstrap.com/docs/5.3/components/card/\n`;
+[7]: https://getbootstrap.com/docs/5.3/components/card/
+[8]: https://github.com/dzhang314/dzhang314.github.com/blob/master/ZhangEdit.html\n`;
         }
 
         const editor = monaco.editor.create(document.getElementById("editor"), {
