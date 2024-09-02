@@ -18,6 +18,9 @@ li { font-family: "STIX Two Text", serif; text-align: justify; }
 .sans p    { font-family: var(--bs-font-sans-serif); text-align: justify; }
 .navbar li { font-family: var(--bs-font-sans-serif); text-align: justify; }
 
+/* Use Fira Code as monospace font for code blocks. */
+code { font-family: "Fira Code", monospace; font-size: 1.0rem; }
+
 /* Slightly increase equation size to better match STIX Two Text. */
 .katex { font-size: 1.05em; }
 
@@ -44,7 +47,7 @@ h1 { text-align: center; padding: 1rem; }
 
 /* Constrain width of main text container for ease of printing. */
 /* 19cm corresponds to an A4 page with 1cm margins on each side. */
-.container-lg { max-width: 19cm; }
+.container-lg { max-width: 19cm; padding: 0; }
 
 /* Adjust navbar padding and add bottom border. */
 .navbar { padding: 0 0.5rem; border-bottom: 1px solid var(--bs-gray-300);  }
@@ -129,11 +132,11 @@ pre {
     David K. Zhang<br>
     Last Modified 2024-09-02
 </div><br>
-<p>This website is <em>static</em>, which means that it consists of a fixed set of HTML, CSS, and JavaScript files. Writing those files by hand can be tedious, so in these notes, I’ll describe the tools I’ve created to automate that process and build <a href="http://dkzhang.com">dkzhang.com</a>.</p>
-<p>There are lots of popular and well-tested tools for creating static websites, like <a href="https://jekyllrb.com/">Jekyll</a> and <a href="https://gohugo.io/">Hugo</a>. I chose to design my own tools for a few reasons:</p>
+<p>This website is <em>static</em>, which means that it consists of a fixed set of HTML, CSS, and JavaScript files. Writing those files by hand can be tedious, so in these notes, I’ll describe the tools I’ve created to automate the process of building <a href="http://dkzhang.com">dkzhang.com</a>.</p>
+<p>There are lots of popular and well-tested tools for creating static websites, like <a href="https://jekyllrb.com/">Jekyll</a> and <a href="https://gohugo.io/">Hugo</a>. I chose to design my own static site generator for a few reasons:</p>
 <ul>
 <li>
-<p>I want to understand how my website is built from the ground up. I don’t want to serve a single HTML tag or CSS rule that I don’t know the purpose of.</p>
+<p>I want to understand how my website is built from the ground up. I don’t want to serve a single HTML tag or CSS rule that I can’t explain the purpose of.</p>
 </li>
 <li>
 <p>I’m very particular about typesetting and mathematical typography. I want to precisely control how text and math are rendered on both the screen and the printed page. (Websites that print well on paper are exceedingly rare.)</p>
@@ -143,53 +146,70 @@ pre {
 </li>
 </ul>
 <h2>Overview</h2>
-<p>Every page on my website is generated from a Markdown file in the <a href="https://github.com/dzhang314/my-markdown-docs">dzhang314/my-markdown-docs GitHub repository</a>. These Markdown files, together with a few <a href="https://github.com/dzhang314/my-markdown-docs/tree/main/templates">HTML/CSS templates</a> and <a href="https://github.com/dzhang314/my-markdown-docs/blob/main/build.mjs">a JS build script</a>, are the only files that I manually wrote.</p>
-<p>Each page has the same basic structure outlined in <a href="https://github.com/dzhang314/my-markdown-docs/blob/main/templates/dkzhang-template.html"><code>dkzhang-template.html</code></a>. This template has four fields that <a href="https://github.com/dzhang314/my-markdown-docs/blob/main/build.mjs"><code>build.mjs</code></a> fills in to generate the final HTML file for each page.</p>
+<p>Every page on my website is generated from a Markdown file in <a href="https://github.com/dzhang314/my-markdown-docs">dzhang314/my-markdown-docs</a>. These Markdown files, together with a few <a href="https://github.com/dzhang314/my-markdown-docs/tree/main/templates">HTML/CSS templates</a> and <a href="https://github.com/dzhang314/my-markdown-docs/blob/main/build.mjs">a JS build script</a>, are the only manually-written files used to create <a href="http://dkzhang.com">dkzhang.com</a>.</p>
+<p>Each page has the same basic structure outlined in <a href="https://github.com/dzhang314/my-markdown-docs/blob/main/templates/dkzhang-template.html">dkzhang-template.html</a>. This template has four fields that <a href="https://github.com/dzhang314/my-markdown-docs/blob/main/build.mjs">build.mjs</a> fills in to generate the final HTML file for each page.</p>
 <ul>
-<li><code>{{{STYLE}}}</code> is replaced with the contents of <a href="https://github.com/dzhang314/my-markdown-docs/blob/main/templates/dkzhang-style.css"><code>dkzhang-style.css</code></a>.</li>
-<li><code>{{{NAVBAR}}}</code> is replaced with the contents of <a href="https://github.com/dzhang314/my-markdown-docs/blob/main/templates/dkzhang-navbar.html"><code>dkzhang-navbar.html</code></a>.</li>
-<li><code>{{{TITLE}}}</code> is replaced with the title supplied as the second argument to <code>compilePage</code>.</li>
-<li><code>{{{CONTENT}}}</code> is replaced with HTML rendered from the Markdown file supplied as the first argument to <code>compilePage</code>.</li>
+<li><code>{{{STYLE}}}</code> is replaced with the contents of <a href="https://github.com/dzhang314/my-markdown-docs/blob/main/templates/dkzhang-style.css">dkzhang-style.css</a>.</li>
+<li><code>{{{NAVBAR}}}</code> is replaced with the contents of <a href="https://github.com/dzhang314/my-markdown-docs/blob/main/templates/dkzhang-navbar.html">dkzhang-navbar.html</a>.</li>
+<li><code>{{{TITLE}}}</code> is replaced with the title supplied to <code>compilePage</code>.</li>
+<li><code>{{{CONTENT}}}</code> is replaced with HTML rendered from the Markdown file supplied to <code>compilePage</code>.</li>
 </ul>
 <h2>Components</h2>
-<p>Most of the content on this website is built from basic HTML elements, like <code>&lt;h1&gt;</code> titles, <code>&lt;h2&gt;</code> headings, <code>&lt;p&gt;</code> paragraphs, and <code>&lt;ul&gt;</code> lists. In addition, I use two special components from <a href="https://getbootstrap.com/docs/5.3/getting-started/introduction/">Bootstrap 5.3</a>: first, a <code>fixed-top</code> <a href="https://getbootstrap.com/docs/5.3/components/navbar/">Bootstrap Navbar</a> provides a navigation interface that stays at the top of the page as you scroll. I apply <code>navbar-expand-md</code> to collapse the navbar into a hamburger menu on smaller screens and <code>d-print-none</code> to hide the navbar when printing. Second, I use <a href="https://getbootstrap.com/docs/5.3/components/card/">Bootstrap cards</a> to call attention to important information and set mathematical definitions and proofs apart from surrounding descriptive text.</p>
-<p>The structure of the navbar is defined in <a href="https://github.com/dzhang314/my-markdown-docs/blob/main/templates/dkzhang-navbar.html"><code>dkzhang-navbar.html</code></a>, which I manually edit every time I add a new page. I might automate the process of generating the navbar in the future, but I don’t have enough pages to necessitate that yet.</p>
+<p>Most of the content on this website is built from basic HTML elements, like <code>&lt;h1&gt;</code> titles, <code>&lt;h2&gt;</code> headings, <code>&lt;p&gt;</code> paragraphs, and <code>&lt;ul&gt;</code> lists. In addition, I use two special components from <a href="https://getbootstrap.com/docs/5.3/getting-started/introduction/">Bootstrap 5.3</a>. First, a <code>fixed-top</code> <a href="https://getbootstrap.com/docs/5.3/components/navbar/">Bootstrap Navbar</a> provides a navigation interface that sticks to the top of the page as you scroll. I apply <code>navbar-expand-md</code> to collapse the navbar into a hamburger menu on smaller screens and <code>d-print-none</code> to hide the navbar when printing. Second, I use <a href="https://getbootstrap.com/docs/5.3/components/card/">Bootstrap cards</a> to call attention to important information and set mathematical definitions and proofs apart from surrounding descriptive text.</p>
+<p>The structure of the navbar is defined in <a href="https://github.com/dzhang314/my-markdown-docs/blob/main/templates/dkzhang-navbar.html">dkzhang-navbar.html</a>, which I manually edit every time I add a new page. I might automate the process of generating the navbar in the future, but I don’t have enough pages to necessitate that yet.</p>
 <h2>Style</h2>
-<p>The style of this website is based on the <a href="https://bootswatch.com/litera/">Bootswatch Litera theme</a> with a few tweaks in <a href="https://github.com/dzhang314/my-markdown-docs/blob/main/templates/dkzhang-style.css"><code>dkzhang-style.css</code></a> to adjust navbar and card padding. I also add a <code>max-width</code> constraint to the main <code>container-lg</code> (but not the navbar) to improve legibility and ensure consistent printing. I display text using the <a href="https://www.stixfonts.org/">STIX fonts</a>, conveniently hosted by <a href="https://fonts.google.com/specimen/STIX+Two+Text">Google Fonts</a>, and I slightly enlarge the KaTeX math font size to better match the STIX glyphs.</p>
+<p>The style of this website is based on the <a href="https://bootswatch.com/litera/">Bootswatch Litera theme</a> with a few manual tweaks in <a href="https://github.com/dzhang314/my-markdown-docs/blob/main/templates/dkzhang-style.css">dkzhang-style.css</a> to adjust navbar and card padding. I apply a <code>max-width</code> constraint to the main <code>container-lg</code> to improve legibility and ensure consistent printing. A width of <code>19cm</code> fits A4 paper with 1cm margins and US Letter paper with 0.5&quot; margins.</p>
+<p>I display text using the highly-legible <a href="https://www.stixfonts.org/">STIX fonts</a>, which are optimized for both screen and print media and are conveniently hosted by <a href="https://fonts.google.com/specimen/STIX+Two+Text">Google Fonts</a>. To match the STIX glyphs, I display code using <a href="https://github.com/tonsky/FiraCode?tab=readme-ov-file">Fira Code</a> at <code>font-size: 1.0rem;</code> and slightly enlarge the KaTeX math font with <code>.katex { font-size: 1.05em; }</code>.</p>
 <h2>Rendering</h2>
-<p>Every page on my website is written in Markdown, a lightweight markup language which is easier to write by hand than HTML. Using <a href="https://github.com/markdown-it/markdown-it"><code>markdown-it</code></a>, an extensible Markdown-to-HTML renderer, I developed my own dialect of Markdown that supports two custom features:</p>
+<p>Every page on my website is written in Markdown, a lightweight markup language which is easier to write by hand than HTML. Using <a href="https://github.com/markdown-it/markdown-it">markdown-it</a>, an extensible Markdown-to-HTML renderer, I developed my own dialect of Markdown with two extensions:</p>
 <ul>
 <li>
-<p>TeX-style math rendering using <a href="https://katex.org/">KaTeX</a>, featuring both inline-mode <code>$...$</code> and display-mode <code>$$...$$</code> environments, using <a href="https://github.com/dzhang314/my-markdown-docs/blob/main/build.mjs">custom <code>markdown-it</code> parser rules in <code>build.mjs</code></a>.</p>
+<p>TeX-style math typesetting with <a href="https://katex.org/">KaTeX</a>, featuring both inline <code>$...$</code> <code>\(...\)</code> and display <code>$$...$$</code> <code>\[...\]</code> environments, implemented with <a href="https://github.com/dzhang314/my-markdown-docs/blob/main/build.mjs">custom parsing rules</a>.</p>
 </li>
 <li>
-<p>Block syntax for Bootstrap cards using <a href="https://github.com/markdown-it/markdown-it-container"><code>markdown-it-container</code></a>, which turns this:</p>
+<p>Block syntax for Bootstrap cards using <a href="https://github.com/markdown-it/markdown-it-container">markdown-it-container</a>, which turns this:</p>
 <pre><code>:::::: card
 ::: card-header
-**Card Title**
+**Quadratic Formula**
 :::
 ::: card-body
-This is the body text of the card.
+**Theorem**: Let $a, b, c \in \C$ be real or complex numbers
+with $a \ne 0$. For any $x \in \C$, the quadratic equation
+$ax^2 + bx + c = 0$ is satisfied if and only if
+\[ x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}. \]
 :::
 ::::::
 </code></pre>
 <p>into this:</p>
 <div class="card bg-light border-dark">
 <div class="card-header bg-dark text-white">
-<p><strong>Card Title</strong></p>
+<p><strong>Quadratic Formula</strong></p>
 </div>
 <div class="card-body">
-<p>This is the body text of the card.</p>
-</div>
+<p><strong>Theorem</strong>: Let <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo separator="true">,</mo><mi>b</mi><mo separator="true">,</mo><mi>c</mi><mo>∈</mo><mi mathvariant="double-struck">C</mi></mrow><annotation encoding="application/x-tex">a, b, c \in \C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">a</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">b</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">c</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6889em;"></span><span class="mord"><span class="mord mathbb">C</span></span></span></span></span> be real or complex numbers
+with <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo mathvariant="normal">≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">a \ne 0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel"><span class="mrel"><span class="mord vbox"><span class="thinbox"><span class="rlap"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="inner"><span class="mord"><span class="mrel"></span></span></span><span class="fix"></span></span></span></span></span><span class="mrel">=</span></span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span>. For any <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>∈</mo><mi mathvariant="double-struck">C</mi></mrow><annotation encoding="application/x-tex">x \in \C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6889em;"></span><span class="mord"><span class="mord mathbb">C</span></span></span></span></span>, the quadratic equation
+<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>b</mi><mi>x</mi><mo>+</mo><mi>c</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">ax^2 + bx + c = 0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8974em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">a</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">b</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">c</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span> is satisfied if and only if</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>x</mi><mo>=</mo><mfrac><mrow><mo>−</mo><mi>b</mi><mo>±</mo><msqrt><mrow><mi mathvariant="normal">Δ</mi><mo stretchy="false">(</mo><mi>a</mi><mo separator="true">,</mo><mi>b</mi><mo separator="true">,</mo><mi>c</mi><mo stretchy="false">)</mo></mrow></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac><mi mathvariant="normal">.</mi></mrow><annotation encoding="application/x-tex"> x = \frac{-b \pm \sqrt{\Delta(a, b, c)}}{2a}. </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.316em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.63em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span><span class="mord mathnormal">a</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.695em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">−</span><span class="mord mathnormal">b</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">±</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.935em;"><span class="svg-align" style="top:-3.2em;"><span class="pstrut" style="height:3.2em;"></span><span class="mord" style="padding-left:1em;"><span class="mord">Δ</span><span class="mopen">(</span><span class="mord mathnormal">a</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">b</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">c</span><span class="mclose">)</span></span></span><span style="top:-2.895em;"><span class="pstrut" style="height:3.2em;"></span><span class="hide-tail" style="min-width:1.02em;height:1.28em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="1.28em" viewBox="0 0 400000 1296" preserveAspectRatio="xMinYMin slice"><path d="M263,681c0.7,0,18,39.7,52,119
+c34,79.3,68.167,158.7,102.5,238c34.3,79.3,51.8,119.3,52.5,120
+c340,-704.7,510.7,-1060.3,512,-1067
+l0 -0
+c4.7,-7.3,11,-11,19,-11
+H40000v40H1012.3
+s-271.3,567,-271.3,567c-38.7,80.7,-84,175,-136,283c-52,108,-89.167,185.3,-111.5,232
+c-22.3,46.7,-33.8,70.3,-34.5,71c-4.7,4.7,-12.3,7,-23,7s-12,-1,-12,-1
+s-109,-253,-109,-253c-72.7,-168,-109.3,-252,-110,-252c-10.7,8,-22,16.7,-34,26
+c-22,17.3,-33.3,26,-34,26s-26,-26,-26,-26s76,-59,76,-59s76,-60,76,-60z
+M1001 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.305em;"><span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mord">.</span></span></span></span></span></div>
 </div>
 </li>
 </ul>
-<h2>Editing</h2>
-<p>WIP</p>
-<h2>Building</h2>
-<p>WIP</p>
+<p>I use <a href="https://katex.org/docs/api"><code>katex.renderToString</code></a> to render pre-render math to static HTML elements which display correctly even when JavaScript is disabled. I also maintain a collection of <a href="https://github.com/dzhang314/my-markdown-docs/blob/main/templates/dkzhang-macros.json">TeX macros</a> with helpful abbreviations that facilitate real-time note-taking during lectures and seminars.</p>
+<h2>Writing</h2>
+<p>The markdown-it rendering pipeline processes simple Markdown documents <a href="https://github.com/dzhang314/my-markdown-docs/blob/main/notes/websites.md">like this one</a> in a matter of milliseconds. This is fast enough to run on every keystroke as I type. I use <a href="https://code.visualstudio.com/">VSCode</a> with the <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode.live-server">Live Preview</a> and <a href="https://marketplace.visualstudio.com/items?itemName=pucelle.run-on-save">Run on Save</a> extensions to <a href="https://github.com/dzhang314/my-markdown-docs/blob/main/.vscode/settings.json">automatically run build.mjs</a> and view the final rendered webpage in real time while I write. This is especially helpful for typesetting complex equations and fiddling with CSS styles.</p>
+<p>You can <strong>try out my writing setup</strong> at <a href="https://www.dkzhang.com/ZhangEdit">dkzhang.com/ZhangEdit</a>, an in-browser Markdown editor that uses the same markdown-it extensions and CSS styles as my website.</p>
 <h2>Hosting</h2>
-<p>WIP</p>
+<p>This website is hosted on <a href="https://pages.github.com/">GitHub Pages</a>, which provides free hosting for static websites. When you visit <a href="http://dkzhang.com">dkzhang.com</a>, GitHub’s servers send you the bundle of generated HTML files that I’ve uploaded to <a href="https://github.com/dzhang314/dzhang314.github.com">this GitHub repository</a> (which is different from <a href="https://github.com/dzhang314/my-markdown-docs">my-markdown-docs</a>).</p>
+<p>Since my GitHub username is <a href="https://github.com/dzhang314">dzhang314</a>, this website would normally be hosted at the URL <a href="https://dzhang314.github.io/">dzhang314.github.io</a>. To make it appear at <a href="http://dkzhang.com">dkzhang.com</a>, I’ve configured a <a href="https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site">custom domain</a> that I purchased through <a href="https://domains.squarespace.com/">Squarespace Domains</a> (formerly Google Domains) for $12/year.</p>
 </main>
             <div class="d-print-none">
                 <hr>
