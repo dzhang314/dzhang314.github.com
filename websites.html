@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>David K. Zhang - About</title>
+        <title>David K. Zhang - Building Static Websites</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.3/dist/litera/bootstrap.min.css" integrity="sha256-Q00U94hg4dJWKAb/+PbWUKdIQSu6JqzKmmS/b8OnMtM=" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha256-cXvJrnhTth8PdkVd3fDs1PUnp4P0LeKsJGhImcHEYlg=" crossorigin="anonymous">
         <style>/* Import STIX Two Text and Fira Code fonts from Google Fonts. */
@@ -124,16 +124,72 @@ pre {
 
         <div class="container-lg">
             <div class="d-print-none" style="padding-top: 4.0rem;"></div>
-            <main><h1>Get to know me.</h1>
-<p>I was born on April 18<sup>th</sup>, 1997 to my incredibly loving and supportive parents, Dong Zhang and Christine Sun. I spent the first seven years of my life in Knoxville, while my parents worked at the <a href="https://www.utk.edu/">University of Tennessee</a> Textiles and Nonwovens Development Center. Halfway through second grade, when my parents found other work, we moved across the state to Clarksville.</p>
-<p>I went to <a href="https://kenwoodhigh.cmcss.net/">Kenwood High School</a> from 2011 to 2015, where I took part in a pilot “STEM Academy” program that the local school system had concocted. In the end, it wasn’t much different from a regular Tennessee high school, but it did afford me the opportunity to take a few classes at <a href="https://apsu.edu/">Austin Peay State University</a> in 11<sup>th</sup> and 12<sup>th</sup> grade. By the time I graduated, I was spending much more of my day at APSU than KHS. I had become friends with some of the math and physics faculty, and they even let me <a href="https://www.clarksvilleonline.com/2014/03/31/16-year-old-helps-apsu-math-jeopardy-team-win-second-place-southeast-region/">come along</a> <a href="http://www.ams.org/amsmtgs/2216_abstracts/1097-65-490.pdf">on a few</a> <a href="https://www.clarksvilleonline.com/2015/03/18/apsu-department-of-mathematics-and-statistics-places-first-in-maa-math-jeopardy-competition/">road trips</a>.</p>
-<p>I spent the next four years of my life at Vanderbilt University, where I majored in math, physics, and computer science — the nerd trifecta. I was a regular attendant of Vanderbilt’s research talks and colloquia, and I even got to <a href="https://as.vanderbilt.edu/math/2019/04/deriving-new-runge-kutta-methods-using-unstructured-numerical-search/">give my own</a> as a senior. I won an <a href="https://as.vanderbilt.edu/physics/undergraduate/awards.php">Ernest A. Jones Scholarship</a> when I was a freshman, a <a href="https://news.vanderbilt.edu/2017/04/06/three-students-named-goldwater-scholars-for-2017/">Goldwater Scholarship</a> when I was a sophomore, and a <a href="https://news.vanderbilt.edu/2019/05/10/vanderbilt-honors-class-of-2019-founders-medalists/">Founder’s Medal</a> when I graduated.</p>
-<p><strong>Fun facts:</strong></p>
+            <main><h1>Building Static Websites</h1>
+<div class="text-center">
+    David K. Zhang<br>
+    Last Modified 2024-09-02
+</div><br>
+<p>This website is <em>static</em>, which means that it consists of a fixed set of HTML, CSS, and JavaScript files. Writing those files by hand can be tedious, so in these notes, I’ll describe the tools I’ve created to automate that process and build <a href="http://dkzhang.com">dkzhang.com</a>.</p>
+<p>There are lots of popular and well-tested tools for creating static websites, like <a href="https://jekyllrb.com/">Jekyll</a> and <a href="https://gohugo.io/">Hugo</a>. I chose to design my own tools for a few reasons:</p>
 <ul>
-<li>My parents did <a href="https://doi.org/10.1002/(SICI)1097-4628(19961205)62:10%3C1605::AID-APP12%3E3.0.CO;2-0">machine learning research</a> <em>way</em> before it was cool.</li>
-<li>I was once the subject of <a href="http://www.capitol.tn.gov/Bills/109/Bill/SJR0154.pdf">a real piece of Tennessee state legislation</a>.</li>
-<li>Yes, my hair is naturally this curly. I don’t know how it happened either.</li>
+<li>
+<p>I want to understand how my website is built from the ground up. I don’t want to serve a single HTML tag or CSS rule that I don’t know the purpose of.</p>
+</li>
+<li>
+<p>I’m very particular about typesetting and mathematical typography. I want to precisely control how text and math are rendered on both the screen and the printed page. (Websites that print well on paper are exceedingly rare.)</p>
+</li>
+<li>
+<p>I like programming, and building a static site generator is <a href="https://news.ycombinator.com/item?id=38126210">something of</a> <a href="https://news.ycombinator.com/item?id=25227181">a rite of passage</a> <a href="https://news.ycombinator.com/item?id=27687899">for programming enthusiasts</a>.</p>
+</li>
 </ul>
+<h2>Overview</h2>
+<p>Every page on my website is generated from a Markdown file in the <a href="https://github.com/dzhang314/my-markdown-docs">dzhang314/my-markdown-docs GitHub repository</a>. These Markdown files, together with a few <a href="https://github.com/dzhang314/my-markdown-docs/tree/main/templates">HTML/CSS templates</a> and <a href="https://github.com/dzhang314/my-markdown-docs/blob/main/build.mjs">a JS build script</a>, are the only files that I manually wrote.</p>
+<p>Each page has the same basic structure outlined in <a href="https://github.com/dzhang314/my-markdown-docs/blob/main/templates/dkzhang-template.html"><code>dkzhang-template.html</code></a>. This template has four fields that <a href="https://github.com/dzhang314/my-markdown-docs/blob/main/build.mjs"><code>build.mjs</code></a> fills in to generate the final HTML file for each page.</p>
+<ul>
+<li><code>{{{STYLE}}}</code> is replaced with the contents of <a href="https://github.com/dzhang314/my-markdown-docs/blob/main/templates/dkzhang-style.css"><code>dkzhang-style.css</code></a>.</li>
+<li><code>{{{NAVBAR}}}</code> is replaced with the contents of <a href="https://github.com/dzhang314/my-markdown-docs/blob/main/templates/dkzhang-navbar.html"><code>dkzhang-navbar.html</code></a>.</li>
+<li><code>{{{TITLE}}}</code> is replaced with the title supplied as the second argument to <code>compilePage</code>.</li>
+<li><code>{{{CONTENT}}}</code> is replaced with HTML rendered from the Markdown file supplied as the first argument to <code>compilePage</code>.</li>
+</ul>
+<h2>Components</h2>
+<p>Most of the content on this website is built from basic HTML elements, like <code>&lt;h1&gt;</code> titles, <code>&lt;h2&gt;</code> headings, <code>&lt;p&gt;</code> paragraphs, and <code>&lt;ul&gt;</code> lists. In addition, I use two special components from <a href="https://getbootstrap.com/docs/5.3/getting-started/introduction/">Bootstrap 5.3</a>: first, a <code>fixed-top</code> <a href="https://getbootstrap.com/docs/5.3/components/navbar/">Bootstrap Navbar</a> provides a navigation interface that stays at the top of the page as you scroll. I apply <code>navbar-expand-md</code> to collapse the navbar into a hamburger menu on smaller screens and <code>d-print-none</code> to hide the navbar when printing. Second, I use <a href="https://getbootstrap.com/docs/5.3/components/card/">Bootstrap cards</a> to call attention to important information and set mathematical definitions and proofs apart from surrounding descriptive text.</p>
+<p>The structure of the navbar is defined in <a href="https://github.com/dzhang314/my-markdown-docs/blob/main/templates/dkzhang-navbar.html"><code>dkzhang-navbar.html</code></a>, which I manually edit every time I add a new page. I might automate the process of generating the navbar in the future, but I don’t have enough pages to necessitate that yet.</p>
+<h2>Style</h2>
+<p>The style of this website is based on the <a href="https://bootswatch.com/litera/">Bootswatch Litera theme</a> with a few tweaks in <a href="https://github.com/dzhang314/my-markdown-docs/blob/main/templates/dkzhang-style.css"><code>dkzhang-style.css</code></a> to adjust navbar and card padding. I also add a <code>max-width</code> constraint to the main <code>container-lg</code> (but not the navbar) to improve legibility and ensure consistent printing. I display text using the <a href="https://www.stixfonts.org/">STIX fonts</a>, conveniently hosted by <a href="https://fonts.google.com/specimen/STIX+Two+Text">Google Fonts</a>, and I slightly enlarge the KaTeX math font size to better match the STIX glyphs.</p>
+<h2>Rendering</h2>
+<p>Every page on my website is written in Markdown, a lightweight markup language which is easier to write by hand than HTML. Using <a href="https://github.com/markdown-it/markdown-it"><code>markdown-it</code></a>, an extensible Markdown-to-HTML renderer, I developed my own dialect of Markdown that supports two custom features:</p>
+<ul>
+<li>
+<p>TeX-style math rendering using <a href="https://katex.org/">KaTeX</a>, featuring both inline-mode <code>$...$</code> and display-mode <code>$$...$$</code> environments, using <a href="https://github.com/dzhang314/my-markdown-docs/blob/main/build.mjs">custom <code>markdown-it</code> parser rules in <code>build.mjs</code></a>.</p>
+</li>
+<li>
+<p>Block syntax for Bootstrap cards using <a href="https://github.com/markdown-it/markdown-it-container"><code>markdown-it-container</code></a>, which turns this:</p>
+<pre><code>:::::: card
+::: card-header
+**Card Title**
+:::
+::: card-body
+This is the body text of the card.
+:::
+::::::
+</code></pre>
+<p>into this:</p>
+<div class="card bg-light border-dark">
+<div class="card-header bg-dark text-white">
+<p><strong>Card Title</strong></p>
+</div>
+<div class="card-body">
+<p>This is the body text of the card.</p>
+</div>
+</div>
+</li>
+</ul>
+<h2>Editing</h2>
+<p>WIP</p>
+<h2>Building</h2>
+<p>WIP</p>
+<h2>Hosting</h2>
+<p>WIP</p>
 </main>
             <div class="d-print-none">
                 <hr>
