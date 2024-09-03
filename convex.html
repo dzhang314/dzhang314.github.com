@@ -54,7 +54,8 @@ a:not([class]):hover { text-decoration: underline; }
 
 /* Constrain width of main text container for ease of printing. */
 /* 19cm corresponds to an A4 page with 1cm margins on each side. */
-.container-lg { max-width: 19cm; padding: 0; }
+@media screen { .container-lg { max-width: 20cm; padding: 0 0.5cm; } }
+@media print { .container-lg { max-width: 19cm; padding: 0; } }
 
 /* Adjust navbar padding and add bottom border. */
 .navbar { padding: 0 0.5rem; border-bottom: 1px solid var(--bs-gray-300);  }
@@ -355,12 +356,10 @@ f([\vv, t, \vw])
 <li>the subgradient <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi mathvariant="bold">g</mi><mi>T</mi></msup><mo>∈</mo><mi mathvariant="normal">∂</mi><mi>f</mi><mo stretchy="false">(</mo><mi mathvariant="bold">x</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\vg^T \in \partial f(\vx)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0358em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord"><span class="mord mathbf" style="margin-right:0.01597em;">g</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord" style="margin-right:0.05556em;">∂</span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord"><span class="mord mathbf">x</span></span><span class="mclose">)</span></span></span></span> used to take the step is not zero.</li>
 </ul>
 </main>
-            <div class="d-print-none">
-                <hr>
-                <footer>
-                    <span class="float-end text-secondary mb-3">&copy; David K. Zhang 2016&ndash;2024</span>
-                </footer>
-            </div>
+            <hr>
+            <footer>
+                <span class="float-end text-secondary mb-3">&copy; David K. Zhang 2016&ndash;2024</span>
+            </footer>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha256-CDOy6cOibCWEdsRiZuaHf8dSGGJRYuBGC+mjoJimHGw=" crossorigin="anonymous"></script>
     </body>
