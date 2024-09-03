@@ -44,13 +44,20 @@
         .card-body ul+p { margin-top: -0.5rem; }
         .card-body ol+p { margin-top: -0.5rem; }
 
-        /* Use flexbox to create two-pane layout. */
-        body { display: flex; height: 100vh; margin: 0; }
-        #editor, #outerPreview { flex: 1; height: 100%; min-width: 0; }
+        /* Only underline links on hover. */
+        a { text-decoration: none; }
+        a:not([class]):hover { text-decoration: underline; }
+
+        /* Ensure browser does not add side margin when printing. */
+        @page { size: portrait; margin: auto 0; }
 
         /* Center and constrain width of preview pane for ease of printing. */
         /* 19cm corresponds to an A4 page with 1cm margins on each side. */
         #innerPreview { margin: auto; max-width: 19cm; }
+
+        /* Use flexbox to create two-pane layout. */
+        body { display: flex; height: 100vh; margin: 0; }
+        #editor, #outerPreview { flex: 1; height: 100%; min-width: 0; }
 
         /* Allow preview pane to scroll. */
         /* Add extra bottom padding to allow scrolling to a blank canvas. */
