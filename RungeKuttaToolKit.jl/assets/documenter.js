@@ -57,7 +57,14 @@ $(document).ready(function() {
       "right": "\\]",
       "display": true
     }
-  ]
+  ],
+  "macros": {
+    "\\vy": "\\mathbf{y}",
+    "\\vf": "\\mathbf{f}",
+    "\\hash": "\\mathbin{\\#}",
+    "\\R": "\\mathbb{R}",
+    "\\N": "\\mathbb{N}"
+  }
 }
 
   );

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Background · Documentation</title><meta name="title" content="Background · Documentation"/><meta property="og:title" content="Background · Documentation"/><meta property="twitter:title" content="Background · Documentation"/><meta name="description" content="Documentation for Documentation."/><meta property="og:description" content="Documentation for Documentation."/><meta property="twitter:description" content="Documentation for Documentation."/><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../search_index.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../">Documentation</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../">RungeKuttaToolKit.jl</a></li><li class="is-active"><a class="tocitem" href>Background</a><ul class="internal"><li><a class="tocitem" href="#Elementary-Differentials-and-Butcher-Series"><span>Elementary Differentials and Butcher Series</span></a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Background</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Background</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/dzhang314/RungeKuttaToolKit.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/dzhang314/RungeKuttaToolKit.jl/blob/master/docs/src/background.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="Background"><a class="docs-heading-anchor" href="#Background">Background</a><a id="Background-1"></a><a class="docs-heading-anchor-permalink" href="#Background" title="Permalink"></a></h1><h2 id="Elementary-Differentials-and-Butcher-Series"><a class="docs-heading-anchor" href="#Elementary-Differentials-and-Butcher-Series">Elementary Differentials and Butcher Series</a><a id="Elementary-Differentials-and-Butcher-Series-1"></a><a class="docs-heading-anchor-permalink" href="#Elementary-Differentials-and-Butcher-Series" title="Permalink"></a></h2><p>If you&#39;ve studied calculus, you know that any analytic function <span>$f: \R \to \R$</span> can be written as a <em>Taylor series</em>. For all <span>$x \in \R$</span> and sufficiently small <span>$h \in \R$</span>, we have:</p><p class="math-container">\[f(x + h) = f(x) + hf&#39;(x) + \frac{h^2}{2}f&#39;&#39;(x) + \frac{h^3}{6}f&#39;&#39;&#39;(x) + \cdots + \frac{h^n}{n!}f^{(n)}(x) + \cdots\]</p><p>In the study of differential equations, we use a special form of Taylor series called a <em>Butcher series</em>, named after the mathematician <a href="https://en.wikipedia.org/wiki/John_C._Butcher">John C. Butcher</a>. Unlike a Taylor series, whose terms are indexed by a natural number <span>$n \in \N$</span>, the terms of a Butcher series are indexed by <em>rooted trees</em>.</p><p>To understand the structure of a Butcher series, let&#39;s say we&#39;re trying to analyze a system of differential equations.</p><p class="math-container">\[\begin{aligned}
+y_1&#39;(t) &amp;= f_1(y_1(t), y_2(t), \ldots, y_n(t)) \\
+y_2&#39;(t) &amp;= f_2(y_1(t), y_2(t), \ldots, y_n(t)) \\
+&amp;\hspace{2mm} \vdots \\
+y_n&#39;(t) &amp;= f_n(y_1(t), y_2(t), \ldots, y_n(t))
+\end{aligned}\]</p><p>Here, <span>$y_1, y_2, \ldots, y_n: \R \to \R$</span> are the unknown functions we&#39;re trying to find, and <span>$f_1, f_2, \dots, f_n: \R^n \to \R$</span> are the known right-hand side functions. To simplify our notation, we can rewrite this system in vector form:</p><p class="math-container">\[\vy&#39;(t) = \vf(\vy(t))\]</p><p>Here, we have gathered the unknown functions <span>$y_1, y_2, \ldots, y_n$</span> and right-hand side functions <span>$f_1, f_2, \dots, f_n$</span> into vector-valued functions <span>$\vy: \R \to \R^n$</span> and <span>$\vf: \R^n \to \R^n$</span>.</p><p class="math-container">\[\begin{aligned}
+\vy&#39; &amp;= \vf \\
+\vy&#39;&#39; &amp;= \vf&#39;[\vf] \\
+\vy&#39;&#39;&#39; &amp;= \vf&#39;&#39;[\vf, \vf] + \vf&#39;[\vf&#39;[\vf]] \\
+\vy&#39;&#39;&#39;&#39; &amp;= \vf&#39;&#39;&#39;[\vf, \vf, \vf] + \vf&#39;&#39;[\vf&#39;[\vf], \vf] + \vf&#39;&#39;[\vf, \vf&#39;[\vf]] + \\
+&amp;\hspace{5mm} \vf&#39;&#39;[\vf&#39;[\vf], \vf] + \vf&#39;[\vf&#39;&#39;[\vf, \vf]] + \vf&#39;[\vf&#39;[\vf&#39;[\vf]]]
+\end{aligned}\]</p><p><strong>Definition:</strong> Let <span>$t$</span> be a rooted tree. The <strong><em>extension</em></strong> of <span>$t$</span>, denoted by <span>$[t]$</span>, is the rooted tree obtained from <span>$t$</span> by adjoining a new vertex <span>$v$</span>, adding a new edge from <span>$v$</span> to the root of <span>$t$</span>, and designating <span>$v$</span> as the root of <span>$[t]$</span>.</p><p><strong>Definition:</strong> Let <span>$s$</span> and <span>$t$</span> be rooted trees. The <strong><em>rooted sum</em></strong> of <span>$s$</span> and <span>$t$</span>, denoted by <span>$s \hash t$</span>, is the rooted tree obtained by taking the disjoint union of <span>$s$</span> and <span>$t$</span> and merging their roots into a single vertex, which is designated as the root of <span>$s \hash t$</span>.</p><p><strong>Example:</strong> Suppose <span>$s =$</span>
+<svg xmlns="http://www.w3.org/2000/svg" width="41" height="91" viewBox="-20.5 -83 41 91" style="vertical-align: middle;">
+<line x1="0" y1="0" x2="0" y2="-25" stroke="white" stroke-width="5.0" />
+<line x1="0" y1="0" x2="0" y2="-25" stroke="black" stroke-width="3.0" />
+<line x1="0" y1="-25" x2="0" y2="-50" stroke="white" stroke-width="5.0" />
+<line x1="0" y1="-25" x2="0" y2="-50" stroke="black" stroke-width="3.0" />
+<line x1="0" y1="-50" x2="-12.5" y2="-75" stroke="white" stroke-width="5.0" />
+<line x1="0" y1="-50" x2="-12.5" y2="-75" stroke="black" stroke-width="3.0" />
+<line x1="0" y1="-50" x2="12.5" y2="-75" stroke="white" stroke-width="5.0" />
+<line x1="0" y1="-50" x2="12.5" y2="-75" stroke="black" stroke-width="3.0" />
+<circle cx="0" cy="0" r="7" stroke="white" />
+<circle cx="0" cy="-25" r="7" stroke="white" />
+<circle cx="0" cy="-50" r="7" stroke="white" />
+<circle cx="-12.5" cy="-75" r="7" stroke="white" />
+<circle cx="12.5" cy="-75" r="7" stroke="white" />
+</svg>
+and <span>$t =$</span>
+<svg xmlns="http://www.w3.org/2000/svg" width="41" height="66" viewBox="-20.5 -58 41 66" style="vertical-align: middle;">
+<line x1="0" y1="0" x2="-12.5" y2="-25" stroke="white" stroke-width="5.0" />
+<line x1="0" y1="0" x2="-12.5" y2="-25" stroke="black" stroke-width="3.0" />
+<line x1="-12.5" y1="-25" x2="-12.5" y2="-50" stroke="white" stroke-width="5.0" />
+<line x1="-12.5" y1="-25" x2="-12.5" y2="-50" stroke="black" stroke-width="3.0" />
+<line x1="0" y1="0" x2="12.5" y2="-25" stroke="white" stroke-width="5.0" />
+<line x1="0" y1="0" x2="12.5" y2="-25" stroke="black" stroke-width="3.0" />
+<circle cx="0" cy="0" r="7" stroke="white" />
+<circle cx="-12.5" cy="-25" r="7" stroke="white" />
+<circle cx="-12.5" cy="-50" r="7" stroke="white" />
+<circle cx="12.5" cy="-25" r="7" stroke="white" />
+</svg>.
+Then <span>$[t] =$</span>
+<svg xmlns="http://www.w3.org/2000/svg" width="41" height="91" viewBox="-20.5 -83 41 91" style="vertical-align: middle;">
+<line x1="0" y1="0" x2="0" y2="-25" stroke="white" stroke-width="5.0" />
+<line x1="0" y1="0" x2="0" y2="-25" stroke="black" stroke-width="3.0" />
+<line x1="0" y1="-25" x2="-12.5" y2="-50" stroke="white" stroke-width="5.0" />
+<line x1="0" y1="-25" x2="-12.5" y2="-50" stroke="black" stroke-width="3.0" />
+<line x1="-12.5" y1="-50" x2="-12.5" y2="-75" stroke="white" stroke-width="5.0" />
+<line x1="-12.5" y1="-50" x2="-12.5" y2="-75" stroke="black" stroke-width="3.0" />
+<line x1="0" y1="-25" x2="12.5" y2="-50" stroke="white" stroke-width="5.0" />
+<line x1="0" y1="-25" x2="12.5" y2="-50" stroke="black" stroke-width="3.0" />
+<circle cx="0" cy="0" r="7" stroke="white" />
+<circle cx="0" cy="-25" r="7" stroke="white" />
+<circle cx="-12.5" cy="-50" r="7" stroke="white" />
+<circle cx="-12.5" cy="-75" r="7" stroke="white" />
+<circle cx="12.5" cy="-50" r="7" stroke="white" />
+</svg>
+and <span>$s \hash t =$</span>
+<svg xmlns="http://www.w3.org/2000/svg" width="91" height="91" viewBox="-45.5 -83 91 91" style="vertical-align: middle;">
+<line x1="0" y1="0" x2="-25" y2="-25" stroke="white" stroke-width="5.0" />
+<line x1="0" y1="0" x2="-25" y2="-25" stroke="black" stroke-width="3.0" />
+<line x1="-25" y1="-25" x2="-25" y2="-50" stroke="white" stroke-width="5.0" />
+<line x1="-25" y1="-25" x2="-25" y2="-50" stroke="black" stroke-width="3.0" />
+<line x1="-25" y1="-50" x2="-37.5" y2="-75" stroke="white" stroke-width="5.0" />
+<line x1="-25" y1="-50" x2="-37.5" y2="-75" stroke="black" stroke-width="3.0" />
+<line x1="-25" y1="-50" x2="-12.5" y2="-75" stroke="white" stroke-width="5.0" />
+<line x1="-25" y1="-50" x2="-12.5" y2="-75" stroke="black" stroke-width="3.0" />
+<line x1="0" y1="0" x2="12.5" y2="-25" stroke="white" stroke-width="5.0" />
+<line x1="0" y1="0" x2="12.5" y2="-25" stroke="black" stroke-width="3.0" />
+<line x1="12.5" y1="-25" x2="12.5" y2="-50" stroke="white" stroke-width="5.0" />
+<line x1="12.5" y1="-25" x2="12.5" y2="-50" stroke="black" stroke-width="3.0" />
+<line x1="0" y1="0" x2="37.5" y2="-25" stroke="white" stroke-width="5.0" />
+<line x1="0" y1="0" x2="37.5" y2="-25" stroke="black" stroke-width="3.0" />
+<circle cx="0" cy="0" r="7" stroke="white" />
+<circle cx="-25" cy="-25" r="7" stroke="white" />
+<circle cx="-25" cy="-50" r="7" stroke="white" />
+<circle cx="-37.5" cy="-75" r="7" stroke="white" />
+<circle cx="-12.5" cy="-75" r="7" stroke="white" />
+<circle cx="12.5" cy="-25" r="7" stroke="white" />
+<circle cx="12.5" cy="-50" r="7" stroke="white" />
+<circle cx="37.5" cy="-25" r="7" stroke="white" />
+</svg>.
+</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../">« RungeKuttaToolKit.jl</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.7.0 on <span class="colophon-date" title="Wednesday 11 September 2024 12:13">Wednesday 11 September 2024</span>. Using Julia version 1.10.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
