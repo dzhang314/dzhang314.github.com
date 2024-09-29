@@ -76,7 +76,7 @@
         import markdownIt from "https://cdn.jsdelivr.net/npm/markdown-it@14/+esm";
         import markdownItContainer from "https://cdn.jsdelivr.net/npm/markdown-it-container/+esm";
         import katex from "https://cdn.jsdelivr.net/npm/katex/+esm";
-        import * as monaco from "https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/+esm";
+        import * as monaco from "https://cdn.jsdelivr.net/npm/monaco-editor/+esm";
 
         //////////////////////////////////////////////////////////// MARKDOWN-IT
 
@@ -102,19 +102,29 @@
         const UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         const LOWERCASE = "abcdefghijklmnopqrstuvwxyz";
 
+        // Double-struck letters for number sets.
         for (const x of "NZQRCKF") MACROS[`\\${x}`] = `{\\mathbb{${x}}}`;
+
+        // Script L for Laplace transforms, Lagrangians, and likelihoods.
+        MACROS["\\L"] = "{\\mathcal{L}}";
+
+        // Bold letters for use as vectors.
         for (const x of LOWERCASE) MACROS[`\\v${x}`] = `{\\mathbf{${x}}}`;
         for (const x of UPPERCASE) MACROS[`\\v${x}`] = `{\\mathbf{${x}}}`;
 
+        // Bold zero and one for use as vectors and indicator functions.
         MACROS["\\vzero"] = "{\\mathbf{0}}";
         MACROS["\\vone"] = "{\\mathbf{1}}";
 
+        // Function arrows: injections, surjections, and bijections.
         MACROS["\\injto"] = "\\hookrightarrow";
         MACROS["\\surjto"] = "\\rightarrow\\!\\!\\!\\!\\!\\rightarrow";
         MACROS["\\bijto"] = "\\hookrightarrow\\!\\!\\!\\!\\!\\rightarrow";
 
+        // Hash symbol as a binary operator for connected sums in topology.
         MACROS["\\hash"] = "\\mathbin{\\#}";
 
+        // Derivatives and differentials.
         MACROS["\\dd"] = "{\\mathrm{d}}";
         MACROS["\\dv"] = "{\\frac{\\dd{#1}}{\\dd{#2}}}";
         MACROS["\\ddv"] = "{\\frac{\\dd^2{#1}}{\\dd{#2}\\,\\dd{#3}}}";
@@ -124,6 +134,16 @@
         MACROS["\\pddv"] = "{\\frac{\\partial^2{#1}}{\\partial{#2}\\,\\partial{#3}}}";
         MACROS["\\pdddv"] = "{\\frac{\\partial^3{#1}}{\\partial{#2}\\,\\partial{#3}\\,\\partial{#4}}}";
         MACROS["\\pddddv"] = "{\\frac{\\partial^4{#1}}{\\partial{#2}\\,\\partial{#3}\\,\\partial{#4}\\,\\partial{#5}}}";
+
+        // Selected Greek letters.
+        MACROS["\\eps"] = "\\varepsilon";
+        MACROS["\\veps"] = "{\\boldsymbol{\\varepsilon}}";
+        MACROS["\\lam"] = "\\lambda";
+        MACROS["\\Lam"] = "\\Lambda";
+        MACROS["\\vlam"] = "{\\boldsymbol{\\lambda}}";
+        MACROS["\\vLam"] = "{\\boldsymbol{\\Lambda}}";
+        MACROS["\\vlambda"] = "{\\boldsymbol{\\lambda}}";
+        MACROS["\\vLambda"] = "{\\boldsymbol{\\Lambda}}";
 
         /////////////////////////////////////////////////////////// KATEX PARSER
 
@@ -480,7 +500,7 @@ The text editor will not be displayed in the printed document.
     </script>
 </head>
 
-<body>
+<body data-bs-theme="dark">
     <input type="file" id="fileInput" accept=".md">
     <div id="editor"></div>
     <div id="outerPreview"><div id="innerPreview"></div></div>
