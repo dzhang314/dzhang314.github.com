@@ -42,7 +42,7 @@
         constrainForces(forces, points);
 
         const visualizer = new SphericalVoronoiVisualizer(points);
-        document.body.appendChild(visualizer.renderer.domElement);
+        document.body.appendChild(visualizer.domElement);
 
         const clock = new THREE.Clock();
 

@@ -120,6 +120,8 @@ export class SphericalVoronoiVisualizer {
         this.hull = new ConvexHull();
     }
 
+    get domElement() { return this.renderer.domElement; }
+
     updatePoints(points) {
 
         if (!Array.isArray(points)) {
