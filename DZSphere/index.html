@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Spherical Point Set Visualizer</title>
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="theme-color" content="#000000">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #000000;
+        }
+    </style>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.177.0/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.177.0/examples/jsm/"
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <script type="module">
+
+        import * as THREE from "three";
+        import {
+            randomNormalArray, normalizePoints,
+            calculateCoulombForces, constrainForces,
+        } from "./CoulombEnergy.js";
+        import { SphericalVoronoiVisualizer } from "./SphericalVoronoiVisualizer.js";
+
+        const numPoints = 132;
+        const points = randomNormalArray(3 * numPoints);
+        normalizePoints(points);
+        const forces = new Array(3 * numPoints);
+        calculateCoulombForces(forces, points);
+        constrainForces(forces, points);
+
+        const visualizer = new SphericalVoronoiVisualizer(points);
+        document.body.appendChild(visualizer.renderer.domElement);
+
+        const clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            for (let i = 0; i < 3 * numPoints; i++) {
+                points[i] += 0.001 * forces[i];
+            }
+            normalizePoints(points);
+            calculateCoulombForces(forces, points);
+            constrainForces(forces, points);
+            visualizer.updatePoints(points);
+            visualizer.updateHull();
+
+            visualizer.controls.update(clock.getDelta());
+            visualizer.renderer.render(visualizer.scene, visualizer.camera);
+        }
+
+        animate();
+
+    </script>
+</body>
+
+</html>
