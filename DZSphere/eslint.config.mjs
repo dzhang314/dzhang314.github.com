@@ -1,5 +1,6 @@
 import { defineConfig } from "eslint/config";
 import globals from "globals";
+import html from "eslint-plugin-html";
 import js from "@eslint/js";
 import sonarjs from "eslint-plugin-sonarjs";
 import unicorn from "eslint-plugin-unicorn";
@@ -18,6 +19,7 @@ export default defineConfig([
             "max-lines-per-function": "off",
             "max-params": "off",
             "max-statements": "off",
+            "no-console": "warn",
             "no-inline-comments": "off",
             "no-magic-numbers": ["error", {
                 ignore: [-2.0, 0, 0.5, 1, 2, 3, 4, 5, 6, 7, 360.0]
@@ -28,12 +30,13 @@ export default defineConfig([
             "sonarjs/cognitive-complexity": "warn",
             "sonarjs/todo-tag": "warn",
             "unicorn/filename-case": ["error", {
-                case: "pascalCase", ignore: ["eslint.config.mjs"]
+                case: "pascalCase", ignore: ["eslint.config.mjs", "index.html"]
             }],
             "unicorn/no-zero-fractions": "off",
             "unicorn/prefer-spread": "off",
             "unicorn/prevent-abbreviations": "off",
         },
     },
+    { files: ["**/*.html"], plugins: { html } },
     { languageOptions: { globals: globals.browser } },
 ]);

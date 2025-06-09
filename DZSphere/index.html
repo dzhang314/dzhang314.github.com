@@ -29,12 +29,12 @@
 
         import * as THREE from "three";
         import {
+            SphericalOptimizerState, normalizePoints,
+            quadraticLineSearch, randomNormalArray, sphericalStep,
+        } from "./SphericalOptimizer.js";
+        import {
             calculateCoulombEnergy, calculateCoulombForces, constrainForces,
         } from "./CoulombEnergy.js";
-        import {
-            randomNormalArray, normalizePoints,
-            SphericalOptimizerState, sphericalStep, quadraticLineSearch,
-        } from "./SphericalOptimizer.js";
         import {
             SphericalVoronoiVisualizer
         } from "./SphericalVoronoiVisualizer.js";
@@ -50,7 +50,7 @@
             initialPoints, initialEnergy, initialForces, initialForces.slice());
 
         const visualizer = new SphericalVoronoiVisualizer(initialPoints);
-        document.body.appendChild(visualizer.domElement);
+        document.body.append(visualizer.domElement);
 
         const clock = new THREE.Clock();
         document.addEventListener('visibilitychange', () => {
