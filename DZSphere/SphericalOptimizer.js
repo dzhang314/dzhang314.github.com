@@ -1,20 +1,21 @@
-import { isNumericArray } from "./IsNumericArray.js";
+import {
+    assertFiniteNumber, assertNumericArray3D,
+    assertSameLength, assertValidLength,
+} from "./InputValidation.js";
 
 
 export function randomNormalArray(n) {
 
-    if (!(Number.isSafeInteger(n) && (n >= 0))) {
-        throw new RangeError("invalid array length");
-    }
+    assertValidLength(n);
 
     const result = new Float64Array(n);
     for (let i = 0; i < n; i += 2) {
-        const r = Math.sqrt(-2 * Math.log(Math.random()));
+        const r = Math.sqrt(-2.0 * Math.log(Math.random()));
         const theta = 2 * Math.PI * Math.random();
         result[i] = r * Math.cos(theta);
         result[i + 1] = r * Math.sin(theta);
-        // No bounds check is needed because writes past
-        // the end of a typed array are silently ignored.
+        /* No bounds check is needed because writes past
+           the end of a typed array are silently ignored. */
     }
     return result;
 }
@@ -22,12 +23,7 @@ export function randomNormalArray(n) {
 
 export function normalizePoints(points) {
 
-    if (!isNumericArray(points)) {
-        throw new TypeError("points must be an array of finite numbers");
-    }
-    if (points.length % 3 !== 0) {
-        throw new RangeError("points must have length divisible by 3");
-    }
+    assertNumericArray3D(points);
 
     for (let i = 0; i < points.length; i += 3) {
         const x = points[i];
@@ -46,33 +42,12 @@ export class SphericalOptimizerState {
 
     constructor(points, energy, forces, stepDirection) {
 
-        if (!isNumericArray(points)) {
-            throw new TypeError("points must be an array of finite numbers");
-        }
-        if (!Number.isFinite(energy)) {
-            throw new TypeError("energy must be a finite number");
-        }
-        if (!isNumericArray(forces)) {
-            throw new TypeError("forces must be an array of finite numbers");
-        }
-        if (!isNumericArray(stepDirection)) {
-            throw new TypeError("stepDirection must be an array of finite numbers");
-        }
-        if (points.length % 3 !== 0) {
-            throw new RangeError("points must have length divisible by 3");
-        }
-        if (forces.length % 3 !== 0) {
-            throw new RangeError("forces must have length divisible by 3");
-        }
-        if (stepDirection.length % 3 !== 0) {
-            throw new RangeError("stepDirection must have length divisible by 3");
-        }
-        if (points.length !== forces.length) {
-            throw new RangeError("points and forces must have the same length");
-        }
-        if (points.length !== stepDirection.length) {
-            throw new RangeError("points and stepDirection must have the same length");
-        }
+        assertNumericArray3D(points);
+        assertFiniteNumber(energy);
+        assertNumericArray3D(forces);
+        assertNumericArray3D(stepDirection);
+        assertSameLength(points, forces);
+        assertSameLength(points, stepDirection);
 
         this.numPoints = points.length / 3;
         this.points = points;
@@ -91,50 +66,27 @@ export class SphericalOptimizerState {
     }
 
 
-} // class SphericalOptimizerState
+}
 
 
 export function sphericalStep(newPoints, oldPoints, stepDirection, stepSize) {
 
-    if (!isNumericArray(newPoints)) {
-        throw new TypeError("newPoints must be an array of finite numbers");
-    }
-    if (!isNumericArray(oldPoints)) {
-        throw new TypeError("oldPoints must be an array of finite numbers");
-    }
-    if (!isNumericArray(stepDirection)) {
-        throw new TypeError("stepDirection must be an array of finite numbers");
-    }
-    if (!Number.isFinite(stepSize)) {
-        throw new TypeError("stepSize must be a finite number");
-    }
-    if (newPoints.length % 3 !== 0) {
-        throw new RangeError("newPoints must have length divisible by 3");
-    }
-    if (oldPoints.length % 3 !== 0) {
-        throw new RangeError("oldPoints must have length divisible by 3");
-    }
-    if (stepDirection.length % 3 !== 0) {
-        throw new RangeError("stepDirection must have length divisible by 3");
-    }
-    if (newPoints.length !== oldPoints.length) {
-        throw new RangeError("newPoints and oldPoints must have the same length");
-    }
-    if (newPoints.length !== stepDirection.length) {
-        throw new RangeError("newPoints and stepDirection must have the same length");
-    }
+    assertNumericArray3D(newPoints);
+    assertNumericArray3D(oldPoints);
+    assertNumericArray3D(stepDirection);
+    assertFiniteNumber(stepSize);
+    assertSameLength(newPoints, oldPoints);
+    assertSameLength(newPoints, stepDirection);
 
     const numPoints = newPoints.length / 3;
-    // let result = 0;
     for (let i = 0; i < numPoints; i++) {
         const dx = stepSize * stepDirection[3 * i];
         const dy = stepSize * stepDirection[3 * i + 1];
         const dz = stepSize * stepDirection[3 * i + 2];
-        // result = Math.max(result, dx * dx + dy * dy + dz * dz);
         const x = oldPoints[3 * i] + dx;
         const y = oldPoints[3 * i + 1] + dy;
         const z = oldPoints[3 * i + 2] + dz;
-        const invDist = 1.0 / Math.sqrt(x * x + y * y + z * z);
+        const invDist = 1.0 / Math.hypot(x, y, z);
         newPoints[3 * i] = invDist * x;
         newPoints[3 * i + 1] = invDist * y;
         newPoints[3 * i + 2] = invDist * z;
@@ -150,15 +102,9 @@ function quadraticLineSearchHelper(energyFunction, state, h, e1, e2) {
     if (!(state instanceof SphericalOptimizerState)) {
         throw new TypeError("state must be a SphericalOptimizerState");
     }
-    if (!(Number.isFinite(h) && (h > 0.0))) {
-        throw new TypeError("h must be a finite positive number");
-    }
-    if (!Number.isFinite(e1)) {
-        throw new TypeError("e1 must be a finite number");
-    }
-    if (!Number.isFinite(e2)) {
-        throw new TypeError("e2 must be a finite number");
-    }
+    assertFiniteNumber(h); // TODO: Should we assert positivity?
+    assertFiniteNumber(e1);
+    assertFiniteNumber(e2);
 
     if (!(
         ((state.energy >= e1) && (e1 < e2)) ||
@@ -192,7 +138,7 @@ function quadraticLineSearchHelper(energyFunction, state, h, e1, e2) {
     }
     if (e2 < eBest) {
         hBest = h + h;
-        eBest = e2;
+        eBest = e2; // eslint-disable-line no-useless-assignment
     }
     return hBest;
 }
@@ -206,9 +152,7 @@ export function quadraticLineSearch(energyFunction, state, initialStepSize) {
     if (!(state instanceof SphericalOptimizerState)) {
         throw new TypeError("state must be a SphericalOptimizerState");
     }
-    if (!Number.isFinite(initialStepSize)) {
-        throw new TypeError("initialStepSize must be a finite number");
-    }
+    assertFiniteNumber(initialStepSize); // TODO: Should we assert positivity?
 
     const tempPoints = new state.points.constructor(3 * state.numPoints);
     sphericalStep(tempPoints,

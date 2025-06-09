@@ -2,18 +2,18 @@ import * as THREE from "three";
 import { ConvexHull } from "three/addons/math/ConvexHull.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-import { isNumericArray } from "./IsNumericArray.js";
+import { assertNumericArray3D } from "./InputValidation.js";
 
 
 const Z_OFFSET = 15;
 const PARTICLE_RADIUS = 0.02;
 const MAX_VORONOI_EDGES = 12;
-const VORONOI_COLOR_DEFAULT = new THREE.Color(0xFFFFFF);
+const VORONOI_COLOR_DEFAULT = new THREE.Color(1.0, 1.0, 1.0);
 const VORONOI_COLOR_MAP = new Map([
-    [4, new THREE.Color(0xFFFF00)],
-    [5, new THREE.Color(0xFF0000)],
-    [6, new THREE.Color(0x00FF00)],
-    [7, new THREE.Color(0x0000FF)],
+    [4, new THREE.Color(1.0, 1.0, 0.0)],
+    [5, new THREE.Color(1.0, 0.0, 0.0)],
+    [6, new THREE.Color(0.0, 1.0, 0.0)],
+    [7, new THREE.Color(0.0, 0.0, 1.0)],
 ]);
 
 
@@ -22,12 +22,7 @@ export class SphericalVoronoiVisualizer {
 
     constructor(points) {
 
-        if (!isNumericArray(points)) {
-            throw new TypeError("points must be an array of finite numbers");
-        }
-        if (points.length % 3 !== 0) {
-            throw new RangeError("points must have length divisible by 3");
-        }
+        assertNumericArray3D(points);
 
         this.scene = new THREE.Scene();
 
@@ -84,9 +79,9 @@ export class SphericalVoronoiVisualizer {
         for (let i = 0; i < this.numPoints; i++) {
             this.voronoiCellMaterials[i] = new THREE.MeshBasicMaterial({
                 color: VORONOI_COLOR_DEFAULT,
+                opacity: 1.0,
                 side: THREE.DoubleSide,
                 transparent: true,
-                opacity: 1.0,
             });
         }
 
@@ -131,12 +126,7 @@ export class SphericalVoronoiVisualizer {
 
     updatePoints(points) {
 
-        if (!isNumericArray(points)) {
-            throw new TypeError("points must be an array of finite numbers");
-        }
-        if (points.length !== 3 * this.numPoints) {
-            throw new RangeError("points must have length 3 * numPoints");
-        }
+        assertNumericArray3D(points);
 
         for (let i = 0; i < this.numPoints; i++) {
             this.points[i].x = points[3 * i];
@@ -186,7 +176,7 @@ export class SphericalVoronoiVisualizer {
         }
 
         for (let i = 0; i < this.numPoints; i++) {
-            const firstFaceIndex = adjacentFaces[i][0];
+            const [firstFaceIndex] = adjacentFaces[i];
             let currentFaceIndex = firstFaceIndex;
             const faceCenters = [];
             do {
@@ -234,4 +224,4 @@ export class SphericalVoronoiVisualizer {
     }
 
 
-} // class SphericalVoronoiVisualizer
+}
