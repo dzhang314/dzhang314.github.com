@@ -5,6 +5,8 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { isNumericArray } from "./IsNumericArray.js";
 
 
+const Z_OFFSET = 15;
+const PARTICLE_RADIUS = 0.02;
 const MAX_VORONOI_EDGES = 12;
 const VORONOI_COLOR_DEFAULT = new THREE.Color(0xFFFFFF);
 const VORONOI_COLOR_MAP = new Map([
@@ -33,9 +35,12 @@ export class SphericalVoronoiVisualizer {
         this.scene.add(new THREE.AmbientLight());
 
         // TODO: Add configurable camera parameters.
-        this.camera = new THREE.PerspectiveCamera(
-            15, window.innerWidth / window.innerHeight, 8, 12);
-        this.camera.position.z = 10;
+        const r = 1.0 + PARTICLE_RADIUS;
+        this.fovAngle = (360.0 / Math.PI) * Math.asin(r / Z_OFFSET);
+        const fovFactor = Math.max(1.0, window.innerHeight / window.innerWidth);
+        this.camera = new THREE.PerspectiveCamera(fovFactor * this.fovAngle,
+            window.innerWidth / window.innerHeight, Z_OFFSET - r, Z_OFFSET + r);
+        this.camera.position.z = Z_OFFSET;
 
         this.renderer = new THREE.WebGLRenderer({ antialias: true });
         this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -53,7 +58,7 @@ export class SphericalVoronoiVisualizer {
                 points[3 * i], points[3 * i + 1], points[3 * i + 2]);
         }
 
-        const particleGeometry = new THREE.IcosahedronGeometry(0.02, 1);
+        const particleGeometry = new THREE.IcosahedronGeometry(PARTICLE_RADIUS, 1);
         const particleMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 });
         this.particles = new Array(this.numPoints);
         for (let i = 0; i < this.numPoints; i++) {
@@ -218,6 +223,8 @@ export class SphericalVoronoiVisualizer {
 
 
     onWindowResize() {
+        const fovFactor = Math.max(1.0, window.innerHeight / window.innerWidth);
+        this.camera.fov = fovFactor * this.fovAngle;
         this.camera.aspect = window.innerWidth / window.innerHeight;
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(window.innerWidth, window.innerHeight);
