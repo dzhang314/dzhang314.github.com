@@ -2,6 +2,8 @@ import * as THREE from "three";
 import { ConvexHull } from "three/addons/math/ConvexHull.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
+import { isNumericArray } from "./IsNumericArray.js";
+
 
 const MAX_VORONOI_EDGES = 12;
 const VORONOI_COLOR_DEFAULT = new THREE.Color(0xFFFFFF);
@@ -15,18 +17,14 @@ const VORONOI_COLOR_MAP = new Map([
 
 export class SphericalVoronoiVisualizer {
 
+
     constructor(points) {
 
-        if (!Array.isArray(points)) {
-            throw new TypeError("points must be an array");
+        if (!isNumericArray(points)) {
+            throw new TypeError("points must be an array of finite numbers");
         }
         if (points.length % 3 !== 0) {
             throw new RangeError("points must have length divisible by 3");
-        }
-        for (const entry of points) {
-            if (!Number.isFinite(entry)) {
-                throw new TypeError("points must be an array of finite numbers");
-            }
         }
 
         this.scene = new THREE.Scene();
@@ -43,8 +41,7 @@ export class SphericalVoronoiVisualizer {
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         window.addEventListener("resize", () => this.onWindowResize());
 
-        this.controls = new OrbitControls(
-            this.camera, this.renderer.domElement);
+        this.controls = new OrbitControls(this.camera, this.renderer.domElement);
         this.controls.enableZoom = false;
         this.controls.enableDamping = true;
         this.controls.autoRotate = true;
@@ -120,20 +117,17 @@ export class SphericalVoronoiVisualizer {
         this.hull = new ConvexHull();
     }
 
+
     get domElement() { return this.renderer.domElement; }
+
 
     updatePoints(points) {
 
-        if (!Array.isArray(points)) {
-            throw new TypeError("points must be an array");
+        if (!isNumericArray(points)) {
+            throw new TypeError("points must be an array of finite numbers");
         }
         if (points.length !== 3 * this.numPoints) {
             throw new RangeError("points must have length 3 * numPoints");
-        }
-        for (const entry of points) {
-            if (!Number.isFinite(entry)) {
-                throw new TypeError("points must be an array of finite numbers");
-            }
         }
 
         for (let i = 0; i < this.numPoints; i++) {
@@ -147,6 +141,7 @@ export class SphericalVoronoiVisualizer {
             this.voronoiBuffers[i].needsUpdate = true;
         }
     }
+
 
     updateHull() {
 
@@ -221,10 +216,12 @@ export class SphericalVoronoiVisualizer {
         }
     }
 
+
     onWindowResize() {
         this.camera.aspect = window.innerWidth / window.innerHeight;
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(window.innerWidth, window.innerHeight);
     }
 
-}
+
+} // class SphericalVoronoiVisualizer

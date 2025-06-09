@@ -1,15 +1,20 @@
+import { isNumericArray } from "./IsNumericArray.js";
+
+
 export function randomNormalArray(n) {
 
     if (!(Number.isSafeInteger(n) && (n >= 0))) {
         throw new RangeError("invalid array length");
     }
 
-    const result = new Array(n);
+    const result = new Float64Array(n);
     for (let i = 0; i < n; i += 2) {
         const r = Math.sqrt(-2 * Math.log(Math.random()));
         const theta = 2 * Math.PI * Math.random();
         result[i] = r * Math.cos(theta);
-        if (i + 1 < n) { result[i + 1] = r * Math.sin(theta); }
+        result[i + 1] = r * Math.sin(theta);
+        // No bounds check is needed because writes past
+        // the end of a typed array are silently ignored.
     }
     return result;
 }
@@ -17,16 +22,11 @@ export function randomNormalArray(n) {
 
 export function normalizePoints(points) {
 
-    if (!Array.isArray(points)) {
-        throw new TypeError("points must be an array");
+    if (!isNumericArray(points)) {
+        throw new TypeError("points must be an array of finite numbers");
     }
     if (points.length % 3 !== 0) {
         throw new RangeError("points must have length divisible by 3");
-    }
-    for (const entry of points) {
-        if (!Number.isFinite(entry)) {
-            throw new TypeError("points must be an array of finite numbers");
-        }
     }
 
     for (let i = 0; i < points.length; i += 3) {
@@ -43,25 +43,20 @@ export function normalizePoints(points) {
 
 export function calculateCoulombForces(forces, points) {
 
-    if (!Array.isArray(forces)) {
-        throw new TypeError("forces must be an array");
+    if (!isNumericArray(forces)) {
+        throw new TypeError("forces must be an array of finite numbers");
+    }
+    if (!isNumericArray(points)) {
+        throw new TypeError("points must be an array of finite numbers");
     }
     if (forces.length % 3 !== 0) {
         throw new RangeError("forces must have length divisible by 3");
     }
-    if (forces.length !== points.length) {
-        throw new RangeError("forces and points must have the same length");
-    }
-    if (!Array.isArray(points)) {
-        throw new TypeError("points must be an array");
-    }
     if (points.length % 3 !== 0) {
         throw new RangeError("points must have length divisible by 3");
     }
-    for (const entry of points) {
-        if (!Number.isFinite(entry)) {
-            throw new TypeError("points must be an array of finite numbers");
-        }
+    if (forces.length !== points.length) {
+        throw new RangeError("forces and points must have the same length");
     }
 
     for (let i = 0; i < points.length; i += 3) {
@@ -96,30 +91,20 @@ export function calculateCoulombForces(forces, points) {
 
 export function constrainForces(forces, points) {
 
-    if (!Array.isArray(forces)) {
-        throw new TypeError("forces must be an array");
+    if (!isNumericArray(forces)) {
+        throw new TypeError("forces must be an array of finite numbers");
+    }
+    if (!isNumericArray(points)) {
+        throw new TypeError("points must be an array of finite numbers");
     }
     if (forces.length % 3 !== 0) {
         throw new RangeError("forces must have length divisible by 3");
     }
-    for (const entry of forces) {
-        if (!Number.isFinite(entry)) {
-            throw new TypeError("forces must be an array of finite numbers");
-        }
-    }
-    if (forces.length !== points.length) {
-        throw new RangeError("forces and points must have the same length");
-    }
-    if (!Array.isArray(points)) {
-        throw new TypeError("points must be an array");
-    }
     if (points.length % 3 !== 0) {
         throw new RangeError("points must have length divisible by 3");
     }
-    for (const entry of points) {
-        if (!Number.isFinite(entry)) {
-            throw new TypeError("points must be an array of finite numbers");
-        }
+    if (forces.length !== points.length) {
+        throw new RangeError("forces and points must have the same length");
     }
 
     for (let i = 0; i < forces.length; i += 3) {
@@ -139,16 +124,11 @@ export function constrainForces(forces, points) {
 
 export function calculateRmsForce(forces) {
 
-    if (!Array.isArray(forces)) {
-        throw new TypeError("forces must be an array");
+    if (!isNumericArray(forces)) {
+        throw new TypeError("forces must be an array of finite numbers");
     }
     if (forces.length % 3 !== 0) {
         throw new RangeError("forces must have length divisible by 3");
-    }
-    for (const entry of forces) {
-        if (!Number.isFinite(entry)) {
-            throw new TypeError("forces must be an array of finite numbers");
-        }
     }
 
     let result = 0;

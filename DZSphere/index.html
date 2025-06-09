@@ -37,7 +37,7 @@
         const numPoints = 132;
         const points = randomNormalArray(3 * numPoints);
         normalizePoints(points);
-        const forces = new Array(3 * numPoints);
+        const forces = new Float64Array(3 * numPoints);
         calculateCoulombForces(forces, points);
         constrainForces(forces, points);
 
