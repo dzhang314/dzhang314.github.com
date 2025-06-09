@@ -45,6 +45,9 @@
         document.body.appendChild(visualizer.domElement);
 
         const clock = new THREE.Clock();
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) { clock.stop(); } else { clock.start(); }
+        });
 
         function animate() {
             requestAnimationFrame(animate);
