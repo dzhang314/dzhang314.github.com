@@ -85,8 +85,8 @@ export function calculateRmsForce(forces) {
     assertNumericArray3D(forces);
 
     let sumForceSq = 0.0;
-    for (let i = 0; i < forces.length; i++) {
-        sumForceSq += forces[i] * forces[i];
+    for (const entry of forces) {
+        sumForceSq += entry * entry;
     }
     return Math.sqrt(sumForceSq / (forces.length / 3.0));
 }

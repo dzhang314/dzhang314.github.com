@@ -10,7 +10,9 @@ export function randomNormalArray(n) {
 
     const result = new Float64Array(n);
     for (let i = 0; i < n; i += 2) {
+        // eslint-disable-next-line sonarjs/pseudo-random
         const r = Math.sqrt(-2.0 * Math.log(Math.random()));
+        // eslint-disable-next-line sonarjs/pseudo-random
         const theta = 2 * Math.PI * Math.random();
         result[i] = r * Math.cos(theta);
         result[i + 1] = r * Math.sin(theta);
@@ -29,10 +31,10 @@ export function normalizePoints(points) {
         const x = points[i];
         const y = points[i + 1];
         const z = points[i + 2];
-        const r = Math.sqrt(x * x + y * y + z * z);
-        points[i] = x / r;
-        points[i + 1] = y / r;
-        points[i + 2] = z / r;
+        const invDist = 1.0 / Math.hypot(x, y, z);
+        points[i] = invDist * x;
+        points[i + 1] = invDist * y;
+        points[i + 2] = invDist * z;
     }
 }
 
@@ -69,27 +71,27 @@ export class SphericalOptimizerState {
 }
 
 
-export function sphericalStep(newPoints, oldPoints, stepDirection, stepSize) {
+export function sphericalStep(result, points, stepDirection, stepSize) {
 
-    assertNumericArray3D(newPoints);
-    assertNumericArray3D(oldPoints);
+    assertNumericArray3D(result);
+    assertNumericArray3D(points);
     assertNumericArray3D(stepDirection);
     assertFiniteNumber(stepSize);
-    assertSameLength(newPoints, oldPoints);
-    assertSameLength(newPoints, stepDirection);
+    assertSameLength(result, points);
+    assertSameLength(result, stepDirection);
 
-    const numPoints = newPoints.length / 3;
+    const numPoints = result.length / 3;
     for (let i = 0; i < numPoints; i++) {
         const dx = stepSize * stepDirection[3 * i];
         const dy = stepSize * stepDirection[3 * i + 1];
         const dz = stepSize * stepDirection[3 * i + 2];
-        const x = oldPoints[3 * i] + dx;
-        const y = oldPoints[3 * i + 1] + dy;
-        const z = oldPoints[3 * i + 2] + dz;
+        const x = points[3 * i] + dx;
+        const y = points[3 * i + 1] + dy;
+        const z = points[3 * i + 2] + dz;
         const invDist = 1.0 / Math.hypot(x, y, z);
-        newPoints[3 * i] = invDist * x;
-        newPoints[3 * i + 1] = invDist * y;
-        newPoints[3 * i + 2] = invDist * z;
+        result[3 * i] = invDist * x;
+        result[3 * i + 1] = invDist * y;
+        result[3 * i + 2] = invDist * z;
     }
 }
 
@@ -123,7 +125,7 @@ function quadraticLineSearchHelper(energyFunction, state, h, e1, e2) {
     sphericalStep(tempPoints, state.points, state.stepDirection, hQuad);
     const eQuad = energyFunction(tempPoints);
     if (!Number.isFinite(eQuad)) {
-        throw new Error("non-finite energy");
+        throw new TypeError("non-finite energy");
     }
 
     let hBest = 0.0;
@@ -138,7 +140,7 @@ function quadraticLineSearchHelper(energyFunction, state, h, e1, e2) {
     }
     if (e2 < eBest) {
         hBest = h + h;
-        eBest = e2; // eslint-disable-line no-useless-assignment
+        // Omitted: eBest = e2;
     }
     return hBest;
 }
@@ -159,7 +161,7 @@ export function quadraticLineSearch(energyFunction, state, initialStepSize) {
         state.points, state.stepDirection, initialStepSize);
     let trialEnergy = energyFunction(tempPoints);
     if (!Number.isFinite(trialEnergy)) {
-        throw new Error("non-finite energy");
+        throw new TypeError("non-finite energy");
     }
 
     if (trialEnergy <= state.energy) {
@@ -169,7 +171,7 @@ export function quadraticLineSearch(energyFunction, state, initialStepSize) {
             sphericalStep(tempPoints, state.points, state.stepDirection, h2);
             const nextEnergy = energyFunction(tempPoints);
             if (!Number.isFinite(nextEnergy)) {
-                throw new Error("non-finite energy");
+                throw new TypeError("non-finite energy");
             }
             if (nextEnergy > trialEnergy) {
                 return quadraticLineSearchHelper(
@@ -186,7 +188,7 @@ export function quadraticLineSearch(energyFunction, state, initialStepSize) {
             sphericalStep(tempPoints, state.points, state.stepDirection, h1);
             const nextEnergy = energyFunction(tempPoints);
             if (!Number.isFinite(nextEnergy)) {
-                throw new Error("non-finite energy");
+                throw new TypeError("non-finite energy");
             }
             if (nextEnergy <= state.energy) {
                 return quadraticLineSearchHelper(

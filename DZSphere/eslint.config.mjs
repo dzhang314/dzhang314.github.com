@@ -1,11 +1,18 @@
 import { defineConfig } from "eslint/config";
 import globals from "globals";
 import js from "@eslint/js";
+import sonarjs from "eslint-plugin-sonarjs";
+import unicorn from "eslint-plugin-unicorn";
 
 
 export default defineConfig([
     {
-        extends: [js.configs.all], plugins: { js }, rules: {
+        extends: [
+            js.configs.all,
+            sonarjs.configs.recommended,
+            unicorn.configs.all,
+        ],
+        rules: {
             "func-style": ["error", "declaration"],
             "id-length": "off",
             "max-lines-per-function": "off",
@@ -13,12 +20,20 @@ export default defineConfig([
             "max-statements": "off",
             "no-inline-comments": "off",
             "no-magic-numbers": ["error", {
-                "ignore": [-2.0, 0, 0.5, 1, 2, 3, 4, 5, 6, 7, 360.0]
+                ignore: [-2.0, 0, 0.5, 1, 2, 3, 4, 5, 6, 7, 360.0]
             }],
-            "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
-            "no-warning-comments": "off",
+            "no-plusplus": ["error", { allowForLoopAfterthoughts: true }],
+            "no-warning-comments": "warn",
             "one-var": ["error", "never"],
-        }
+            "sonarjs/cognitive-complexity": "warn",
+            "sonarjs/todo-tag": "warn",
+            "unicorn/filename-case": ["error", {
+                case: "pascalCase", ignore: ["eslint.config.mjs"]
+            }],
+            "unicorn/no-zero-fractions": "off",
+            "unicorn/prefer-spread": "off",
+            "unicorn/prevent-abbreviations": "off",
+        },
     },
     { languageOptions: { globals: globals.browser } },
 ]);

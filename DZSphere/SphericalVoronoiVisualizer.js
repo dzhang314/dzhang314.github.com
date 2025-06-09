@@ -48,17 +48,17 @@ export class SphericalVoronoiVisualizer {
         this.controls.autoRotate = true;
 
         this.numPoints = points.length / 3;
-        this.points = new Array(this.numPoints);
+        this.points = Array.from({ length: this.numPoints });
         for (let i = 0; i < this.numPoints; i++) {
             this.points[i] = new THREE.Vector3(
                 points[3 * i], points[3 * i + 1], points[3 * i + 2]);
         }
 
-        const particleGeometry =
-            new THREE.IcosahedronGeometry(PARTICLE_RADIUS, 1);
-        const particleMaterial =
-            new THREE.MeshBasicMaterial({ color: 0x000000 });
-        this.particles = new Array(this.numPoints);
+        const particleGeometry = new THREE.IcosahedronGeometry(
+            PARTICLE_RADIUS, 1);
+        const particleMaterial = new THREE.MeshBasicMaterial(
+            { color: new THREE.Color(0.0, 0.0, 0.0) });
+        this.particles = Array.from({ length: this.numPoints });
         for (let i = 0; i < this.numPoints; i++) {
             const particle = new THREE.Mesh(particleGeometry, particleMaterial);
             particle.position.copy(this.points[i]);
@@ -66,7 +66,7 @@ export class SphericalVoronoiVisualizer {
             this.scene.add(this.particles[i]);
         }
 
-        this.voronoiBuffers = new Array(this.numPoints);
+        this.voronoiBuffers = Array.from({ length: this.numPoints });
         for (let i = 0; i < this.numPoints; i++) {
             const vertices = new Float32Array(3 * (MAX_VORONOI_EDGES + 1));
             vertices[0] = this.particles[i].position.x;
@@ -75,7 +75,7 @@ export class SphericalVoronoiVisualizer {
             this.voronoiBuffers[i] = new THREE.BufferAttribute(vertices, 3);
         }
 
-        this.voronoiCellMaterials = new Array(this.numPoints);
+        this.voronoiCellMaterials = Array.from({ length: this.numPoints });
         for (let i = 0; i < this.numPoints; i++) {
             this.voronoiCellMaterials[i] = new THREE.MeshBasicMaterial({
                 color: VORONOI_COLOR_DEFAULT,
@@ -85,14 +85,14 @@ export class SphericalVoronoiVisualizer {
             });
         }
 
-        const cellIndices = new Array(3 * MAX_VORONOI_EDGES);
+        const cellIndices = Array.from({ length: 3 * MAX_VORONOI_EDGES });
         for (let i = 0; i < MAX_VORONOI_EDGES; i++) {
             cellIndices[3 * i] = 0;
             cellIndices[3 * i + 1] = i + 1;
             cellIndices[3 * i + 2] = i + 2;
         }
         cellIndices[3 * MAX_VORONOI_EDGES - 1] = 1;
-        this.voronoiCells = new Array(this.numPoints);
+        this.voronoiCells = Array.from({ length: this.numPoints });
         for (let i = 0; i < this.numPoints; i++) {
             const geometry = new THREE.BufferGeometry();
             geometry.setIndex(cellIndices);
@@ -102,13 +102,14 @@ export class SphericalVoronoiVisualizer {
             this.scene.add(this.voronoiCells[i]);
         }
 
-        const edgeIndices = new Array(MAX_VORONOI_EDGES + 1);
+        const edgeIndices = Array.from({ length: MAX_VORONOI_EDGES + 1 });
         for (let i = 0; i < MAX_VORONOI_EDGES; i++) {
             edgeIndices[i] = i + 1;
         }
         edgeIndices[MAX_VORONOI_EDGES] = 1;
-        const edgeMaterial = new THREE.LineBasicMaterial({ color: 0x000000 });
-        this.voronoiEdges = new Array(this.numPoints);
+        const edgeMaterial = new THREE.LineBasicMaterial(
+            { color: new THREE.Color(0.0, 0.0, 0.0) });
+        this.voronoiEdges = Array.from({ length: this.numPoints });
         for (let i = 0; i < this.numPoints; i++) {
             const geometry = new THREE.BufferGeometry();
             geometry.setIndex(edgeIndices);
@@ -155,9 +156,9 @@ export class SphericalVoronoiVisualizer {
             faceIndexMap.set(this.hull.faces[i], i);
         }
 
-        const faceVertices = new Array(numFaces);
-        const faceNeighbors = new Array(numFaces);
-        const adjacentFaces = new Array(this.numPoints);
+        const faceVertices = Array.from({ length: numFaces });
+        const faceNeighbors = Array.from({ length: numFaces });
+        const adjacentFaces = Array.from({ length: this.numPoints });
         for (let i = 0; i < this.numPoints; i++) { adjacentFaces[i] = []; }
         for (let i = 0; i < numFaces; i++) {
             const face = this.hull.faces[i];
@@ -190,6 +191,7 @@ export class SphericalVoronoiVisualizer {
                 currentFaceIndex = faceNeighbors[currentFaceIndex][headIndex];
             } while (currentFaceIndex !== firstFaceIndex);
             if (faceCenters.length <= MAX_VORONOI_EDGES) {
+                // eslint-disable-next-line unicorn/no-for-loop
                 for (let j = 0; j < faceCenters.length; j++) {
                     this.voronoiBuffers[i].array[3 * j + 3] = faceCenters[j].x;
                     this.voronoiBuffers[i].array[3 * j + 4] = faceCenters[j].y;
