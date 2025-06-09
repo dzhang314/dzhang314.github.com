@@ -1,26 +1,7 @@
 import { isNumericArray } from "./IsNumericArray.js";
 
 
-export function randomNormalArray(n) {
-
-    if (!(Number.isSafeInteger(n) && (n >= 0))) {
-        throw new RangeError("invalid array length");
-    }
-
-    const result = new Float64Array(n);
-    for (let i = 0; i < n; i += 2) {
-        const r = Math.sqrt(-2 * Math.log(Math.random()));
-        const theta = 2 * Math.PI * Math.random();
-        result[i] = r * Math.cos(theta);
-        result[i + 1] = r * Math.sin(theta);
-        // No bounds check is needed because writes past
-        // the end of a typed array are silently ignored.
-    }
-    return result;
-}
-
-
-export function normalizePoints(points) {
+export function calculateCoulombEnergy(points) {
 
     if (!isNumericArray(points)) {
         throw new TypeError("points must be an array of finite numbers");
@@ -29,15 +10,23 @@ export function normalizePoints(points) {
         throw new RangeError("points must have length divisible by 3");
     }
 
+    let energy = 0.0;
     for (let i = 0; i < points.length; i += 3) {
-        const x = points[i];
-        const y = points[i + 1];
-        const z = points[i + 2];
-        const r = Math.sqrt(x * x + y * y + z * z);
-        points[i] = x / r;
-        points[i + 1] = y / r;
-        points[i + 2] = z / r;
+        const xi = points[i];
+        const yi = points[i + 1];
+        const zi = points[i + 2];
+        for (let j = i + 3; j < points.length; j += 3) {
+            const xj = points[j];
+            const yj = points[j + 1];
+            const zj = points[j + 2];
+            const dx = xi - xj;
+            const dy = yi - yj;
+            const dz = zi - zj;
+            const distSq = dx * dx + dy * dy + dz * dz;
+            energy += 1.0 / Math.sqrt(distSq);
+        }
     }
+    return energy;
 }
 
 
@@ -60,9 +49,9 @@ export function calculateCoulombForces(forces, points) {
     }
 
     for (let i = 0; i < points.length; i += 3) {
-        let fx = 0;
-        let fy = 0;
-        let fz = 0;
+        let fx = 0.0;
+        let fy = 0.0;
+        let fz = 0.0;
         const xi = points[i];
         const yi = points[i + 1];
         const zi = points[i + 2];
@@ -77,7 +66,7 @@ export function calculateCoulombForces(forces, points) {
             const dy = yi - yj;
             const dz = zi - zj;
             const distSq = dx * dx + dy * dy + dz * dz;
-            const invDistCb = 1 / (distSq * Math.sqrt(distSq));
+            const invDistCb = 1.0 / (distSq * Math.sqrt(distSq));
             fx += invDistCb * dx;
             fy += invDistCb * dy;
             fz += invDistCb * dz;
@@ -131,9 +120,9 @@ export function calculateRmsForce(forces) {
         throw new RangeError("forces must have length divisible by 3");
     }
 
-    let result = 0;
+    let sumForceSq = 0.0;
     for (let i = 0; i < forces.length; i++) {
-        result += forces[i] * forces[i];
+        sumForceSq += forces[i] * forces[i];
     }
-    return Math.sqrt(result / (forces.length / 3));
+    return Math.sqrt(sumForceSq / (forces.length / 3.0));
 }

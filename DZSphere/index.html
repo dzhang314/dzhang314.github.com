@@ -29,36 +29,51 @@
 
         import * as THREE from "three";
         import {
-            randomNormalArray, normalizePoints,
-            calculateCoulombForces, constrainForces,
+            calculateCoulombEnergy, calculateCoulombForces, constrainForces,
         } from "./CoulombEnergy.js";
-        import { SphericalVoronoiVisualizer } from "./SphericalVoronoiVisualizer.js";
+        import {
+            randomNormalArray, normalizePoints,
+            SphericalOptimizerState, sphericalStep, quadraticLineSearch,
+        } from "./SphericalOptimizer.js";
+        import {
+            SphericalVoronoiVisualizer
+        } from "./SphericalVoronoiVisualizer.js";
 
         const numPoints = 132;
-        const points = randomNormalArray(3 * numPoints);
-        normalizePoints(points);
-        const forces = new Float64Array(3 * numPoints);
-        calculateCoulombForces(forces, points);
-        constrainForces(forces, points);
+        const initialPoints = randomNormalArray(3 * numPoints);
+        normalizePoints(initialPoints);
+        const initialEnergy = calculateCoulombEnergy(initialPoints);
+        const initialForces = new Float64Array(3 * numPoints);
+        calculateCoulombForces(initialForces, initialPoints);
+        constrainForces(initialForces, initialPoints);
+        const state = new SphericalOptimizerState(
+            initialPoints, initialEnergy, initialForces, initialForces.slice());
 
-        const visualizer = new SphericalVoronoiVisualizer(points);
+        const visualizer = new SphericalVoronoiVisualizer(initialPoints);
         document.body.appendChild(visualizer.domElement);
 
         const clock = new THREE.Clock();
         document.addEventListener('visibilitychange', () => {
-            if (document.hidden) { clock.stop(); } else { clock.start(); }
+            if (document.hidden) {
+                clock.stop();
+            } else {
+                clock.start();
+            }
         });
 
         function animate() {
             requestAnimationFrame(animate);
 
-            for (let i = 0; i < 3 * numPoints; i++) {
-                points[i] += 0.001 * forces[i];
-            }
-            normalizePoints(points);
-            calculateCoulombForces(forces, points);
-            constrainForces(forces, points);
-            visualizer.updatePoints(points);
+            const stepSize = quadraticLineSearch(
+                calculateCoulombEnergy, state, 1.0);
+            sphericalStep(state.points,
+                state.points, state.stepDirection, stepSize);
+            state.energy = calculateCoulombEnergy(state.points);
+            console.log(state.energy);
+            calculateCoulombForces(state.forces, state.points);
+            constrainForces(state.forces, state.points);
+            state.stepDirection.set(state.forces);
+            visualizer.updatePoints(state.points);
             visualizer.updateHull();
 
             visualizer.controls.update(clock.getDelta());

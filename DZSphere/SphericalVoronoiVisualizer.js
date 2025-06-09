@@ -46,7 +46,8 @@ export class SphericalVoronoiVisualizer {
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         window.addEventListener("resize", () => this.onWindowResize());
 
-        this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+        this.controls = new OrbitControls(
+            this.camera, this.renderer.domElement);
         this.controls.enableZoom = false;
         this.controls.enableDamping = true;
         this.controls.autoRotate = true;
@@ -58,8 +59,10 @@ export class SphericalVoronoiVisualizer {
                 points[3 * i], points[3 * i + 1], points[3 * i + 2]);
         }
 
-        const particleGeometry = new THREE.IcosahedronGeometry(PARTICLE_RADIUS, 1);
-        const particleMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 });
+        const particleGeometry =
+            new THREE.IcosahedronGeometry(PARTICLE_RADIUS, 1);
+        const particleMaterial =
+            new THREE.MeshBasicMaterial({ color: 0x000000 });
         this.particles = new Array(this.numPoints);
         for (let i = 0; i < this.numPoints; i++) {
             const particle = new THREE.Mesh(particleGeometry, particleMaterial);
