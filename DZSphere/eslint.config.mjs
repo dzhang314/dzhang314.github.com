@@ -33,6 +33,7 @@ export default defineConfig([
                 case: "pascalCase", ignore: ["eslint.config.mjs", "index.html"]
             }],
             "unicorn/no-keyword-prefix": ["error", { checkProperties: false }],
+            "unicorn/no-null": "off",
             "unicorn/no-zero-fractions": "off",
             "unicorn/prefer-spread": "off",
             "unicorn/prevent-abbreviations": "off",

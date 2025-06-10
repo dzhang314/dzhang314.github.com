@@ -125,6 +125,7 @@ export class SphericalVoronoiVisualizer {
         this.controls.enableDamping = true;
         this.controls.enablePan = false;
         this.controls.enableZoom = false;
+        this.controls.touches.TWO = null;
 
         /* Begin constructing scene. */
         this.scene = new THREE.Scene();
