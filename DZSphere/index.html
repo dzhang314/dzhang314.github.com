@@ -4,14 +4,29 @@
 <head>
     <meta charset="utf-8">
     <title>DZSphere</title>
-    <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="viewport" width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
     <meta name="theme-color" content="#000000">
     <style>
         body {
             margin: 0;
             overflow: hidden;
+        }
+
+        #grid-container {
+            width: 100vw;
+            height: 100vh;
             background-color: #000000;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+        }
+
+        .grid-item {
+            width: 100%;
+            height: 100%;
+            background-color: #000000;
+            overflow: hidden;
         }
     </style>
     <script type="importmap">
@@ -25,32 +40,32 @@
 </head>
 
 <body>
+    <div id="grid-container"></div>
     <script type="module">
-
         import * as THREE from "three";
         import {
-            SphericalOptimizerState, normalizePoints,
-            quadraticLineSearch, randomNormalArray, sphericalStep,
+            normalizePoints, randomNormalArray,
         } from "./SphericalOptimizer.js";
-        import {
-            calculateCoulombEnergy, calculateCoulombForces, constrainForces,
-        } from "./CoulombEnergy.js";
         import {
             SphericalVoronoiVisualizer
         } from "./SphericalVoronoiVisualizer.js";
 
-        const numPoints = 132;
-        const initialPoints = randomNormalArray(3 * numPoints);
-        normalizePoints(initialPoints);
-        const initialEnergy = calculateCoulombEnergy(initialPoints);
-        const initialForces = new Float64Array(3 * numPoints);
-        calculateCoulombForces(initialForces, initialPoints);
-        constrainForces(initialForces, initialPoints);
-        const state = new SphericalOptimizerState(
-            initialPoints, initialEnergy, initialForces, initialForces.slice());
+        const gridContainer = document.querySelector("#grid-container");
+        const gridStyle = getComputedStyle(gridContainer);
+        const numRows = gridStyle.gridTemplateRows.split(' ').length;
+        const numCols = gridStyle.gridTemplateColumns.split(' ').length;
 
-        const visualizer = new SphericalVoronoiVisualizer(initialPoints);
-        document.body.append(visualizer.domElement);
+        const numPoints = 132;
+        const visualizers = [];
+        for (let i = 0; i < numRows * numCols; ++i) {
+            const gridItem = document.createElement("div");
+            gridItem.className = "grid-item";
+            gridContainer.append(gridItem);
+            const initialPoints = randomNormalArray(3 * numPoints);
+            normalizePoints(initialPoints);
+            visualizers.push(new SphericalVoronoiVisualizer(
+                initialPoints, gridItem));
+        }
 
         const clock = new THREE.Clock();
         document.addEventListener('visibilitychange', () => {
@@ -63,25 +78,14 @@
 
         function animate() {
             requestAnimationFrame(animate);
-
-            const stepSize = quadraticLineSearch(
-                calculateCoulombEnergy, state, 1.0);
-            sphericalStep(state.points,
-                state.points, state.stepDirection, stepSize);
-            state.energy = calculateCoulombEnergy(state.points);
-            console.log(state.energy);
-            calculateCoulombForces(state.forces, state.points);
-            constrainForces(state.forces, state.points);
-            state.stepDirection.set(state.forces);
-            visualizer.updatePoints(state.points);
-            visualizer.updateHull();
-
-            visualizer.controls.update(clock.getDelta());
-            visualizer.renderer.render(visualizer.scene, visualizer.camera);
+            const dt = clock.getDelta();
+            for (const visualizer of visualizers) {
+                visualizer.controls.update(dt);
+                visualizer.renderer.render(visualizer.scene, visualizer.camera);
+            }
         }
 
         animate();
-
     </script>
 </body>
 

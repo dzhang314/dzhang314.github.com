@@ -1,12 +1,13 @@
 import * as THREE from "three";
-import { ConvexHull } from "three/addons/math/ConvexHull.js";
+import { ConvexHull, Face } from "three/addons/math/ConvexHull.js";
+import {
+    assertArrayOf, assertHTMLElement,
+    assertNumericArray3D, assertPositiveNumber,
+} from "./InputValidation.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-import { assertNumericArray3D } from "./InputValidation.js";
 
-
-const Z_OFFSET = 15;
-const PARTICLE_RADIUS = 0.02;
+const OUTLINE_SCALE = 1.0 + 0.5 ** 10; // eslint-disable-line no-magic-numbers
 const MAX_VORONOI_EDGES = 12;
 const VORONOI_COLOR_DEFAULT = new THREE.Color(1.0, 1.0, 1.0);
 const VORONOI_COLOR_MAP = new Map([
@@ -17,36 +18,77 @@ const VORONOI_COLOR_MAP = new Map([
 ]);
 
 
+function computeDualPolyhedron(vertices, faces) {
+
+    assertArrayOf(vertices, THREE.Vector3);
+    assertArrayOf(faces, Face);
+
+    /* Assign indices to vertices and faces. */
+    const vertexMap = new Map();
+    for (const [i, vertex] of vertices.entries()) { vertexMap.set(vertex, i); }
+    const faceMap = new Map();
+    for (const [i, face] of faces.entries()) { faceMap.set(face, i); }
+
+    /* To compute the dual of a convex polyhedron, we need to extract:
+     * (1) The list of faces incident to each vertex. */
+    const vertexFaceIndices = Array.from({ length: vertices.length });
+    for (let i = 0; i < vertices.length; i++) { vertexFaceIndices[i] = []; }
+    /* (2) The list of vertices incident to each face. */
+    const faceVertexIndices = Array.from({ length: faces.length });
+    for (let i = 0; i < faces.length; i++) { faceVertexIndices[i] = []; }
+    /* (3) The list of faces adjacent to each face. */
+    const faceNeighborIndices = Array.from({ length: faces.length });
+    for (let i = 0; i < faces.length; i++) { faceNeighborIndices[i] = []; }
+
+    for (const [i, face] of faces.entries()) {
+        /* THREE.js represents each face as a linked list of half-edges. */
+        let currentEdge = face.edge;
+        do {
+            const headIndex = vertexMap.get(currentEdge.vertex.point);
+            vertexFaceIndices[headIndex].push(i);
+            faceVertexIndices[i].push(headIndex);
+            const adjacentFaceIndex = faceMap.get(currentEdge.twin.face);
+            faceNeighborIndices[i].push(adjacentFaceIndex);
+            currentEdge = currentEdge.next;
+        } while (currentEdge !== face.edge);
+    }
+
+    /* For each vertex of the original polyhedron, we construct
+     * the corresponding face of the dual polyhedron. */
+    const dualFaces = Array.from({ length: vertices.length });
+    for (let i = 0; i < vertices.length; i++) { dualFaces[i] = []; }
+    for (let i = 0; i < vertices.length; i++) {
+        /* We represent each face of the dual polyhedron as a list of dual
+         * vertices, each of which is a face of the original polyhedron. */
+        if (vertexFaceIndices[i].length > 0) {
+            const [firstFaceIndex] = vertexFaceIndices[i];
+            let currentFaceIndex = firstFaceIndex;
+            do {
+                const dualVertex = faceVertexIndices[currentFaceIndex];
+                dualFaces[i].push(dualVertex);
+                const neighborIndices = faceNeighborIndices[currentFaceIndex];
+                currentFaceIndex = neighborIndices[dualVertex.indexOf(i)];
+            } while (currentFaceIndex !== firstFaceIndex);
+        }
+    }
+
+    return dualFaces;
+}
+
+
 export class SphericalVoronoiVisualizer {
 
 
-    constructor(points) {
+    // eslint-disable-next-line no-magic-numbers
+    constructor(points, container, particleRadius = 0.02, zOffset = 15) {
 
         assertNumericArray3D(points);
+        assertHTMLElement(container);
+        assertPositiveNumber(particleRadius);
+        assertPositiveNumber(zOffset);
 
-        this.scene = new THREE.Scene();
-
-        // TODO: Add configurable lighting parameters.
-        this.scene.add(new THREE.AmbientLight());
-
-        // TODO: Add configurable camera parameters.
-        const r = 1.0 + PARTICLE_RADIUS;
-        this.fovAngle = (360.0 / Math.PI) * Math.asin(r / Z_OFFSET);
-        const fovFactor = Math.max(1.0, window.innerHeight / window.innerWidth);
-        this.camera = new THREE.PerspectiveCamera(fovFactor * this.fovAngle,
-            window.innerWidth / window.innerHeight, Z_OFFSET - r, Z_OFFSET + r);
-        this.camera.position.z = Z_OFFSET;
-
-        this.renderer = new THREE.WebGLRenderer({ antialias: true });
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
-        window.addEventListener("resize", () => this.onWindowResize());
-
-        this.controls = new OrbitControls(
-            this.camera, this.renderer.domElement);
-        this.controls.enableZoom = false;
-        this.controls.enableDamping = true;
-        this.controls.autoRotate = true;
-
+        /* Convert points from a flat array of (x, y, z)
+         * coordinates to an array of THREE.Vector3 objects. */
         this.numPoints = points.length / 3;
         this.points = Array.from({ length: this.numPoints });
         for (let i = 0; i < this.numPoints; i++) {
@@ -54,8 +96,42 @@ export class SphericalVoronoiVisualizer {
                 points[3 * i], points[3 * i + 1], points[3 * i + 2]);
         }
 
+        /* Extract container dimensions. */
+        this.container = container;
+        const width = this.container.clientWidth;
+        const height = this.container.clientHeight;
+
+        /* Initialize renderer and attach to container. */
+        this.renderer = new THREE.WebGLRenderer({ antialias: true });
+        this.renderer.setSize(width, height);
+        this.container.append(this.renderer.domElement);
+        this.resizeObserver = new ResizeObserver(
+            () => this.onContainerResize());
+        this.resizeObserver.observe(this.container);
+
+        /* Initialize camera with FOV computed to inscribe
+         * a sphere of radius r at distance zOffset. */
+        const r = 1.0 + particleRadius;
+        this.fovAngle = (360.0 / Math.PI) * Math.asin(r / zOffset);
+        this.camera = new THREE.PerspectiveCamera(
+            Math.max(1.0, height / width) * this.fovAngle,
+            width / height, zOffset - r, zOffset + r);
+        this.camera.position.z = zOffset;
+
+        /* Initialize controls. */
+        this.controls = new OrbitControls(
+            this.camera, this.renderer.domElement);
+        this.controls.enableZoom = false;
+        this.controls.enableDamping = true;
+        this.controls.autoRotate = true;
+
+        /* Begin constructing scene. */
+        this.scene = new THREE.Scene();
+        this.scene.add(new THREE.AmbientLight());
+
+        /* Add particles to scene. */
         const particleGeometry = new THREE.IcosahedronGeometry(
-            PARTICLE_RADIUS, 1);
+            particleRadius, 1);
         const particleMaterial = new THREE.MeshBasicMaterial(
             { color: new THREE.Color(0.0, 0.0, 0.0) });
         this.particles = Array.from({ length: this.numPoints });
@@ -66,25 +142,34 @@ export class SphericalVoronoiVisualizer {
             this.scene.add(this.particles[i]);
         }
 
+        /* Set up necessary data structures to compute Voronoi cells. */
+        this.hull = new ConvexHull();
+        this.hull.setFromPoints(this.points);
+        this.voronoiCellIndices = computeDualPolyhedron(
+            this.points, this.hull.faces);
+
         this.voronoiBuffers = Array.from({ length: this.numPoints });
         for (let i = 0; i < this.numPoints; i++) {
             const vertices = new Float32Array(3 * (MAX_VORONOI_EDGES + 1));
-            vertices[0] = this.particles[i].position.x;
-            vertices[1] = this.particles[i].position.y;
-            vertices[2] = this.particles[i].position.z;
+            vertices[0] = this.points[i].x;
+            vertices[1] = this.points[i].y;
+            vertices[2] = this.points[i].z;
             this.voronoiBuffers[i] = new THREE.BufferAttribute(vertices, 3);
         }
-
         this.voronoiCellMaterials = Array.from({ length: this.numPoints });
         for (let i = 0; i < this.numPoints; i++) {
             this.voronoiCellMaterials[i] = new THREE.MeshBasicMaterial({
                 color: VORONOI_COLOR_DEFAULT,
                 opacity: 1.0,
-                side: THREE.DoubleSide,
+                side: THREE.FrontSide,
                 transparent: true,
             });
         }
 
+        /* Compute Voronoi cells. */
+        this.updateVoronoiCells();
+
+        /* Add Voronoi cells to scene. */
         const cellIndices = Array.from({ length: 3 * MAX_VORONOI_EDGES });
         for (let i = 0; i < MAX_VORONOI_EDGES; i++) {
             cellIndices[3 * i] = 0;
@@ -97,32 +182,32 @@ export class SphericalVoronoiVisualizer {
             const geometry = new THREE.BufferGeometry();
             geometry.setIndex(cellIndices);
             geometry.setAttribute("position", this.voronoiBuffers[i]);
+            geometry.setAttribute("normal", this.voronoiBuffers[i]);
             this.voronoiCells[i] = new THREE.Mesh(
                 geometry, this.voronoiCellMaterials[i]);
             this.scene.add(this.voronoiCells[i]);
         }
 
-        const edgeIndices = Array.from({ length: MAX_VORONOI_EDGES + 1 });
+        /* Add outlines of Voronoi cells to scene. */
+        const outlineIndices = Array.from({ length: MAX_VORONOI_EDGES + 1 });
         for (let i = 0; i < MAX_VORONOI_EDGES; i++) {
-            edgeIndices[i] = i + 1;
+            outlineIndices[i] = i + 1;
         }
-        edgeIndices[MAX_VORONOI_EDGES] = 1;
-        const edgeMaterial = new THREE.LineBasicMaterial(
+        outlineIndices[MAX_VORONOI_EDGES] = 1;
+        const outlineMaterial = new THREE.LineBasicMaterial(
             { color: new THREE.Color(0.0, 0.0, 0.0) });
-        this.voronoiEdges = Array.from({ length: this.numPoints });
+        this.voronoiOutlines = Array.from({ length: this.numPoints });
         for (let i = 0; i < this.numPoints; i++) {
             const geometry = new THREE.BufferGeometry();
-            geometry.setIndex(edgeIndices);
+            geometry.setIndex(outlineIndices);
             geometry.setAttribute("position", this.voronoiBuffers[i]);
-            this.voronoiEdges[i] = new THREE.Line(geometry, edgeMaterial);
-            this.scene.add(this.voronoiEdges[i]);
+            this.voronoiOutlines[i] = new THREE.Line(geometry, outlineMaterial);
+            this.voronoiOutlines[i].scale.set(
+                OUTLINE_SCALE, OUTLINE_SCALE, OUTLINE_SCALE);
+            this.scene.add(this.voronoiOutlines[i]);
         }
 
-        this.hull = new ConvexHull();
     }
-
-
-    get domElement() { return this.renderer.domElement; }
 
 
     updatePoints(points) {
@@ -143,86 +228,63 @@ export class SphericalVoronoiVisualizer {
 
 
     updateHull() {
-
         this.hull.setFromPoints(this.points);
-        const numFaces = this.hull.faces.length;
+        this.voronoiCellIndices = computeDualPolyhedron(
+            this.points, this.hull.faces);
+    }
 
-        const pointIndexMap = new Map();
+
+    updateVoronoiCells() {
         for (let i = 0; i < this.numPoints; i++) {
-            pointIndexMap.set(this.points[i], i);
-        }
-        const faceIndexMap = new Map();
-        for (let i = 0; i < numFaces; i++) {
-            faceIndexMap.set(this.hull.faces[i], i);
-        }
-
-        const faceVertices = Array.from({ length: numFaces });
-        const faceNeighbors = Array.from({ length: numFaces });
-        const adjacentFaces = Array.from({ length: this.numPoints });
-        for (let i = 0; i < this.numPoints; i++) { adjacentFaces[i] = []; }
-        for (let i = 0; i < numFaces; i++) {
-            const face = this.hull.faces[i];
-            const vertices = [];
-            const neighbors = [];
-            let currentEdge = face.edge;
-            do {
-                const headIndex = pointIndexMap.get(currentEdge.vertex.point);
-                vertices.push(headIndex);
-                neighbors.push(faceIndexMap.get(currentEdge.twin.face));
-                adjacentFaces[headIndex].push(i);
-                currentEdge = currentEdge.next;
-            } while (currentEdge !== face.edge);
-            faceVertices[i] = vertices;
-            faceNeighbors[i] = neighbors;
-        }
-
-        for (let i = 0; i < this.numPoints; i++) {
-            const [firstFaceIndex] = adjacentFaces[i];
-            let currentFaceIndex = firstFaceIndex;
-            const faceCenters = [];
-            do {
-                // TODO: We should compute the circumcenter of the face.
-                const vertexIndices = faceVertices[currentFaceIndex];
-                const center = new THREE.Vector3();
-                for (const j of vertexIndices) { center.add(this.points[j]); }
-                center.normalize();
-                faceCenters.push(center);
-                const headIndex = vertexIndices.indexOf(i);
-                currentFaceIndex = faceNeighbors[currentFaceIndex][headIndex];
-            } while (currentFaceIndex !== firstFaceIndex);
-            if (faceCenters.length <= MAX_VORONOI_EDGES) {
-                // eslint-disable-next-line unicorn/no-for-loop
-                for (let j = 0; j < faceCenters.length; j++) {
-                    this.voronoiBuffers[i].array[3 * j + 3] = faceCenters[j].x;
-                    this.voronoiBuffers[i].array[3 * j + 4] = faceCenters[j].y;
-                    this.voronoiBuffers[i].array[3 * j + 5] = faceCenters[j].z;
+            const vertexList = [];
+            for (const indices of this.voronoiCellIndices[i]) {
+                if (indices.length !== 3) {
+                    console.log("WARNING: Non-triangular Voronoi cell")
                 }
-                for (let j = faceCenters.length; j < MAX_VORONOI_EDGES; j++) {
-                    this.voronoiBuffers[i].array[3 * j + 3] = faceCenters[0].x;
-                    this.voronoiBuffers[i].array[3 * j + 4] = faceCenters[0].y;
-                    this.voronoiBuffers[i].array[3 * j + 5] = faceCenters[0].z;
+                const circumcenter = new THREE.Vector3();
+                for (let j = 0; j < indices.length; j++) {
+                    const x = this.points[indices[j]];
+                    const y = this.points[indices[(j + 1) % indices.length]];
+                    circumcenter.add(x.clone().cross(y));
+                }
+                circumcenter.normalize();
+                vertexList.push(circumcenter);
+            }
+            const vertexBuffer = this.voronoiBuffers[i].array;
+            if (vertexList.length <= MAX_VORONOI_EDGES) {
+                // eslint-disable-next-line unicorn/no-for-loop
+                for (let j = 0; j < vertexList.length; j++) {
+                    vertexBuffer[3 * j + 3] = vertexList[j].x;
+                    vertexBuffer[3 * j + 4] = vertexList[j].y;
+                    vertexBuffer[3 * j + 5] = vertexList[j].z;
+                }
+                for (let j = vertexList.length; j < MAX_VORONOI_EDGES; j++) {
+                    vertexBuffer[3 * j + 3] = vertexList[0].x;
+                    vertexBuffer[3 * j + 4] = vertexList[0].y;
+                    vertexBuffer[3 * j + 5] = vertexList[0].z;
                 }
             } else {
                 for (let j = 0; j < MAX_VORONOI_EDGES; j++) {
-                    this.voronoiBuffers[i].array[3 * j + 3] = 0;
-                    this.voronoiBuffers[i].array[3 * j + 4] = 0;
-                    this.voronoiBuffers[i].array[3 * j + 5] = 0;
+                    vertexBuffer[3 * j + 3] = 0;
+                    vertexBuffer[3 * j + 4] = 0;
+                    vertexBuffer[3 * j + 5] = 0;
                 }
             }
             this.voronoiBuffers[i].needsUpdate = true;
             this.voronoiCellMaterials[i].color =
-                VORONOI_COLOR_MAP.get(faceCenters.length) ??
+                VORONOI_COLOR_MAP.get(vertexList.length) ??
                 VORONOI_COLOR_DEFAULT;
         }
     }
 
 
-    onWindowResize() {
-        const fovFactor = Math.max(1.0, window.innerHeight / window.innerWidth);
-        this.camera.fov = fovFactor * this.fovAngle;
-        this.camera.aspect = window.innerWidth / window.innerHeight;
+    onContainerResize() {
+        const width = this.container.clientWidth;
+        const height = this.container.clientHeight;
+        this.camera.aspect = width / height;
+        this.camera.fov = Math.max(1.0, height / width) * this.fovAngle;
         this.camera.updateProjectionMatrix();
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.renderer.setSize(width, height);
     }
 
 
