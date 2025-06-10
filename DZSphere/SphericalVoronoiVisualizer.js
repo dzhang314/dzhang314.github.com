@@ -127,7 +127,6 @@ export class SphericalVoronoiVisualizer {
 
         /* Begin constructing scene. */
         this.scene = new THREE.Scene();
-        this.scene.add(new THREE.AmbientLight());
 
         /* Add particles to scene. */
         const particleGeometry = new THREE.IcosahedronGeometry(
@@ -239,7 +238,7 @@ export class SphericalVoronoiVisualizer {
             const vertexList = [];
             for (const indices of this.voronoiCellIndices[i]) {
                 if (indices.length !== 3) {
-                    console.log("WARNING: Non-triangular Voronoi cell")
+                    console.log("WARNING: Non-triangular Voronoi cell!");
                 }
                 const circumcenter = new THREE.Vector3();
                 for (let j = 0; j < indices.length; j++) {
