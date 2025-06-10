@@ -121,9 +121,10 @@ export class SphericalVoronoiVisualizer {
         /* Initialize controls. */
         this.controls = new OrbitControls(
             this.camera, this.renderer.domElement);
-        this.controls.enableZoom = false;
-        this.controls.enableDamping = true;
         this.controls.autoRotate = true;
+        this.controls.enableDamping = true;
+        this.controls.enablePan = false;
+        this.controls.enableZoom = false;
 
         /* Begin constructing scene. */
         this.scene = new THREE.Scene();
