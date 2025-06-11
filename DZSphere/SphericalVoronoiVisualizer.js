@@ -240,7 +240,7 @@ export class SphericalVoronoiVisualizer {
             const vertexList = [];
             for (const indices of this.voronoiCellIndices[i]) {
                 if (indices.length !== 3) {
-                    console.log("WARNING: Non-triangular Voronoi cell!");
+                    console.log("WARNING: Non-triangular face in convex hull!");
                 }
                 const circumcenter = new THREE.Vector3();
                 for (let j = 0; j < indices.length; j++) {
