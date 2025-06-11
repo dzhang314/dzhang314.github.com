@@ -1,9 +1,11 @@
+/** @typedef {import("./InputValidation.js").NumericArray} NumericArray */
 import {
     assertFiniteNumber, assertNumericArray3D,
     assertSameLength, assertValidLength,
 } from "./InputValidation.js";
 
 
+/** @param {number} n @returns {Float64Array} */
 export function randomNormalArray(n) {
 
     assertValidLength(n);
@@ -23,6 +25,7 @@ export function randomNormalArray(n) {
 }
 
 
+/** @param {NumericArray} points @returns {void} */
 export function normalizePoints(points) {
 
     assertNumericArray3D(points);
@@ -42,6 +45,12 @@ export function normalizePoints(points) {
 export class SphericalOptimizerState {
 
 
+    /**
+     * @param {NumericArray} points
+     * @param {number} energy
+     * @param {NumericArray} forces
+     * @param {NumericArray} stepDirection
+     */
     constructor(points, energy, forces, stepDirection) {
 
         assertNumericArray3D(points);
@@ -51,15 +60,25 @@ export class SphericalOptimizerState {
         assertSameLength(points, forces);
         assertSameLength(points, stepDirection);
 
+        /** @public @type {number} */
         this.numPoints = points.length / 3;
+
+        /** @public @type {NumericArray} */
         this.points = points;
+
+        /** @public @type {number} */
         this.energy = energy;
+
+        /** @public @type {NumericArray} */
         this.forces = forces;
+
+        /** @public @type {NumericArray} */
         this.stepDirection = stepDirection;
 
     }
 
 
+    /** @returns {SphericalOptimizerState} */
     clone() {
         return new SphericalOptimizerState(
             this.points.slice(), this.energy,
@@ -71,6 +90,13 @@ export class SphericalOptimizerState {
 }
 
 
+/**
+ * @param {NumericArray} result
+ * @param {NumericArray} points
+ * @param {NumericArray} stepDirection
+ * @param {number} stepSize
+ * @returns {void}
+ */
 export function sphericalStep(result, points, stepDirection, stepSize) {
 
     assertNumericArray3D(result);
@@ -96,14 +122,16 @@ export function sphericalStep(result, points, stepDirection, stepSize) {
 }
 
 
+/**
+ * @param {(points: NumericArray) => number} energyFunction
+ * @param {SphericalOptimizerState} state
+ * @param {number} h
+ * @param {number} e1
+ * @param {number} e2
+ * @returns {number}
+ */
 function quadraticLineSearchHelper(energyFunction, state, h, e1, e2) {
 
-    if (typeof energyFunction !== "function") {
-        throw new TypeError("energyFunction must be a function");
-    }
-    if (!(state instanceof SphericalOptimizerState)) {
-        throw new TypeError("state must be a SphericalOptimizerState");
-    }
     assertFiniteNumber(h); // TODO: Should we assert positivity?
     assertFiniteNumber(e1);
     assertFiniteNumber(e2);
@@ -121,7 +149,7 @@ function quadraticLineSearchHelper(energyFunction, state, h, e1, e2) {
     const denominator = (d3 + d3);
     const numerator = d3 - (d1 + d1);
     const hQuad = (numerator / denominator) * h;
-    const tempPoints = new state.points.constructor(3 * state.numPoints);
+    const tempPoints = new Float64Array(3 * state.numPoints);
     sphericalStep(tempPoints, state.points, state.stepDirection, hQuad);
     const eQuad = energyFunction(tempPoints);
     if (!Number.isFinite(eQuad)) {
@@ -146,6 +174,12 @@ function quadraticLineSearchHelper(energyFunction, state, h, e1, e2) {
 }
 
 
+/**
+ * @param {(points: NumericArray) => number} energyFunction
+ * @param {SphericalOptimizerState} state
+ * @param {number} initialStepSize
+ * @returns {number}
+ */
 export function quadraticLineSearch(energyFunction, state, initialStepSize) {
 
     if (typeof energyFunction !== "function") {
@@ -156,7 +190,7 @@ export function quadraticLineSearch(energyFunction, state, initialStepSize) {
     }
     assertFiniteNumber(initialStepSize); // TODO: Should we assert positivity?
 
-    const tempPoints = new state.points.constructor(3 * state.numPoints);
+    const tempPoints = new Float64Array(3 * state.numPoints);
     sphericalStep(tempPoints,
         state.points, state.stepDirection, initialStepSize);
     let trialEnergy = energyFunction(tempPoints);

@@ -2,7 +2,18 @@
 import { assertNumericArray3D, assertSameLength } from "./InputValidation.js";
 
 
-/** @param {NumericArray} points @returns {number} */
+/**
+ * Compute the Coulomb (electrostatic) energy of a configuration of unit point
+ * charges in 3D Euclidean space. The energy is computed in natural units
+ * where the Coulomb constant k = 1 / (4 * pi * epsilon_0) is set to 1.
+ *
+ * @param {NumericArray} points - The coordinates of the point charges in the
+ * format [x_0, y_0, z_0, x_1, y_1, z_1, ...]. All point charges are assumed to
+ * have unit charge (q = 1).
+ *
+ * @returns {number} The Coulomb (electrostatic) energy of the point charge
+ * configuration in natural units.
+ */
 export function calculateCoulombEnergy(points) {
 
     assertNumericArray3D(points);
@@ -27,7 +38,23 @@ export function calculateCoulombEnergy(points) {
 }
 
 
-/** @param {NumericArray} forces @param {NumericArray} points @returns {void} */
+/**
+ * Compute the Coulomb (electrostatic) forces on a configuration of unit point
+ * charges in 3D Euclidean space. The forces are computed in natural units
+ * where the Coulomb constant k = 1 / (4 * pi * epsilon_0) is set to 1.
+ *
+ * The computation is performed in-place on a preallocated output array.
+ *
+ * @param {NumericArray} forces - Preallocated output array to contain the
+ * forces on the point charges in natural units. The forces are returned in the
+ * format [F0_x, F0_y, F0_z, F1_x, F1_y, F1_z, ...].
+ *
+ * @param {NumericArray} points - The coordinates of the point charges in the
+ * format [x_0, y_0, z_0, x_1, y_1, z_1, ...]. All point charges are assumed to
+ * have unit charge (q = 1).
+ *
+ * @returns {void}
+ */
 export function calculateCoulombForces(forces, points) {
 
     assertNumericArray3D(forces);

@@ -1,4 +1,11 @@
-/** @param {number} x @returns {void} */
+/**
+ * Throw a TypeError unless the input is a finite number
+ * (i.e., a number other than Infinity, -Infinity, or NaN).
+ *
+ * @param {number} x - The input to check.
+ *
+ * @returns {void}
+ */
 export function assertFiniteNumber(x) {
     if (!Number.isFinite(x)) {
         throw new TypeError("input must be a finite number")
@@ -6,31 +13,30 @@ export function assertFiniteNumber(x) {
 }
 
 
-/** @param {number} x @returns {void} */
+/**
+ * Throw a TypeError unless the input is a positive number.
+ *
+ * @param {number} x - The input to check.
+ *
+ * @returns {void}
+ */
 export function assertPositiveNumber(x) {
-    if (!(Number.isFinite(x) && (x > 0))) {
+    if (!(x > 0)) {
         throw new TypeError("input must be a positive number")
     }
 }
 
 
-/** @param {number} n @returns {void} */
+/**
+ * Throw a TypeError unless the input is a non-negative safe integer.
+ *
+ * @param {number} n - The input to check.
+ *
+ * @returns {void}
+ */
 export function assertValidLength(n) {
     if (!(Number.isSafeInteger(n) && (n >= 0))) {
         throw new RangeError("invalid array length");
-    }
-}
-
-
-/** @param {any} x @param {any} T @returns {void} */
-export function assertArrayOf(x, T) {
-    if (!Array.isArray(x)) {
-        throw new TypeError("input must be an array");
-    }
-    for (const entry of x) {
-        if (!(entry instanceof T)) {
-            throw new TypeError(`input must be an array of ${T.name}`);
-        }
     }
 }
 

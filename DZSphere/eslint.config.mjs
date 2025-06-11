@@ -16,6 +16,7 @@ export default defineConfig([
         rules: {
             "func-style": ["error", "declaration"],
             "id-length": "off",
+            "max-lines": "off",
             "max-lines-per-function": "off",
             "max-params": "off",
             "max-statements": "off",
@@ -25,9 +26,11 @@ export default defineConfig([
                 ignore: [-2.0, 0, 0.5, 1, 2, 3, 4, 5, 6, 7, 360.0]
             }],
             "no-plusplus": ["error", { allowForLoopAfterthoughts: true }],
+            "no-undefined": "off",
             "no-warning-comments": "warn",
             "one-var": ["error", "never"],
             "sonarjs/cognitive-complexity": "warn",
+            "sonarjs/no-inverted-boolean-check": "off",
             "sonarjs/todo-tag": "warn",
             "unicorn/filename-case": ["error", {
                 case: "pascalCase", ignore: ["eslint.config.mjs", "index.html"]
