@@ -1,3 +1,4 @@
+/** @param {number} x @returns {void} */
 export function assertFiniteNumber(x) {
     if (!Number.isFinite(x)) {
         throw new TypeError("input must be a finite number")
@@ -5,6 +6,7 @@ export function assertFiniteNumber(x) {
 }
 
 
+/** @param {number} x @returns {void} */
 export function assertPositiveNumber(x) {
     if (!(Number.isFinite(x) && (x > 0))) {
         throw new TypeError("input must be a positive number")
@@ -12,6 +14,7 @@ export function assertPositiveNumber(x) {
 }
 
 
+/** @param {number} n @returns {void} */
 export function assertValidLength(n) {
     if (!(Number.isSafeInteger(n) && (n >= 0))) {
         throw new RangeError("invalid array length");
@@ -19,6 +22,7 @@ export function assertValidLength(n) {
 }
 
 
+/** @param {any} x @param {any} T @returns {void} */
 export function assertArrayOf(x, T) {
     if (!Array.isArray(x)) {
         throw new TypeError("input must be an array");
@@ -31,6 +35,10 @@ export function assertArrayOf(x, T) {
 }
 
 
+/** @typedef {number[] | Float32Array | Float64Array} NumericArray */
+
+
+/** @param {NumericArray} x @returns {boolean} */
 function isNumericArray(x) {
     if (!(
         Array.isArray(x) ||
@@ -46,6 +54,7 @@ function isNumericArray(x) {
 }
 
 
+/** @param {NumericArray} x @returns {void} */
 export function assertNumericArray3D(x) {
     if (!isNumericArray(x)) {
         throw new TypeError("input must be an array of finite numbers");
@@ -56,6 +65,7 @@ export function assertNumericArray3D(x) {
 }
 
 
+/** @param {NumericArray} x @param {NumericArray} y @returns {void} */
 export function assertSameLength(x, y) {
     if (x.length !== y.length) {
         throw new RangeError("inputs must have the same length");
@@ -63,6 +73,7 @@ export function assertSameLength(x, y) {
 }
 
 
+/** @param {HTMLElement} x @returns {void} */
 export function assertHTMLElement(x) {
     if (!(x instanceof HTMLElement)) {
         throw new TypeError("input must be an HTMLElement");
