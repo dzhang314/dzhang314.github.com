@@ -1,4 +1,4 @@
-/** @typedef {import("./InputValidation.js").NumericArray} NumericArray */
+/** @import { NumericArray } from "./InputValidation.js" */
 import { assertNumericArray3D, assertSameLength } from "./InputValidation.js";
 
 
@@ -91,7 +91,11 @@ export function calculateCoulombForces(forces, points) {
 }
 
 
-/** @param {NumericArray} forces @param {NumericArray} points @returns {void} */
+/**
+ * @param {NumericArray} forces
+ * @param {NumericArray} points
+ * @returns {void}
+ */
 export function constrainForces(forces, points) {
 
     assertNumericArray3D(forces);
@@ -114,14 +118,18 @@ export function constrainForces(forces, points) {
 }
 
 
-/** @param {NumericArray} forces @returns {number} */
+/**
+ * @param {NumericArray} forces
+ * @returns {number}
+ */
 export function calculateRmsForce(forces) {
 
     assertNumericArray3D(forces);
 
+    const numForces = forces.length / 3;
     let sumForceSq = 0.0;
     for (const entry of forces) {
         sumForceSq += entry * entry;
     }
-    return Math.sqrt(sumForceSq / (forces.length / 3.0));
+    return Math.sqrt(sumForceSq / numForces);
 }

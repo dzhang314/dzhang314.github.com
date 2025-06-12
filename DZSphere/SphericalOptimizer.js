@@ -1,4 +1,4 @@
-/** @typedef {import("./InputValidation.js").NumericArray} NumericArray */
+/** @import { NumericArray } from "./InputValidation.js" */
 import {
     assertFiniteNumber, assertNumericArray3D,
     assertSameLength, assertValidLength,

@@ -1,11 +1,11 @@
 import * as THREE from "three";
-// eslint-disable-next-line no-unused-vars
-import { ConvexHull, Face } from "three/addons/math/ConvexHull.js";
-/** @typedef {import("./InputValidation.js").NumericArray} NumericArray */
+/** @import { NumericArray } from "./InputValidation.js" */
 import {
     assertFiniteNumber, assertHTMLElement,
     assertNumericArray3D, assertPositiveNumber,
 } from "./InputValidation.js";
+/** @import { Face } from "three/addons/math/ConvexHull.js" */
+import { ConvexHull } from "three/addons/math/ConvexHull.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 
@@ -31,27 +31,29 @@ function computeDualPolyhedron(vertices, faces) {
 
     /* Assign indices to vertices and faces. */
 
-    /** @type {Map<THREE.Vector3, number>} */ const vertexMap = new Map();
+    /** @type {Map<THREE.Vector3, number>} */
+    const vertexMap = new Map();
     for (const [i, vertex] of vertices.entries()) { vertexMap.set(vertex, i); }
 
-    /** @type {Map<Face, number>} */ const faceMap = new Map();
+    /** @type {Map<Face, number>} */
+    const faceMap = new Map();
     for (const [i, face] of faces.entries()) { faceMap.set(face, i); }
 
-    /* To compute the dual of a convex polyhedron, we need to extract: */
+    /* To compute the dual of a convex polyhedron, we need to construct: */
 
     /* (1) The list of faces incident to each vertex. */
-    /** @type {number[][]} */ const vertexFaceIndices =
-        Array.from({ length: vertices.length });
+    /** @type {number[][]} */
+    const vertexFaceIndices = Array.from({ length: vertices.length });
     for (let i = 0; i < vertices.length; i++) { vertexFaceIndices[i] = []; }
 
     /* (2) The list of vertices incident to each face. */
-    /** @type {number[][]} */ const faceVertexIndices =
-        Array.from({ length: faces.length });
+    /** @type {number[][]} */
+    const faceVertexIndices = Array.from({ length: faces.length });
     for (let i = 0; i < faces.length; i++) { faceVertexIndices[i] = []; }
 
     /* (3) The list of faces adjacent to each face. */
-    /** @type {number[][]} */ const faceNeighborIndices =
-        Array.from({ length: faces.length });
+    /** @type {number[][]} */
+    const faceNeighborIndices = Array.from({ length: faces.length });
     for (let i = 0; i < faces.length; i++) { faceNeighborIndices[i] = []; }
 
     for (const [i, face] of faces.entries()) {
@@ -75,8 +77,8 @@ function computeDualPolyhedron(vertices, faces) {
 
     /* For each vertex of the original polyhedron, we construct
      * the corresponding face of the dual polyhedron. */
-    /** @type {number[][][]} */ const dualFaces =
-        Array.from({ length: vertices.length });
+    /** @type {number[][][]} */
+    const dualFaces = Array.from({ length: vertices.length });
     for (let i = 0; i < vertices.length; i++) { dualFaces[i] = []; }
 
     for (let i = 0; i < vertices.length; i++) {
@@ -117,10 +119,11 @@ export class SphericalVoronoiVisualizer {
         assertFiniteNumber(zOffset);
         assertPositiveNumber(zOffset);
 
-        /** @private @type {number} */ this.numPoints = points.length / 3;
+        /** @private @type {number} */
+        this.numPoints = points.length / 3;
 
-        /** @private @type {THREE.Vector3[]} */ this.points =
-            Array.from({ length: this.numPoints });
+        /** @private @type {THREE.Vector3[]} */
+        this.points = Array.from({ length: this.numPoints });
 
         /* Convert from flat (x, y, z) coordinates to THREE.Vector3 objects. */
         for (let i = 0; i < this.numPoints; i++) {
@@ -128,53 +131,51 @@ export class SphericalVoronoiVisualizer {
                 points[3 * i], points[3 * i + 1], points[3 * i + 2]);
         }
 
-        /** @private @type {HTMLElement} */ this.container = container;
-
-        /* Extract container dimensions. */
+        /** @private @type {HTMLElement} */
+        this.container = container;
         const width = this.container.clientWidth;
         const height = this.container.clientHeight;
 
-        /** @private @type {THREE.WebGLRenderer} */ this.renderer =
-            new THREE.WebGLRenderer({ antialias: true });
-
-        /* Initialize renderer and attach to container. */
+        /** @private @type {THREE.WebGLRenderer} */
+        this.renderer = new THREE.WebGLRenderer({ antialias: true });
         this.renderer.setSize(width, height);
         this.container.append(this.renderer.domElement);
+
+        /** @private @type {ResizeObserver} */
         this.resizeObserver = new ResizeObserver(
             () => this.onContainerResize());
         this.resizeObserver.observe(this.container);
 
-        /* Initialize camera with FOV computed to inscribe
-         * a sphere of radius r at distance zOffset. */
+        /* Compute FOV to inscribe a sphere of radius r at distance zOffset. */
         const r = 1.0 + particleRadius;
 
-        /** @private @type {number} */ this.fovAngle =
-            (360.0 / Math.PI) * Math.asin(r / zOffset);
+        /** @private @type {number} */
+        this.fovAngle = (360.0 / Math.PI) * Math.asin(r / zOffset);
 
-        /** @private @type {THREE.PerspectiveCamera} */ this.camera =
-            new THREE.PerspectiveCamera(
-                Math.max(1.0, height / width) * this.fovAngle,
-                width / height, zOffset - r, zOffset + r);
+        /** @private @type {THREE.PerspectiveCamera} */
+        this.camera = new THREE.PerspectiveCamera(
+            Math.max(1.0, height / width) * this.fovAngle,
+            width / height, zOffset - r, zOffset + r);
         this.camera.position.z = zOffset;
 
-        /** @private @type {OrbitControls} */ this.controls =
-            new OrbitControls(this.camera, this.renderer.domElement);
+        /** @private @type {OrbitControls} */
+        this.controls = new OrbitControls(
+            this.camera, this.renderer.domElement);
         this.controls.autoRotate = true;
         this.controls.enableDamping = true;
         this.controls.enablePan = false;
         this.controls.enableZoom = false;
         this.controls.touches.TWO = null;
 
-        /* Begin constructing scene. */
-        /** @private @type {THREE.Scene} */ this.scene = new THREE.Scene();
+        /** @private @type {THREE.Scene} */
+        this.scene = new THREE.Scene();
 
-        /* Add particles to scene. */
+        /** @private @type {THREE.Mesh[]} */
+        this.particles = Array.from({ length: this.numPoints });
         const particleGeometry = new THREE.IcosahedronGeometry(
             particleRadius, 1);
         const particleMaterial = new THREE.MeshBasicMaterial(
             { color: new THREE.Color(0.0, 0.0, 0.0) });
-        /** @private @type {THREE.Mesh[]} */ this.particles =
-            Array.from({ length: this.numPoints });
         for (let i = 0; i < this.numPoints; i++) {
             const particle = new THREE.Mesh(particleGeometry, particleMaterial);
             particle.position.copy(this.points[i]);
@@ -182,11 +183,12 @@ export class SphericalVoronoiVisualizer {
             this.scene.add(this.particles[i]);
         }
 
-        /* Set up necessary data structures to compute Voronoi cells. */
-        /** @private @type {ConvexHull} */ this.hull = new ConvexHull();
+        /** @private @type {ConvexHull} */
+        this.hull = new ConvexHull();
         this.hull.setFromPoints(this.points);
 
-        /** @private @type {number[][][]} */ this.voronoiCellIndices =
+        /** @private @type {number[][][]} */
+        this.voronoiCellIndices =
             computeDualPolyhedron(this.points, this.hull.faces);
 
         /** @private @type {THREE.BufferAttribute[]} */ this.voronoiBuffers =
@@ -213,7 +215,8 @@ export class SphericalVoronoiVisualizer {
         /* Compute Voronoi cells. */
         this.updateVoronoiCells();
 
-        /* Add Voronoi cells to scene. */
+        /** @private @type {THREE.Mesh[]} */
+        this.voronoiCells = Array.from({ length: this.numPoints });
         const cellIndices = Array.from({ length: 3 * MAX_VORONOI_EDGES });
         for (let i = 0; i < MAX_VORONOI_EDGES; i++) {
             cellIndices[3 * i] = 0;
@@ -221,9 +224,6 @@ export class SphericalVoronoiVisualizer {
             cellIndices[3 * i + 2] = i + 2;
         }
         cellIndices[3 * MAX_VORONOI_EDGES - 1] = 1;
-
-        /** @private @type {THREE.Mesh[]} */ this.voronoiCells =
-            Array.from({ length: this.numPoints });
         for (let i = 0; i < this.numPoints; i++) {
             const geometry = new THREE.BufferGeometry();
             geometry.setIndex(cellIndices);
@@ -234,7 +234,8 @@ export class SphericalVoronoiVisualizer {
             this.scene.add(this.voronoiCells[i]);
         }
 
-        /* Add outlines of Voronoi cells to scene. */
+        /** @private @type {THREE.Line[]} */
+        this.voronoiOutlines = Array.from({ length: this.numPoints });
         const outlineIndices = Array.from({ length: MAX_VORONOI_EDGES + 1 });
         for (let i = 0; i < MAX_VORONOI_EDGES; i++) {
             outlineIndices[i] = i + 1;
@@ -242,9 +243,6 @@ export class SphericalVoronoiVisualizer {
         outlineIndices[MAX_VORONOI_EDGES] = 1;
         const outlineMaterial = new THREE.LineBasicMaterial(
             { color: new THREE.Color(0.0, 0.0, 0.0) });
-
-        /** @private @type {THREE.Line[]} */ this.voronoiOutlines =
-            Array.from({ length: this.numPoints });
         for (let i = 0; i < this.numPoints; i++) {
             const geometry = new THREE.BufferGeometry();
             geometry.setIndex(outlineIndices);
