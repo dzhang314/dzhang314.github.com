@@ -217,16 +217,17 @@ export class SphericalVoronoiVisualizer {
 
         /** @private @type {THREE.Mesh[]} */
         this.voronoiCells = Array.from({ length: this.numPoints });
-        const cellIndices = Array.from({ length: 3 * MAX_VORONOI_EDGES });
+        const cellIndices = new Uint8Array(3 * MAX_VORONOI_EDGES);
         for (let i = 0; i < MAX_VORONOI_EDGES; i++) {
-            cellIndices[3 * i] = 0;
+            cellIndices[3 * i + 0] = 0;
             cellIndices[3 * i + 1] = i + 1;
             cellIndices[3 * i + 2] = i + 2;
         }
         cellIndices[3 * MAX_VORONOI_EDGES - 1] = 1;
+        const cellIndexBuffer = new THREE.BufferAttribute(cellIndices, 1);
         for (let i = 0; i < this.numPoints; i++) {
             const geometry = new THREE.BufferGeometry();
-            geometry.setIndex(cellIndices);
+            geometry.setIndex(cellIndexBuffer);
             geometry.setAttribute("position", this.voronoiBuffers[i]);
             geometry.setAttribute("normal", this.voronoiBuffers[i]);
             this.voronoiCells[i] = new THREE.Mesh(
