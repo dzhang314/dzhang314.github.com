@@ -14,7 +14,7 @@ import { assertNumericArray3D, assertSameLength } from "./InputValidation.js";
  * @returns {number} The Coulomb (electrostatic) energy of the point charge
  * configuration in natural units.
  */
-export function calculateCoulombEnergy(points) {
+export function computeCoulombEnergy(points) {
 
     assertNumericArray3D(points);
 
@@ -55,7 +55,7 @@ export function calculateCoulombEnergy(points) {
  *
  * @returns {void}
  */
-export function calculateCoulombForces(forces, points) {
+export function computeCoulombForces(forces, points) {
 
     assertNumericArray3D(forces);
     assertNumericArray3D(points);
@@ -122,7 +122,7 @@ export function constrainForces(forces, points) {
  * @param {NumericArray} forces
  * @returns {number}
  */
-export function calculateRmsForce(forces) {
+export function computeRmsForce(forces) {
 
     assertNumericArray3D(forces);
 
