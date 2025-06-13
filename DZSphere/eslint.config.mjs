@@ -24,7 +24,7 @@ export default defineConfig([
             "no-console": "warn",
             "no-inline-comments": "off",
             "no-magic-numbers": ["error", {
-                ignore: [-2.0, 0, 0.5, 1, 2, 3, 4, 5, 6, 7, 8, 360.0]
+                ignore: [-2.0, -1.0, 0, 0.5, 1, 2, 3, 4, 5, 6, 7, 8, 360.0]
             }],
             "no-plusplus": ["error", { allowForLoopAfterthoughts: true }],
             "no-undefined": "off",

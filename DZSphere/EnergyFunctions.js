@@ -43,11 +43,10 @@ export function computeCoulombEnergy(points) {
  * charges in 3D Euclidean space. The forces are computed in natural units
  * where the Coulomb constant k = 1 / (4 * pi * epsilon_0) is set to 1.
  *
- * The computation is performed in-place on a preallocated output array.
+ * The computed forces are written to a preallocated output array.
  *
- * @param {NumericArray} forces - Preallocated output array to contain the
- * forces on the point charges in natural units. The forces are returned in the
- * format [F0_x, F0_y, F0_z, F1_x, F1_y, F1_z, ...].
+ * @param {NumericArray} forces - Preallocated output array to receive the
+ * computed forces in the format [F0_x, F0_y, F0_z, F1_x, F1_y, F1_z, ...].
  *
  * @param {NumericArray} points - The coordinates of the point charges in the
  * format [x_0, y_0, z_0, x_1, y_1, z_1, ...]. All point charges are assumed to
@@ -82,6 +81,147 @@ export function computeCoulombForces(forces, points) {
                 fx += invDistCb * dx;
                 fy += invDistCb * dy;
                 fz += invDistCb * dz;
+            }
+        }
+        forces[3 * i + 0] = fx;
+        forces[3 * i + 1] = fy;
+        forces[3 * i + 2] = fz;
+    }
+}
+
+
+/**
+ * Compute the Hessian-vector product (HVP) of the Hessian of the Coulomb
+ * (electrostatic) energy function, evaluated at a given configuration of unit
+ * point charges in 3D Euclidean space, with a given vector. The entries of the
+ * Hessian matrix are computed in natural units where the Coulomb constant
+ * k = 1 / (4 * pi * epsilon_0) is set to 1.
+ *
+ * The Hessian-vector product is written to a preallocated output array.
+ *
+ * @param {NumericArray} result
+ * @param {NumericArray} points
+ * @param {NumericArray} vector
+ */
+export function computeCoulombHVP(result, points, vector) {
+
+    assertNumericArray3D(result);
+    assertNumericArray3D(points);
+    assertNumericArray3D(vector);
+    assertSameLength(result, points);
+    assertSameLength(result, vector);
+
+    const numPoints = points.length / 3;
+    for (let i = 0; i < numPoints; i++) {
+        let rx = 0.0;
+        let ry = 0.0;
+        let rz = 0.0;
+        const xi = points[3 * i + 0];
+        const yi = points[3 * i + 1];
+        const zi = points[3 * i + 2];
+        const ui = vector[3 * i + 0];
+        const vi = vector[3 * i + 1];
+        const wi = vector[3 * i + 2];
+        for (let j = 0; j < numPoints; j++) {
+            if (i !== j) {
+                const xj = points[3 * j + 0];
+                const yj = points[3 * j + 1];
+                const zj = points[3 * j + 2];
+                const uj = vector[3 * j + 0];
+                const vj = vector[3 * j + 1];
+                const wj = vector[3 * j + 2];
+                const dx = xi - xj;
+                const dy = yi - yj;
+                const dz = zi - zj;
+                const du = ui - uj;
+                const dv = vi - vj;
+                const dw = wi - wj;
+                const overlap = dx * du + dy * dv + dz * dw;
+                const distSq = dx * dx + dy * dy + dz * dz;
+                const dist = Math.sqrt(distSq);
+                const distCb = distSq * dist;
+                const alpha = -1.0 / distCb;
+                const dist5 = distSq * distCb;
+                const beta = (overlap + overlap + overlap) / dist5;
+                rx += alpha * du + beta * dx;
+                ry += alpha * dv + beta * dy;
+                rz += alpha * dw + beta * dz;
+            }
+        }
+        result[3 * i + 0] = rx;
+        result[3 * i + 1] = ry;
+        result[3 * i + 2] = rz;
+    }
+}
+
+
+/**
+ * @param {(distSq: number) => number} radialEnergyFunction
+ * @param {NumericArray} points
+ */
+export function computePairwiseRadialEnergy(radialEnergyFunction, points) {
+
+    assertNumericArray3D(points);
+
+    const numPoints = points.length / 3;
+    let energy = 0.0;
+    for (let i = 0; i < numPoints; i++) {
+        const xi = points[3 * i + 0];
+        const yi = points[3 * i + 1];
+        const zi = points[3 * i + 2];
+        for (let j = i + 1; j < numPoints; j++) {
+            const xj = points[3 * j + 0];
+            const yj = points[3 * j + 1];
+            const zj = points[3 * j + 2];
+            const dx = xi - xj;
+            const dy = yi - yj;
+            const dz = zi - zj;
+            const distSq = dx * dx + dy * dy + dz * dz;
+            energy += radialEnergyFunction(distSq);
+        }
+    }
+    return energy;
+
+}
+
+
+/**
+ * @param {NumericArray} forces
+ * @param {(distSq: number) => number} radialEnergyDerivative
+ * @param {NumericArray} points
+ */
+export function computePairwiseRadialForces(
+    forces,
+    radialEnergyDerivative,
+    points,
+) {
+
+    assertNumericArray3D(forces);
+    assertNumericArray3D(points);
+    assertSameLength(forces, points);
+
+    const numPoints = points.length / 3;
+    for (let i = 0; i < numPoints; i++) {
+        let fx = 0.0;
+        let fy = 0.0;
+        let fz = 0.0;
+        const xi = points[3 * i + 0];
+        const yi = points[3 * i + 1];
+        const zi = points[3 * i + 2];
+        for (let j = 0; j < numPoints; j++) {
+            if (i !== j) {
+                const xj = points[3 * j + 0];
+                const yj = points[3 * j + 1];
+                const zj = points[3 * j + 2];
+                const dx = xi - xj;
+                const dy = yi - yj;
+                const dz = zi - zj;
+                const distSq = dx * dx + dy * dy + dz * dz;
+                const energyDerivative = radialEnergyDerivative(distSq);
+                const forceStrength = energyDerivative + energyDerivative;
+                fx -= forceStrength * dx;
+                fy -= forceStrength * dy;
+                fz -= forceStrength * dz;
             }
         }
         forces[3 * i + 0] = fx;
