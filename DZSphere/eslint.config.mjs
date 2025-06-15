@@ -15,6 +15,7 @@ export default defineConfig([
             unicorn.configs.all,
         ],
         rules: {
+            "capitalized-comments": "warn",
             "func-style": ["error", "declaration"],
             "id-length": "off",
             "max-lines": "off",
