@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>David K. Zhang - Functional Analysis</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.8/dist/litera/bootstrap.min.css" integrity="sha256-EcieE9PSCz4ZRJ4bD9NMsa/Xtz311YjGDuvhy7EOpY8=" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css" integrity="sha256-DIEmZFu5g6eIsWexuXq+JQWpYq1F4EkAFGPEYBIBKps=" crossorigin="anonymous">
+        <style>/* Import STIX Two Text and Fira Code fonts from Google Fonts. */
+@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+
+/* Use STIX Two Text as main text font. */
+p  { font-family: "STIX Two Text", serif; text-align: justify; }
+li { font-family: "STIX Two Text", serif; text-align: justify; }
+
+/* Use sans-serif font for navbar and special paragraphs. */
+.sans p    { font-family: var(--bs-font-sans-serif); text-align: justify; }
+.navbar li { font-family: var(--bs-font-sans-serif); text-align: justify; }
+
+/* Use Fira Code as monospace font for code blocks. */
+code { font-family: "Fira Code", monospace; font-size: 1.0rem; }
+
+/* Slightly increase equation size to better match STIX Two Text. */
+.katex { font-size: 1.05em; }
+
+/* Center h1 headings for use as page titles. */
+h1 { text-align: center; padding: 1rem; }
+
+/* Adjust card spacing for visual symmetry. */
+.card        { margin: 1rem 0; }
+.card hr     { margin: 0.1rem 0; }
+.card-header { padding: 0.3rem 0.7rem 0.1rem; }
+.card-body   { padding: 0.4rem 0.7rem; }
+
+/* Tighten spacing around paragraphs, lists,
+   and display-mode equations inside cards. */
+.card-body .katex-display { margin: -0.5rem 0 0.5rem; }
+.card-header p:last-child { margin-bottom: 0; }
+.card-body   p:last-child { margin-bottom: 0; }
+.card-body  ul:last-child { margin-bottom: 0; }
+.card-body  ol:last-child { margin-bottom: 0; }
+.card-body p+ul { margin-top: -0.5rem; }
+.card-body p+ol { margin-top: -0.5rem; }
+.card-body ul+p { margin-top: -0.5rem; }
+.card-body ol+p { margin-top: -0.5rem; }
+
+/* Only underline links on hover. */
+a { text-decoration: none; }
+a:not([class]):hover { text-decoration: underline; }
+
+/* Ensure browser does not add side margin when printing. */
+@page { size: portrait; margin: auto 0; }
+
+/* Constrain width of main text container for ease of printing. */
+/* 19cm corresponds to an A4 page with 1cm margins on each side. */
+@media screen { .container-lg { max-width: 20cm; padding: 0 0.5cm; } }
+@media print { .container-lg { max-width: 19cm; padding: 0; } }
+
+/* Adjust navbar padding and add bottom border. */
+.navbar { padding: 0 0.5rem; border-bottom: 1px solid var(--bs-gray-300);  }
+
+/* Use checkbox trick to toggle navbar without JS. */
+#navbar-checkbox:checked ~ .navbar-collapse { display: block; }
+#navbar-checkbox:focus + .navbar-toggler { outline: auto; }
+
+/* Use disclosure widget to toggle dropdown menu without JS. */
+details[open] > .dropdown-menu { display: block; }
+
+pre {
+    color: black;
+    background-color: var(--bs-gray-200);
+    font-size: 0.9rem;
+    padding: 0.5rem;
+}
+</style>
+    </head>
+    <body>
+        <a class="visually-hidden" href="#main-content">Skip to main content</a>
+        <nav class="navbar fixed-top navbar-expand-md navbar-light bg-light d-print-none">
+    <a class="navbar-brand" href="/">
+        <img src="/resources/favicon_crop.png" class="align-top" alt="" style="height: 2.0rem;">
+        David K. Zhang
+    </a>
+    <input type="checkbox" id="navbar-checkbox" class="visually-hidden" autocomplete="off"
+        aria-label="Toggle navigation" aria-controls="navbar-menu">
+    <label class="navbar-toggler" for="navbar-checkbox">
+        <span class="navbar-toggler-icon"></span>
+    </label>
+    <div class="collapse navbar-collapse" id="navbar-menu">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="/index.html">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/projects.html">Projects</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/publications.html">Publications</a>
+            </li>
+            <li class="nav-item dropdown">
+                <details>
+                    <summary class="nav-link dropdown-toggle">
+                        Notes
+                    </summary>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <h6 class="dropdown-header">Mathematics</h6>
+                        </li>
+                        <li><a class="dropdown-item" href="/groups.html">Group Theory</a></li>
+                        <li><a class="dropdown-item" href="/rings.html">Ring Theory</a></li>
+                        <li><a class="dropdown-item" href="/linalg.html">Linear Algebra</a></li>
+                        <li><a class="dropdown-item" href="/convex.html">Convex Analysis</a></li>
+                        <li><a class="dropdown-item" href="/functionalanalysis.html">Functional Analysis</a></li>
+                        <li><a class="dropdown-item" href="/optimization.html">Optimization</a></li>
+                        <li><a class="dropdown-item" href="/topology.html">Topology</a></li>
+                        <li><a class="dropdown-item" href="/numbertheory.html">Number Theory</a></li>
+                        <li><a class="dropdown-item" href="/misc.html">Miscellaneous Thoughts</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <h6 class="dropdown-header">Computer Science</h6>
+                        </li>
+                        <li><a class="dropdown-item" href="/ecc.html">Error-Correcting Codes</a></li>
+                        <li><a class="dropdown-item" href="/websites.html">Building Static Websites</a></li>
+                    </ul>
+                </details>
+            </li>
+        </ul>
+        <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/about.html">About</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/contact.html">Contact</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+        <div class="container-lg">
+            <div class="d-print-none" style="padding-top: 4.0rem;"></div>
+            <main id="main-content"><h1>Notes on Functional Analysis</h1>
+<div class="text-center">
+    David K. Zhang<br>
+    Last Modified 2025-11-22
+</div><br>
+<div class="card bg-light border-dark">
+<div class="card-header bg-dark text-white">
+<p><strong>Definition: Hermite Polynomial, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>H</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">H_n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.08125em;">H</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0813em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></strong></p>
+</div>
+<div class="card-body">
+<p>Let <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>∈</mo><mi mathvariant="double-struck">N</mi></mrow><annotation encoding="application/x-tex">n \in \N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6889em;"></span><span class="mord"><span class="mord mathbb">N</span></span></span></span></span>. The <em><strong>Hermite polynomial</strong></em> <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>H</mi><mi>n</mi></msub><mo>∈</mo><mi mathvariant="double-struck">Z</mi><mo stretchy="false">[</mo><mi>x</mi><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">H_n \in \Z[x]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.08125em;">H</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0813em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathbb">Z</span></span><span class="mopen">[</span><span class="mord mathnormal">x</span><span class="mclose">]</span></span></span></span> is defined by the following formula:</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>H</mi><mi>n</mi></msub><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo><mi mathvariant="normal">≔</mi></mo><mo stretchy="false">(</mo><mo>−</mo><mn>1</mn><msup><mo stretchy="false">)</mo><mi>n</mi></msup><msup><mi>e</mi><msup><mi>x</mi><mn>2</mn></msup></msup><mfrac><msup><mi mathvariant="normal">d</mi><mi>n</mi></msup><mrow><mi mathvariant="normal">d</mi><msup><mi>x</mi><mi>n</mi></msup></mrow></mfrac><msup><mi>e</mi><mrow><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup></mrow></msup></mrow><annotation encoding="application/x-tex"> H_n(x) \coloneqq (-1)^n e^{x^2} \frac{\dd^n}{\dd x^n} e^{-x^2} </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.08125em;">H</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0813em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel"><span class="mrel"><span class="mop" style="position:relative;top:-0.0347em;">:</span></span><span class="mrel"><span class="mspace" style="margin-right:-0.0667em;"></span></span><span class="mrel">=</span></span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.0574em;vertical-align:-0.686em;"></span><span class="mopen">(</span><span class="mord">−</span><span class="mord">1</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7144em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:1.0369em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8913em;"><span style="top:-2.931em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3714em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathrm">d</span></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.5904em;"><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord mathrm">d</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:1.0369em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight"><span class="mord mathnormal mtight">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8913em;"><span style="top:-2.931em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></div>
+</div>
+</main>
+            <hr>
+            <footer>
+                <span class="float-end text-secondary mb-3">&copy; David K. Zhang 2016&ndash;2026</span>
+            </footer>
+        </div>
+    </body>
+</html>
