@@ -80,7 +80,11 @@
 
         //////////////////////////////////////////////////////////// MARKDOWN-IT
 
-        const md = markdownIt({ html: true, linkify: true, typographer: true });
+        const md = markdownIt({
+            html: false,
+            linkify: true,
+            typographer: true,
+        });
 
         ////////////////////////////////////////////////// MARKDOWN-IT-CONTAINER
 
@@ -109,8 +113,8 @@
         MACROS["\\L"] = "{\\mathcal{L}}";
 
         // Bold letters for use as vectors.
-        for (const x of LOWERCASE) MACROS[`\\v${x}`] = `{\\mathbf{${x}}}`;
         for (const x of UPPERCASE) MACROS[`\\v${x}`] = `{\\mathbf{${x}}}`;
+        for (const x of LOWERCASE) MACROS[`\\v${x}`] = `{\\mathbf{${x}}}`;
 
         // Bold zero and one for use as vectors and indicator functions.
         MACROS["\\vzero"] = "{\\mathbf{0}}";
@@ -146,6 +150,13 @@
         MACROS["\\vLambda"] = "{\\boldsymbol{\\Lambda}}";
 
         /////////////////////////////////////////////////////////// KATEX PARSER
+
+        md.inline.ruler.before("entity", "qed", (state, silent) => {
+            if (!state.src.startsWith("&qed;", state.pos)) return false;
+            if (!silent) state.push("qed", "", 0);
+            state.pos += "&qed;".length;
+            return true;
+        });
 
         function addKatexInlineRule(regex) {
             md.inline.ruler.before("escape", "math_inline", (state, silent) => {
@@ -194,7 +205,8 @@
                         state.line = lastLine + 1;
                     }
                     return true;
-                }
+                },
+                { alt: ["paragraph", "blockquote"] }
             );
         }
 
@@ -204,6 +216,8 @@
         addKatexBlockRule(/\${2}([^$]*?[^\\])\${2}/gmy);
 
         ///////////////////////////////////////////////////////// KATEX RENDERER
+
+        md.renderer.rules.qed = () => `<span class="float-end">&#8718;</span>`;
 
         function katexRenderer(displayMode) {
             return (tokens, i) => katex.renderToString(tokens[i].content, {
@@ -307,22 +321,12 @@ The text editor will not be displayed in the printed document.
         // Automatically resize Monaco editor window when window is resized.
         window.addEventListener("resize", () => editor.layout());
 
-        function preprocessMarkdown(string) {
-            const result = [];
-            for (const line of string.split('\n')) {
-                if (/^\s*\\\[|^\s*\$\$/.test(line)) { result.push(""); }
-                result.push(line.replaceAll("&qed;",
-                    `<span class="float-end">&#8718;</span>`));
-            }
-            return result.join('\n');
-        }
-
         // Re-render Markdown whenever editor content changes.
         const innerPreview = document.getElementById("innerPreview");
         function renderMarkdown() {
             const content = editor.getValue();
             localStorage.setItem("ZhangEditDocument", content);
-            innerPreview.innerHTML = md.render(preprocessMarkdown(content));
+            innerPreview.innerHTML = md.render(content);
         }
         editor.onDidChangeModelContent(renderMarkdown);
         renderMarkdown();
